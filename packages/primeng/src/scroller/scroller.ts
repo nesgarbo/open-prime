@@ -1,22 +1,5 @@
 import { isPlatformBrowser, NgTemplateOutlet } from '@angular/common';
-import {
-    ChangeDetectionStrategy,
-    Component,
-    computed,
-    contentChild,
-    effect,
-    ElementRef,
-    inject,
-    InjectionToken,
-    input,
-    NgModule,
-    output,
-    signal,
-    TemplateRef,
-    untracked,
-    viewChild,
-    ViewEncapsulation
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, contentChild, effect, ElementRef, inject, InjectionToken, input, NgModule, output, signal, TemplateRef, untracked, viewChild, ViewEncapsulation } from '@angular/core';
 import { findSingle, getHeight, getWidth, isTouchDevice, isVisible } from '@primeuix/utils';
 import { ScrollerOptions } from 'primeng/api';
 import { BaseComponent, PARENT_INSTANCE } from 'primeng/basecomponent';

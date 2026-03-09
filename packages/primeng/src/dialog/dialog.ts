@@ -22,17 +22,7 @@ import {
     ViewRef
 } from '@angular/core';
 import { MotionEvent, MotionOptions } from '@primeuix/motion';
-import {
-    addStyle,
-    appendChild,
-    getOuterHeight,
-    getOuterWidth,
-    getViewport,
-    hasClass,
-    removeClass,
-    setAttribute,
-    uuid
-} from '@primeuix/utils';
+import { addStyle, appendChild, getOuterHeight, getOuterWidth, getViewport, hasClass, removeClass, setAttribute, uuid } from '@primeuix/utils';
 import { OverlayService, SharedModule, TranslationKeys } from 'primeng/api';
 import { BaseComponent, PARENT_INSTANCE } from 'primeng/basecomponent';
 import { Bind } from 'primeng/bind';
