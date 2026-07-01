@@ -1,22 +1,5 @@
 import { isPlatformBrowser, NgTemplateOutlet } from '@angular/common';
-import {
-    booleanAttribute,
-    ChangeDetectionStrategy,
-    Component,
-    computed,
-    contentChild,
-    ElementRef,
-    inject,
-    input,
-    NgModule,
-    numberAttribute,
-    output,
-    signal,
-    TemplateRef,
-    viewChild,
-    ViewEncapsulation,
-    ViewRef
-} from '@angular/core';
+import { booleanAttribute, ChangeDetectionStrategy, Component, computed, contentChild, ElementRef, inject, input, NgModule, numberAttribute, output, signal, TemplateRef, viewChild, ViewEncapsulation, ViewRef } from '@angular/core';
 import { MotionEvent, MotionOptions } from '@primeuix/motion';
 import { absolutePosition, addStyle, appendChild, find, findSingle, focus, isTouchDevice, uuid } from '@primeuix/utils';
 import { MenuItem, OverlayService, SharedModule } from 'primeng/api';
