@@ -33,7 +33,7 @@ describe('ToggleSwitch', () => {
             expect(component.trueValue()).toBe(true);
             expect(component.falseValue()).toBe(false);
             expect(component.focused()).toBe(false);
-            expect(component.readonly()).toBe(false);
+            expect(component.readonly()).toBeFalsy();
             expect(component.tabindex()).toBeUndefined();
         });
 

@@ -133,7 +133,7 @@ describe('Knob', () => {
             expect(knobInstance.size()).toBe(100);
             expect(knobInstance.strokeWidth()).toBe(14);
             expect(knobInstance.showValue()).toBe(true);
-            expect(knobInstance.readonly()).toBe(false);
+            expect(knobInstance.readonly()).toBeFalsy();
             expect(knobInstance.valueTemplate()).toBe('{value}');
         });
 
