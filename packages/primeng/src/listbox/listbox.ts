@@ -6,7 +6,6 @@ import {
     contentChild,
     effect,
     ElementRef,
-    HostListener,
     InjectionToken,
     NgModule,
     output,
@@ -353,7 +352,8 @@ export const LISTBOX_VALUE_ACCESSOR: any = {
     host: {
         '[attr.id]': '$id()',
         '[class]': "cx('root')",
-        '[attr.data-p]': 'containerDataP'
+        '[attr.data-p]': 'containerDataP',
+        '(focusout)': 'onHostFocusOut($event)'
     },
     hostDirectives: [Bind]
 })
@@ -992,7 +992,6 @@ export class Listbox extends BaseEditableHolder<ListBoxPassThrough> {
         return t?.aria ? t.aria[this.allSelected() ? 'selectAll' : 'unselectAll'] : undefined;
     });
 
-    @HostListener('focusout', ['$event'])
     onHostFocusOut(event: FocusEvent) {
         this.onFocusout(event);
     }
