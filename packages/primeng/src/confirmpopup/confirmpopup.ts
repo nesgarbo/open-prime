@@ -8,7 +8,6 @@ import {
     effect,
     ElementRef,
     EventEmitter,
-    HostListener,
     inject,
     InjectionToken,
     input,
@@ -48,6 +47,9 @@ const CONFIRMPOPUP_INSTANCE = new InjectionToken<ConfirmPopup>('CONFIRMPOPUP_INS
     imports: [NgTemplateOutlet, SharedModule, ButtonModule, FocusTrap, Bind, MotionModule],
     providers: [ConfirmPopupStyle, { provide: CONFIRMPOPUP_INSTANCE, useExisting: ConfirmPopup }, { provide: PARENT_INSTANCE, useExisting: ConfirmPopup }],
     hostDirectives: [Bind],
+    host: {
+        '(document:keydown.Escape)': 'onEscapeKeydown($event)'
+    },
     template: `
         @if (render()) {
             <div
@@ -321,7 +323,6 @@ export class ConfirmPopup extends BaseComponent<ConfirmPopupPassThrough> {
         return undefined;
     }
 
-    @HostListener('document:keydown.Escape', ['$event'])
     onEscapeKeydown(event: KeyboardEvent) {
         const confirmation = this.confirmation();
         if (confirmation && confirmation.closeOnEscape !== false) {
