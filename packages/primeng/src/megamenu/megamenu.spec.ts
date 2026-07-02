@@ -806,7 +806,7 @@ describe('MegaMenu', () => {
             const mockEvent = new KeyboardEvent('keydown');
 
             spyOn(megaMenuInstance, 'changeFocusedItemInfo').and.callThrough();
-            spyOn(megaMenuInstance, 'findVisibleItem').and.returnValue({ key: 'test', parentKey: '', item: null });
+            spyOn(megaMenuInstance, 'findVisibleItem').and.returnValue({ key: 'test', parentKey: '', item: null } as any);
 
             megaMenuInstance.changeFocusedItemInfo(mockEvent, 0);
 

@@ -959,8 +959,8 @@ describe('Slider', () => {
                 }
             } as any;
 
-            spyOn(window, 'scrollX').and.returnValue(5);
-            spyOn(window, 'scrollY').and.returnValue(10);
+            spyOnProperty(window, 'scrollX', 'get').and.returnValue(5);
+            spyOnProperty(window, 'scrollY', 'get').and.returnValue(10);
 
             component.updateDomData();
 

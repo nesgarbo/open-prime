@@ -1,6 +1,7 @@
 import { Component, DebugElement, PLATFORM_ID, provideZonelessChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { providePrimeNG } from 'primeng/config';
 
 import { BaseComponent } from 'primeng/basecomponent';
 import { Button } from 'primeng/button';
@@ -1218,8 +1219,6 @@ describe('ScrollTop', () => {
 
     describe('PassThrough - Case 7: Test from PrimeNGConfig', () => {
         it('should apply global pt configuration from PrimeNGConfig', () => {
-            const { providePrimeNG } = require('primeng/config');
-
             @Component({
                 standalone: false,
                 template: `
@@ -1261,8 +1260,6 @@ describe('ScrollTop', () => {
         });
 
         it('should merge local pt with global pt configuration', () => {
-            const { providePrimeNG } = require('primeng/config');
-
             @Component({
                 standalone: false,
                 template: ` <p-scrolltop [threshold]="100" [pt]="{ host: 'LOCAL_HOST_CLASS', root: 'LOCAL_ROOT_CLASS' }"></p-scrolltop> `

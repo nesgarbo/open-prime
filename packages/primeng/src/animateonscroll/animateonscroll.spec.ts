@@ -5,6 +5,7 @@ import { AnimateOnScroll, AnimateOnScrollModule } from './animateonscroll';
 
 // Mock IntersectionObserver
 class MockIntersectionObserver implements IntersectionObserver {
+    readonly scrollMargin: string = '0px';
     root: Element | Document | null = null as any;
     rootMargin = '';
     thresholds: readonly number[] = [];
@@ -50,7 +51,7 @@ class MockIntersectionObserver implements IntersectionObserver {
             rootBounds: new DOMRect(0, 0, 1000, 1000),
             time: Date.now()
         };
-        this.callback([entry], this);
+        this.callback([entry], this as unknown as IntersectionObserver);
     }
 }
 

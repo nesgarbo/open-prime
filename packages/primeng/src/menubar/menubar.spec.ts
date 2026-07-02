@@ -965,7 +965,7 @@ describe('Menubar', () => {
 
         it('should call show method programmatically', () => {
             spyOn(menubarInstance, 'findFirstFocusedItemIndex').and.returnValue(0);
-            spyOn(menubarInstance, 'findVisibleItem').and.returnValue({ item: { label: 'Test' } });
+            spyOn(menubarInstance, 'findVisibleItem').and.returnValue({ item: { label: 'Test' } } as any);
 
             menubarInstance.show();
 
