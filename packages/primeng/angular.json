@@ -5,6 +5,7 @@
     "projects": {
         "primeng": {
             "root": "src",
+            "sourceRoot": "src",
             "projectType": "library",
             "architect": {
                 "build": {
