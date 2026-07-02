@@ -58,6 +58,7 @@ import { AppDocSectionText } from '@/components/doc/app.docsectiontext';
                 <li><i>migrate_v18_to_v19</i> : v18 to v19 migration guide</li>
                 <li><i>migrate_v19_to_v20</i> : v19 to v20 migration guide</li>
                 <li><i>migrate_v20_to_v21</i> : v20 to v21 migration guide</li>
+                <li><i>migrate_v21_to_v22</i> : v21 to v22 migration guide</li>
             </ul>
 
             <h3>Search & Discovery</h3>
