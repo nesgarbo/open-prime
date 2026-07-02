@@ -30,6 +30,7 @@ const migrationGuides = {
         from: 'v21',
         breaking: [
             'PrimeNG v22 requires Angular 22+',
+            'Component and directive inputs are now signal inputs (`input()`), which return a read-only `InputSignal`. Setting an input imperatively from outside the component (e.g. `iconRef.spin = true` or `iconRef.spin.set(true)`) no longer works — bind the value through the template (`[spin]="..."`) instead. This affects any code that injected a component/directive (such as `BaseIcon`) and wrote to its `@Input` property directly.',
             'Form components now expose the signal-forms state contract; the `minlength`/`maxlength` inputs are deprecated in favor of `minLength`/`maxLength`',
             'The `pattern` input now accepts a string, a RegExp or an array of patterns and is normalized to `readonly RegExp[]` to match the Angular signal-forms FormValueControl contract',
             'Legacy `@angular/animations` triggers removed in favor of the built-in motion system'
