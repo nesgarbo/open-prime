@@ -77,6 +77,7 @@ function formatMigrationContent(guide: (typeof migrationGuides)[keyof typeof mig
     }
 
     content += `For detailed migration guide, visit: https://primeng.org/installation`;
+
     return content;
 }
 
@@ -111,12 +112,13 @@ runPrimeMcpServer({
 
                 if (!version) {
                     // Return summary of all migrations
-                    const summary = Object.entries(migrationGuides).map(([key, guide]) => ({
+                    const summary = Object.values(migrationGuides).map((guide) => ({
                         migration: `${guide.from} → ${guide.version}`,
                         breaking_count: guide.breaking.length,
                         deprecations_count: guide.deprecations.length,
                         new_features_count: guide.whatsnew.length
                     }));
+
                     return {
                         content: [
                             {
@@ -161,16 +163,14 @@ runPrimeMcpServer({
                     description: "Optional section: 'breaking', 'deprecations', 'whatsnew'"
                 }
             },
-            handler: async (_data: ComponentsData, args: Record<string, unknown>) => {
-                return {
-                    content: [
-                        {
-                            type: 'text' as const,
-                            text: formatMigrationContent(migrationGuides.v18_to_v19, args.section as string | undefined)
-                        }
-                    ]
-                };
-            }
+            handler: async (_data: ComponentsData, args: Record<string, unknown>) => ({
+                content: [
+                    {
+                        type: 'text' as const,
+                        text: formatMigrationContent(migrationGuides.v18_to_v19, args.section as string | undefined)
+                    }
+                ]
+            })
         },
         // Angular-specific: migrate_v19_to_v20
         {
@@ -182,16 +182,14 @@ runPrimeMcpServer({
                     description: "Optional section: 'breaking', 'deprecations', 'whatsnew'"
                 }
             },
-            handler: async (_data: ComponentsData, args: Record<string, unknown>) => {
-                return {
-                    content: [
-                        {
-                            type: 'text' as const,
-                            text: formatMigrationContent(migrationGuides.v19_to_v20, args.section as string | undefined)
-                        }
-                    ]
-                };
-            }
+            handler: async (_data: ComponentsData, args: Record<string, unknown>) => ({
+                content: [
+                    {
+                        type: 'text' as const,
+                        text: formatMigrationContent(migrationGuides.v19_to_v20, args.section as string | undefined)
+                    }
+                ]
+            })
         },
         // Angular-specific: migrate_v20_to_v21
         {
@@ -203,16 +201,14 @@ runPrimeMcpServer({
                     description: "Optional section: 'breaking', 'deprecations', 'whatsnew'"
                 }
             },
-            handler: async (_data: ComponentsData, args: Record<string, unknown>) => {
-                return {
-                    content: [
-                        {
-                            type: 'text' as const,
-                            text: formatMigrationContent(migrationGuides.v20_to_v21, args.section as string | undefined)
-                        }
-                    ]
-                };
-            }
+            handler: async (_data: ComponentsData, args: Record<string, unknown>) => ({
+                content: [
+                    {
+                        type: 'text' as const,
+                        text: formatMigrationContent(migrationGuides.v20_to_v21, args.section as string | undefined)
+                    }
+                ]
+            })
         },
         // Angular-specific: migrate_v21_to_v22
         {
@@ -224,16 +220,14 @@ runPrimeMcpServer({
                     description: "Optional section: 'breaking', 'deprecations', 'whatsnew'"
                 }
             },
-            handler: async (_data: ComponentsData, args: Record<string, unknown>) => {
-                return {
-                    content: [
-                        {
-                            type: 'text' as const,
-                            text: formatMigrationContent(migrationGuides.v21_to_v22, args.section as string | undefined)
-                        }
-                    ]
-                };
-            }
+            handler: async (_data: ComponentsData, args: Record<string, unknown>) => ({
+                content: [
+                    {
+                        type: 'text' as const,
+                        text: formatMigrationContent(migrationGuides.v21_to_v22, args.section as string | undefined)
+                    }
+                ]
+            })
         }
     ]
 });
