@@ -34,6 +34,32 @@ p-auto-complete.ng-invalid.ng-dirty .p-autocomplete-input::placeholder,
 p-autocomplete.ng-invalid.ng-dirty .p-autocomplete-input::placeholder {
     color: dt('autocomplete.invalid.placeholder.color');
 }
+
+.p-autocomplete-selected-item {
+    position: absolute;
+    inset-block: 1px;
+    inset-inline-start: 1px;
+    inset-inline-end: 1px;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    white-space: nowrap;
+    padding-inline: dt('autocomplete.padding.x');
+    border-radius: dt('autocomplete.border.radius');
+    pointer-events: none;
+}
+
+.p-autocomplete:has(.p-autocomplete-selected-item) .p-autocomplete-input {
+    color: transparent;
+}
+
+.p-autocomplete:has(.p-autocomplete-dropdown) .p-autocomplete-selected-item {
+    inset-inline-end: calc(dt('autocomplete.dropdown.width') + 1px);
+}
+
+.p-autocomplete:has(.p-autocomplete-clear-icon) .p-autocomplete-selected-item {
+    padding-inline-end: calc((dt('form.field.padding.x') * 2) + dt('icon.size'));
+}
 `;
 
 const inlineStyles = {
@@ -54,6 +80,7 @@ const classes = {
         }
     ],
     pcInputText: 'p-autocomplete-input',
+    selectedItem: 'p-autocomplete-selected-item',
     inputMultiple: ({ instance }) => [
         'p-autocomplete-input-multiple',
         {
@@ -115,6 +142,10 @@ export enum AutoCompleteClasses {
      * Class name of the input element
      */
     pcInputText = 'p-autocomplete-input',
+    /**
+     * Class name of the selected item element
+     */
+    selectedItem = 'p-autocomplete-selected-item',
     /**
      * Class name of the input multiple element
      */

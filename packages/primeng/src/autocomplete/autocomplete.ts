@@ -117,6 +117,11 @@ export const AUTOCOMPLETE_VALUE_ACCESSOR = {
                 [fluid]="hasFluid"
                 [pInputTextUnstyled]="unstyled()"
             />
+            @if ($showSelectedItem()) {
+                <span [pBind]="ptm('selectedItem')" [class]="cx('selectedItem')">
+                    <ng-container [ngTemplateOutlet]="selectedItemTemplate()!" [ngTemplateOutletContext]="getSelectedItemContext($selectedOption())"></ng-container>
+                </span>
+            }
         }
         @if ($showClear()) {
             @if (!clearIconTemplate()) {
@@ -851,9 +856,17 @@ export class AutoComplete extends BaseInput<AutoCompletePassThrough> {
         return this.group() ? this.flatOptions(this.suggestions()) : this.suggestions() || [];
     });
 
+    $selectedOption = computed(() => {
+        const modelValue = this.modelValue();
+
+        return this.optionValueSelected ? (this.suggestions() || []).find((option: any) => equals(option, modelValue, this.equalityKey())) : modelValue;
+    });
+
+    $showSelectedItem = computed(() => !this.multiple() && this.$filled() && !this.focused() && !!this.selectedItemTemplate());
+
     inputValue = computed(() => {
         const modelValue = this.modelValue();
-        const selectedOption = this.optionValueSelected ? (this.suggestions() || []).find((option: any) => equals(option, modelValue, this.equalityKey())) : modelValue;
+        const selectedOption = this.$selectedOption();
 
         if (isNotEmpty(modelValue)) {
             if (typeof modelValue === 'object' || this.optionValueSelected) {

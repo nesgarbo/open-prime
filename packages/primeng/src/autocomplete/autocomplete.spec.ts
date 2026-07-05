@@ -1070,6 +1070,42 @@ describe('AutoComplete', () => {
                 const autocompleteInstance = templateFixture.debugElement.query(By.directive(AutoComplete)).componentInstance;
                 expect(autocompleteInstance.selectedItemTemplate()).toBeTruthy();
             });
+
+            it('should render #selecteditem with item context in single mode', async () => {
+                const autocompleteInstance = templateFixture.debugElement.query(By.directive(AutoComplete)).componentInstance;
+                autocompleteInstance.writeValue(mockCountries[0]);
+                templateFixture.changeDetectorRef.markForCheck();
+                await templateFixture.whenStable();
+
+                const selectedItemElement = templateFixture.debugElement.query(By.css('.p-autocomplete-selected-item'));
+                expect(selectedItemElement).toBeTruthy();
+                expect(selectedItemElement.query(By.css('.selected-name')).nativeElement.textContent.trim()).toBe('Afghanistan');
+            });
+
+            it('should hide #selecteditem in single mode while the input is focused', async () => {
+                const autocompleteInstance = templateFixture.debugElement.query(By.directive(AutoComplete)).componentInstance;
+                autocompleteInstance.writeValue(mockCountries[0]);
+                templateFixture.changeDetectorRef.markForCheck();
+                await templateFixture.whenStable();
+
+                const inputElement = templateFixture.debugElement.query(By.css('input'));
+                inputElement.nativeElement.dispatchEvent(new Event('focus'));
+                await templateFixture.whenStable();
+
+                expect(templateFixture.debugElement.query(By.css('.p-autocomplete-selected-item'))).toBeFalsy();
+
+                inputElement.nativeElement.dispatchEvent(new Event('blur'));
+                await templateFixture.whenStable();
+
+                expect(templateFixture.debugElement.query(By.css('.p-autocomplete-selected-item'))).toBeTruthy();
+            });
+
+            it('should not render #selecteditem in single mode when there is no value', async () => {
+                templateFixture.changeDetectorRef.markForCheck();
+                await templateFixture.whenStable();
+
+                expect(templateFixture.debugElement.query(By.css('.p-autocomplete-selected-item'))).toBeFalsy();
+            });
         });
 
         describe('Group Template (_groupTemplate)', () => {
