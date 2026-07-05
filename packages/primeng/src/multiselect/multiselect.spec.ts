@@ -1189,6 +1189,19 @@ describe('MultiSelect', () => {
             }).not.toThrow();
         });
 
+        it('should not display null label for selected values that do not match any option', async () => {
+            component.optionValue = 'code';
+            component.selectedCities = ['NY', 'INVALID'] as any;
+            fixture.detectChanges();
+            await fixture.whenStable();
+            fixture.detectChanges();
+
+            expect(multiSelect.label()).toBe('New York');
+
+            const label = fixture.debugElement.query(By.css('.p-multiselect-label'));
+            expect(label.nativeElement.textContent).not.toContain('null');
+        });
+
         it('should not break with circular references', () => {
             const circularOption: any = { name: 'Circular', code: 'C' };
             circularOption.self = circularOption;

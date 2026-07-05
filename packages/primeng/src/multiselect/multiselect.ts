@@ -1070,15 +1070,10 @@ export class MultiSelect extends BaseEditableHolder<MultiSelectPassThrough> {
             if (isNotEmpty(maxSelectedLabels) && modelValue?.length > (maxSelectedLabels || 0)) {
                 return this.getSelectedItemsLabel();
             } else {
-                label = '';
-
-                for (let i = 0; i < modelValue.length; i++) {
-                    if (i !== 0) {
-                        label += ', ';
-                    }
-
-                    label += this.getLabelByValue(modelValue[i]);
-                }
+                label = modelValue
+                    .map((value) => this.getLabelByValue(value))
+                    .filter((optionLabel) => optionLabel != null)
+                    .join(', ');
             }
         } else {
             label = this.placeholder() || '';
