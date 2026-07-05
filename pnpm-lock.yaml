@@ -80,7 +80,7 @@ catalogs:
       specifier: ^3.0.0-alpha.1
       version: 3.0.0-rc.1
     '@primeuix/themes':
-      specifier: 3.0.0-alpha.13
+      specifier: ^3.0.0-alpha.1
       version: 3.0.0-alpha.13
     '@primeuix/utils':
       specifier: ^0.7.2
@@ -249,7 +249,7 @@ importers:
         version: 3.0.0-rc.1
       '@primeuix/themes':
         specifier: 'catalog:'
-        version: 3.0.0-rc.1
+        version: 3.0.0-alpha.13
       '@primeuix/utils':
         specifier: 'catalog:'
         version: 0.7.2
