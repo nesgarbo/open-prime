@@ -1,7 +1,7 @@
 {
   "version": "1.0.0",
-  "generatedAt": "2026-07-05T08:57:22.688Z",
-  "totalDemos": 831,
+  "generatedAt": "2026-07-05T09:23:21.451Z",
+  "totalDemos": 855,
   "demos": {
     "Image-template-demo": {
       "key": "Image-template-demo",
@@ -297,6 +297,25 @@
         "imports": [
           "AutoCompleteModule",
           "FormsModule"
+        ]
+      }
+    },
+    "autocomplete-signal-forms-demo": {
+      "key": "autocomplete-signal-forms-demo",
+      "selector": "autocomplete-signal-forms-demo",
+      "component": "autocomplete",
+      "section": "signal-forms",
+      "code": {
+        "typescript": "import { Component, inject, signal } from '@angular/core';\nimport { form, FormField, required, type FieldTree } from '@angular/forms/signals';\nimport { AutoCompleteModule } from 'primeng/autocomplete';\nimport { MessageModule } from 'primeng/message';\nimport { ButtonModule } from 'primeng/button';\nimport { MessageService } from 'primeng/api';\n\n@Component({\n    template: `\n        <div class=\"flex justify-center\">\n            <form (submit)=\"onSubmit($event)\" class=\"flex justify-center flex-col gap-4 md:w-56\">\n                <div class=\"flex flex-col gap-1\">\n                    <p-autocomplete [formField]=\"exampleForm.value\" [suggestions]=\"items\" (completeMethod)=\"search($event)\" fluid />\n                    @if (isInvalid(exampleForm.value)) {\n                        @for (error of exampleForm.value().errors(); track error.kind) {\n                            <p-message severity=\"error\" size=\"small\" variant=\"simple\">{{ error.message }}</p-message>\n                        }\n                    }\n                </div>\n                <button pButton severity=\"secondary\" type=\"submit\"><span pButtonLabel>Submit</span></button>\n            </form>\n        </div>\n    `,\n    standalone: true,\n    imports: [FormField, AutoCompleteModule, MessageModule, ButtonModule]\n})\nexport class AutoCompleteSignalFormsDemo {\n    messageService = inject(MessageService);\n    items: string[] = [];\n    formSubmitted = signal(false);\n    model = signal({ value: '' });\n    exampleForm = form(this.model, (path) => {\n        required(path.value, { message: 'Value is required.' });\n    });\n\n    search(event: AutoCompleteCompleteEvent) {\n        this.items = [...Array(10).keys()].map((item) => event.query + '-' + item);\n    }\n\n    onSubmit(event: Event) {\n        event.preventDefault();\n        this.formSubmitted.set(true);\n        \n        if (this.exampleForm().valid()) {\n            this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Form Submitted', life: 3000 });\n            this.model.set({ value: '' });\n            this.formSubmitted.set(false);\n        }\n    }\n\n    isInvalid(field: FieldTree<string>) {\n        const state = field();\n        \n        return state.invalid() && (state.touched() || this.formSubmitted());\n    }\n}"
+      },
+      "metadata": {
+        "services": [],
+        "primeNGServices": [],
+        "extFiles": [],
+        "imports": [
+          "AutoCompleteModule",
+          "MessageModule",
+          "ButtonModule"
         ]
       }
     },
@@ -1530,6 +1549,25 @@
         ]
       }
     },
+    "cascadeselect-signal-forms-demo": {
+      "key": "cascadeselect-signal-forms-demo",
+      "selector": "cascadeselect-signal-forms-demo",
+      "component": "cascadeselect",
+      "section": "signalforms",
+      "code": {
+        "typescript": "import { Component, inject, signal } from '@angular/core';\nimport { form, FormField, required, type FieldTree } from '@angular/forms/signals';\nimport { CascadeSelectModule } from 'primeng/cascadeselect';\nimport { MessageModule } from 'primeng/message';\nimport { ButtonModule } from 'primeng/button';\nimport { MessageService } from 'primeng/api';\n\ninterface City {\n    cname: string;\n    code: string;\n}\n\n@Component({\n    template: `\n        <div class=\"flex justify-center\">\n            <form (submit)=\"onSubmit($event)\" class=\"flex flex-col gap-4\">\n                <div class=\"flex flex-col gap-1\">\n                    <p-cascadeselect\n                        [formField]=\"exampleForm.selectedCity\"\n                        [options]=\"countries\"\n                        optionLabel=\"cname\"\n                        optionGroupLabel=\"name\"\n                        [optionGroupChildren]=\"['states', 'cities']\"\n                        [style]=\"{ minWidth: '14rem' }\"\n                        placeholder=\"Select a City\"\n                    />\n                    @if (isInvalid(exampleForm.selectedCity)) {\n                        @for (error of exampleForm.selectedCity().errors(); track error.kind) {\n                            <p-message severity=\"error\" size=\"small\" variant=\"simple\">{{ error.message }}</p-message>\n                        }\n                    }\n                </div>\n                <button pButton severity=\"secondary\" type=\"submit\"><span pButtonLabel>Submit</span></button>\n            </form>\n        </div>\n    `,\n    standalone: true,\n    imports: [FormField, CascadeSelectModule, MessageModule, ButtonModule]\n})\nexport class CascadeSelectSignalFormsDemo {\n    messageService = inject(MessageService);\n    formSubmitted = signal(false);\n    countries: any[] = [\n        {\n            name: 'Australia',\n            code: 'AU',\n            states: [\n                {\n                    name: 'New South Wales',\n                    cities: [\n                        { cname: 'Sydney', code: 'A-SY' },\n                        { cname: 'Newcastle', code: 'A-NE' },\n                        { cname: 'Wollongong', code: 'A-WO' }\n                    ]\n                },\n                {\n                    name: 'Queensland',\n                    cities: [\n                        { cname: 'Brisbane', code: 'A-BR' },\n                        { cname: 'Townsville', code: 'A-TO' }\n                    ]\n                }\n            ]\n        },\n        {\n            name: 'Canada',\n            code: 'CA',\n            states: [\n                {\n                    name: 'Quebec',\n                    cities: [\n                        { cname: 'Montreal', code: 'C-MO' },\n                        { cname: 'Quebec City', code: 'C-QU' }\n                    ]\n                },\n                {\n                    name: 'Ontario',\n                    cities: [\n                        { cname: 'Ottawa', code: 'C-OT' },\n                        { cname: 'Toronto', code: 'C-TO' }\n                    ]\n                }\n            ]\n        },\n        {\n            name: 'United States',\n            code: 'US',\n            states: [\n                {\n                    name: 'California',\n                    cities: [\n                        { cname: 'Los Angeles', code: 'US-LA' },\n                        { cname: 'San Diego', code: 'US-SD' },\n                        { cname: 'San Francisco', code: 'US-SF' }\n                    ]\n                },\n                {\n                    name: 'Florida',\n                    cities: [\n                        { cname: 'Jacksonville', code: 'US-JA' },\n                        { cname: 'Miami', code: 'US-MI' },\n                        { cname: 'Tampa', code: 'US-TA' },\n                        { cname: 'Orlando', code: 'US-OR' }\n                    ]\n                },\n                {\n                    name: 'Texas',\n                    cities: [\n                        { cname: 'Austin', code: 'US-AU' },\n                        { cname: 'Dallas', code: 'US-DA' },\n                        { cname: 'Houston', code: 'US-HO' }\n                    ]\n                }\n            ]\n        }\n    ];\n    model = signal<{ selectedCity: City | null }>({ selectedCity: null });\n    exampleForm = form(this.model, (path) => {\n        required(path.selectedCity, { message: 'City is required.' });\n    });\n\n    onSubmit(event: Event) {\n        event.preventDefault();\n        this.formSubmitted.set(true);\n        \n        if (this.exampleForm().valid()) {\n            this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Form is submitted', life: 3000 });\n            this.model.set({ selectedCity: null });\n            this.formSubmitted.set(false);\n        }\n    }\n\n    isInvalid(field: FieldTree<City | null>) {\n        const state = field();\n        \n        return state.invalid() && (state.touched() || this.formSubmitted());\n    }\n}"
+      },
+      "metadata": {
+        "services": [],
+        "primeNGServices": [],
+        "extFiles": [],
+        "imports": [
+          "CascadeSelectModule",
+          "MessageModule",
+          "ButtonModule"
+        ]
+      }
+    },
     "cascadeselect-reactive-forms-demo": {
       "key": "cascadeselect-reactive-forms-demo",
       "selector": "cascadeselect-reactive-forms-demo",
@@ -2014,6 +2052,25 @@
         ]
       }
     },
+    "checkbox-signal-forms-demo": {
+      "key": "checkbox-signal-forms-demo",
+      "selector": "checkbox-signal-forms-demo",
+      "component": "checkbox",
+      "section": "signalforms",
+      "code": {
+        "typescript": "import { Component, inject, signal } from '@angular/core';\nimport { form, FormField, validate } from '@angular/forms/signals';\nimport { CheckboxModule } from 'primeng/checkbox';\nimport { MessageModule } from 'primeng/message';\nimport { ButtonModule } from 'primeng/button';\nimport { MessageService } from 'primeng/api';\n\n@Component({\n    template: `\n        <div class=\"flex justify-center\">\n            <form (submit)=\"onSubmit($event)\" class=\"flex flex-col gap-4\">\n                <div class=\"flex flex-wrap gap-4\">\n                    <div class=\"flex items-center gap-2\">\n                        <p-checkbox [formField]=\"exampleForm.cheese\" [binary]=\"true\" inputId=\"cheese\" />\n                        <label for=\"cheese\" class=\"text-sm\">Cheese</label>\n                    </div>\n                    <div class=\"flex items-center gap-2\">\n                        <p-checkbox [formField]=\"exampleForm.mushroom\" [binary]=\"true\" inputId=\"mushroom\" />\n                        <label for=\"mushroom\" class=\"text-sm\">Mushroom</label>\n                    </div>\n                    <div class=\"flex items-center gap-2\">\n                        <p-checkbox [formField]=\"exampleForm.pepper\" [binary]=\"true\" inputId=\"pepper\" />\n                        <label for=\"pepper\" class=\"text-sm\">Pepper</label>\n                    </div>\n                    <div class=\"flex items-center gap-2\">\n                        <p-checkbox [formField]=\"exampleForm.onion\" [binary]=\"true\" inputId=\"onion\" />\n                        <label for=\"onion\" class=\"text-sm\">Onion</label>\n                    </div>\n                </div>\n                @if (isInvalid()) {\n                    @for (error of exampleForm().errors(); track error.kind) {\n                        <p-message severity=\"error\" size=\"small\" variant=\"simple\">{{ error.message }}</p-message>\n                    }\n                }\n                <button pButton severity=\"secondary\" type=\"submit\">\n                    <span pButtonLabel>Submit</span>\n                </button>\n            </form>\n        </div>\n    `,\n    standalone: true,\n    imports: [FormField, CheckboxModule, MessageModule, ButtonModule]\n})\nexport class CheckboxSignalFormsDemo {\n    messageService = inject(MessageService);\n    formSubmitted = signal(false);\n    model = signal({ cheese: false, mushroom: false, pepper: false, onion: false });\n    exampleForm = form(this.model, (path) => {\n        validate(path, ({ value }) => {\n            const anySelected = Object.values(value()).some((selected) => selected === true);\n\n            return anySelected ? undefined : { kind: 'atLeastOneRequired', message: 'At least one ingredient must be selected.' };\n        });\n    });\n\n    onSubmit(event: Event) {\n        event.preventDefault();\n        this.formSubmitted.set(true);\n        \n        if (this.exampleForm().valid()) {\n            this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Form Submitted', life: 3000 });\n            this.model.set({ cheese: false, mushroom: false, pepper: false, onion: false });\n            this.formSubmitted.set(false);\n        }\n    }\n\n    isInvalid() {\n        const state = this.exampleForm();\n        \n        return state.invalid() && this.formSubmitted();\n    }\n}"
+      },
+      "metadata": {
+        "services": [],
+        "primeNGServices": [],
+        "extFiles": [],
+        "imports": [
+          "CheckboxModule",
+          "MessageModule",
+          "ButtonModule"
+        ]
+      }
+    },
     "checkbox-reactive-forms-demo": {
       "key": "checkbox-reactive-forms-demo",
       "selector": "checkbox-reactive-forms-demo",
@@ -2308,6 +2365,25 @@
           "MessageModule",
           "ButtonModule",
           "FormsModule"
+        ]
+      }
+    },
+    "colorpicker-signal-forms-demo": {
+      "key": "colorpicker-signal-forms-demo",
+      "selector": "colorpicker-signal-forms-demo",
+      "component": "colorpicker",
+      "section": "signalforms",
+      "code": {
+        "typescript": "import { Component, inject, signal } from '@angular/core';\nimport { form, FormField, required, type FieldTree } from '@angular/forms/signals';\nimport { ColorPickerModule } from 'primeng/colorpicker';\nimport { MessageModule } from 'primeng/message';\nimport { ButtonModule } from 'primeng/button';\nimport { MessageService } from 'primeng/api';\n\n@Component({\n    template: `\n        <div class=\"flex justify-center\">\n            <form (submit)=\"onSubmit($event)\" class=\"flex flex-col gap-4\">\n                <div class=\"flex flex-col items-center gap-2\">\n                    <p-colorpicker [formField]=\"exampleForm.color\" defaultColor=\"989898\" />\n                    @if (isInvalid(exampleForm.color)) {\n                        @for (error of exampleForm.color().errors(); track error.kind) {\n                            <p-message severity=\"error\" size=\"small\" variant=\"simple\">{{ error.message }}</p-message>\n                        }\n                    }\n                </div>\n                <button pButton severity=\"secondary\" type=\"submit\"><span pButtonLabel>Submit</span></button>\n            </form>\n        </div>\n    `,\n    standalone: true,\n    imports: [FormField, ColorPickerModule, MessageModule, ButtonModule]\n})\nexport class ColorPickerSignalFormsDemo {\n    messageService = inject(MessageService);\n    formSubmitted = signal(false);\n    model = signal({ color: '' });\n    exampleForm = form(this.model, (path) => {\n        required(path.color, { message: 'Color is required.' });\n    });\n\n    onSubmit(event: Event) {\n        event.preventDefault();\n        this.formSubmitted.set(true);\n        \n        if (this.exampleForm().valid()) {\n            this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Form is submitted', life: 3000 });\n            this.model.set({ color: '' });\n            this.formSubmitted.set(false);\n        }\n    }\n\n    isInvalid(field: FieldTree<string>) {\n        const state = field();\n        \n        return state.invalid() && (state.touched() || this.formSubmitted());\n    }\n}"
+      },
+      "metadata": {
+        "services": [],
+        "primeNGServices": [],
+        "extFiles": [],
+        "imports": [
+          "ColorPickerModule",
+          "MessageModule",
+          "ButtonModule"
         ]
       }
     },
@@ -3162,6 +3238,25 @@
         "imports": [
           "DatePickerModule",
           "FormsModule"
+        ]
+      }
+    },
+    "datepicker-signal-forms-demo": {
+      "key": "datepicker-signal-forms-demo",
+      "selector": "datepicker-signal-forms-demo",
+      "component": "datepicker",
+      "section": "signalforms",
+      "code": {
+        "typescript": "import { Component, inject, signal } from '@angular/core';\nimport { form, FormField, required, type FieldTree } from '@angular/forms/signals';\nimport { DatePickerModule } from 'primeng/datepicker';\nimport { MessageModule } from 'primeng/message';\nimport { ButtonModule } from 'primeng/button';\nimport { MessageService } from 'primeng/api';\n\n@Component({\n    template: `\n        <div class=\"flex justify-center\">\n            <form (submit)=\"onSubmit($event)\" class=\"flex flex-col gap-4\">\n                <div class=\"flex flex-col gap-1\">\n                    <p-datepicker [formField]=\"exampleForm.selectedDate\" />\n                    @if (isInvalid(exampleForm.selectedDate)) {\n                        @for (error of exampleForm.selectedDate().errors(); track error.kind) {\n                            <p-message severity=\"error\" size=\"small\" variant=\"simple\">{{ error.message }}</p-message>\n                        }\n                    }\n                </div>\n                <button pButton severity=\"secondary\" type=\"submit\"><span pButtonLabel>Submit</span></button>\n            </form>\n        </div>\n    `,\n    standalone: true,\n    imports: [FormField, DatePickerModule, MessageModule, ButtonModule]\n})\nexport class DatePickerSignalFormsDemo {\n    messageService = inject(MessageService);\n    formSubmitted = signal(false);\n    model = signal<{ selectedDate: Date | null }>({ selectedDate: null });\n    exampleForm = form(this.model, (path) => {\n        required(path.selectedDate, { message: 'Date is required.' });\n    });\n\n    onSubmit(event: Event) {\n        event.preventDefault();\n        this.formSubmitted.set(true);\n        \n        if (this.exampleForm().valid()) {\n            this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Form is submitted', life: 3000 });\n            this.model.set({ selectedDate: null });\n            this.formSubmitted.set(false);\n        }\n    }\n\n    isInvalid(field: FieldTree<Date | null>) {\n        const state = field();\n        \n        return state.invalid() && (state.touched() || this.formSubmitted());\n    }\n}"
+      },
+      "metadata": {
+        "services": [],
+        "primeNGServices": [],
+        "extFiles": [],
+        "imports": [
+          "DatePickerModule",
+          "MessageModule",
+          "ButtonModule"
         ]
       }
     },
@@ -4215,6 +4310,25 @@
           "MessageModule",
           "ButtonModule",
           "FormsModule"
+        ]
+      }
+    },
+    "editor-signal-forms-demo": {
+      "key": "editor-signal-forms-demo",
+      "selector": "editor-signal-forms-demo",
+      "component": "editor",
+      "section": "signalforms",
+      "code": {
+        "typescript": "import { Component, inject, signal } from '@angular/core';\nimport { form, FormField, required, type FieldTree } from '@angular/forms/signals';\nimport { EditorModule } from 'primeng/editor';\nimport { MessageModule } from 'primeng/message';\nimport { ButtonModule } from 'primeng/button';\nimport { MessageService } from 'primeng/api';\n\n@Component({\n    template: `\n        <form (submit)=\"onSubmit($event)\" class=\"flex flex-col gap-4\">\n            <div class=\"flex flex-col gap-1\">\n                <p-editor [formField]=\"exampleForm.text\" [style]=\"{ height: '320px' }\" />\n                @if (isInvalid(exampleForm.text)) {\n                    @for (error of exampleForm.text().errors(); track error.kind) {\n                        <p-message severity=\"error\" size=\"small\" variant=\"simple\">{{ error.message }}</p-message>\n                    }\n                }\n            </div>\n            <button pButton severity=\"secondary\" type=\"submit\"><span pButtonLabel>Submit</span></button>\n        </form>\n    `,\n    standalone: true,\n    imports: [FormField, EditorModule, MessageModule, ButtonModule]\n})\nexport class EditorSignalFormsDemo {\n    messageService = inject(MessageService);\n    formSubmitted = signal(false);\n    model = signal({ text: '' });\n    exampleForm = form(this.model, (path) => {\n        required(path.text, { message: 'Content is required.' });\n    });\n\n    onSubmit(event: Event) {\n        event.preventDefault();\n        this.formSubmitted.set(true);\n        \n        if (this.exampleForm().valid()) {\n            this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Form is submitted', life: 3000 });\n            this.model.set({ text: '' });\n            this.formSubmitted.set(false);\n        }\n    }\n\n    isInvalid(field: FieldTree<string>) {\n        const state = field();\n        \n        return state.invalid() && (state.touched() || this.formSubmitted());\n    }\n}"
+      },
+      "metadata": {
+        "services": [],
+        "primeNGServices": [],
+        "extFiles": [],
+        "imports": [
+          "EditorModule",
+          "MessageModule",
+          "ButtonModule"
         ]
       }
     },
@@ -5435,6 +5549,24 @@
         ]
       }
     },
+    "inputcolor-signal-forms-demo": {
+      "key": "inputcolor-signal-forms-demo",
+      "selector": "inputcolor-signal-forms-demo",
+      "component": "inputcolor",
+      "section": "signalforms",
+      "code": {
+        "typescript": "import { Component, inject, signal } from '@angular/core';\nimport { form, FormField, required, type FieldTree } from '@angular/forms/signals';\nimport { MessageModule } from 'primeng/message';\nimport { ButtonModule } from 'primeng/button';\nimport { MessageService } from 'primeng/api';\n\n@Component({\n    template: `\n        <div class=\"flex justify-center\">\n            <form (submit)=\"onSubmit($event)\" class=\"flex flex-col gap-4\">\n                <div class=\"flex flex-col items-center gap-2\">\n                    <p-inputcolor [formField]=\"exampleForm.color\" class=\"w-80 space-y-3\">\n                        <p-inputcolor-area>\n                            <p-inputcolor-area-background />\n                            <p-inputcolor-area-thumb />\n                        </p-inputcolor-area>\n                        <div class=\"flex items-center gap-2\">\n                            <div class=\"flex-1 space-y-1 mr-1\">\n                                <p-inputcolor-slider>\n                                    <p-inputcolor-transparency-grid />\n                                    <p-inputcolor-slider-track />\n                                    <p-inputcolor-slider-thumb />\n                                </p-inputcolor-slider>\n                            </div>\n                            <p-inputcolor-swatch class=\"shrink-0\">\n                                <p-inputcolor-transparency-grid />\n                                <p-inputcolor-swatch-background />\n                            </p-inputcolor-swatch>\n                        </div>\n                        <input pInputColorInput [fluid]=\"true\" channel=\"hex\" />\n                    </p-inputcolor>\n                    @if (isInvalid(exampleForm.color)) {\n                        @for (error of exampleForm.color().errors(); track error.kind) {\n                            <p-message severity=\"error\" size=\"small\" variant=\"simple\">{{ error.message }}</p-message>\n                        }\n                    }\n                </div>\n                <button pButton severity=\"secondary\" type=\"submit\"><span pButtonLabel>Submit</span></button>\n            </form>\n        </div>\n    `,\n    standalone: true,\n    imports: [FormField, MessageModule, ButtonModule]\n})\nexport class InputColorSignalFormsDemo {\n    messageService = inject(MessageService);\n    formSubmitted = signal(false);\n    model = signal({ color: '' });\n    exampleForm = form(this.model, (path) => {\n        required(path.color, { message: 'Color is required.' });\n    });\n\n    onSubmit(event: Event) {\n        event.preventDefault();\n        this.formSubmitted.set(true);\n        \n        if (this.exampleForm().valid()) {\n            this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Form is submitted', life: 3000 });\n            this.model.set({ color: '' });\n            this.formSubmitted.set(false);\n        }\n    }\n\n    isInvalid(field: FieldTree<string>) {\n        const state = field();\n        \n        return state.invalid() && (state.touched() || this.formSubmitted());\n    }\n}"
+      },
+      "metadata": {
+        "services": [],
+        "primeNGServices": [],
+        "extFiles": [],
+        "imports": [
+          "MessageModule",
+          "ButtonModule"
+        ]
+      }
+    },
     "inputcolor-reactive-forms-demo": {
       "key": "inputcolor-reactive-forms-demo",
       "selector": "inputcolor-reactive-forms-demo",
@@ -5737,6 +5869,26 @@
         ]
       }
     },
+    "inputmask-signal-forms-demo": {
+      "key": "inputmask-signal-forms-demo",
+      "selector": "inputmask-signal-forms-demo",
+      "component": "inputmask",
+      "section": "signalforms",
+      "code": {
+        "typescript": "import { Component, inject, signal } from '@angular/core';\nimport { form, FormField, required, type FieldTree } from '@angular/forms/signals';\nimport { MessageModule } from 'primeng/message';\nimport { ButtonModule } from 'primeng/button';\nimport { InputTextModule } from 'primeng/inputtext';\nimport { InputMaskModule } from 'primeng/inputmask';\nimport { MessageService } from 'primeng/api';\n\n@Component({\n    template: `\n        <div class=\"flex justify-center\">\n            <form (submit)=\"onSubmit($event)\" class=\"flex flex-col gap-4 sm:w-56\">\n                <div class=\"flex flex-col gap-1\">\n                    <input pInputText pInputMask=\"99-999999\" placeholder=\"99-999999\" [formField]=\"exampleForm.value\" fluid />\n                    @if (isInvalid(exampleForm.value)) {\n                        @for (error of exampleForm.value().errors(); track error.kind) {\n                            <p-message severity=\"error\" size=\"small\" variant=\"simple\">{{ error.message }}</p-message>\n                        }\n                    }\n                </div>\n                <button pButton severity=\"secondary\" type=\"submit\"><span pButtonLabel>Submit</span></button>\n            </form>\n        </div>\n    `,\n    standalone: true,\n    imports: [FormField, MessageModule, ButtonModule, InputTextModule, InputMaskModule]\n})\nexport class InputMaskSignalFormsDemo {\n    messageService = inject(MessageService);\n    formSubmitted = signal(false);\n    model = signal({ value: '' });\n    exampleForm = form(this.model, (path) => {\n        required(path.value, { message: 'Serial number is required.' });\n    });\n\n    onSubmit(event: Event) {\n        event.preventDefault();\n        this.formSubmitted.set(true);\n        \n        if (this.exampleForm().valid()) {\n            this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Form is submitted', life: 3000 });\n            this.model.set({ value: '' });\n            this.formSubmitted.set(false);\n        }\n    }\n\n    isInvalid(field: FieldTree<string>) {\n        const state = field();\n        \n        return state.invalid() && (state.touched() || this.formSubmitted());\n    }\n}"
+      },
+      "metadata": {
+        "services": [],
+        "primeNGServices": [],
+        "extFiles": [],
+        "imports": [
+          "MessageModule",
+          "ButtonModule",
+          "InputTextModule",
+          "InputMaskModule"
+        ]
+      }
+    },
     "inputmask-reactive-forms-demo": {
       "key": "inputmask-reactive-forms-demo",
       "selector": "inputmask-reactive-forms-demo",
@@ -6017,6 +6169,25 @@
         "imports": [
           "InputNumberModule",
           "FormsModule"
+        ]
+      }
+    },
+    "inputnumber-signal-forms-demo": {
+      "key": "inputnumber-signal-forms-demo",
+      "selector": "inputnumber-signal-forms-demo",
+      "component": "inputnumber",
+      "section": "signalforms",
+      "code": {
+        "typescript": "import { Component, inject, signal } from '@angular/core';\nimport { form, FormField, required, type FieldTree } from '@angular/forms/signals';\nimport { InputNumberModule } from 'primeng/inputnumber';\nimport { MessageModule } from 'primeng/message';\nimport { ButtonModule } from 'primeng/button';\nimport { MessageService } from 'primeng/api';\n\n@Component({\n    template: `\n        <div class=\"flex justify-center\">\n            <form (submit)=\"onSubmit($event)\" class=\"flex flex-col gap-4\">\n                <div class=\"flex flex-col gap-1\">\n                    <p-inputnumber inputId=\"integeronly\" [formField]=\"exampleForm.value\" />\n                    @if (isInvalid(exampleForm.value)) {\n                        @for (error of exampleForm.value().errors(); track error.kind) {\n                            <p-message severity=\"error\" size=\"small\" variant=\"simple\">{{ error.message }}</p-message>\n                        }\n                    }\n                </div>\n                <button pButton severity=\"secondary\" type=\"submit\"><span pButtonLabel>Submit</span></button>\n            </form>\n        </div>\n    `,\n    standalone: true,\n    imports: [FormField, InputNumberModule, MessageModule, ButtonModule]\n})\nexport class InputNumberSignalFormsDemo {\n    messageService = inject(MessageService);\n    formSubmitted = signal(false);\n    model = signal({ value: null as number | null });\n    exampleForm = form(this.model, (path) => {\n        required(path.value, { message: 'Number is required.' });\n    });\n\n    onSubmit(event: Event) {\n        event.preventDefault();\n        this.formSubmitted.set(true);\n        \n        if (this.exampleForm().valid()) {\n            this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Form Submitted', life: 3000 });\n            this.model.set({ value: null });\n            this.formSubmitted.set(false);\n        }\n    }\n\n    isInvalid(field: FieldTree<number | null>) {\n        const state = field();\n        \n        return state.invalid() && (state.touched() || this.formSubmitted());\n    }\n}"
+      },
+      "metadata": {
+        "services": [],
+        "primeNGServices": [],
+        "extFiles": [],
+        "imports": [
+          "InputNumberModule",
+          "MessageModule",
+          "ButtonModule"
         ]
       }
     },
@@ -6326,6 +6497,25 @@
         "imports": [
           "InputOtpModule",
           "FormsModule"
+        ]
+      }
+    },
+    "inputotp-signal-forms-demo": {
+      "key": "inputotp-signal-forms-demo",
+      "selector": "inputotp-signal-forms-demo",
+      "component": "inputotp",
+      "section": "signalforms",
+      "code": {
+        "typescript": "import { Component, inject, signal } from '@angular/core';\nimport { form, FormField, minLength, required, type FieldTree } from '@angular/forms/signals';\nimport { InputOtpModule } from 'primeng/inputotp';\nimport { MessageModule } from 'primeng/message';\nimport { ButtonModule } from 'primeng/button';\nimport { MessageService } from 'primeng/api';\n\n@Component({\n    template: `\n        <div class=\"flex justify-center\">\n            <form (submit)=\"onSubmit($event)\" class=\"flex flex-col gap-4\">\n                <div class=\"flex flex-col gap-1\">\n                    <p-inputotp [formField]=\"exampleForm.value\" />\n                    @if (isInvalid(exampleForm.value)) {\n                        @for (error of exampleForm.value().errors(); track error.kind) {\n                            <p-message severity=\"error\" size=\"small\" variant=\"simple\">{{ error.message }}</p-message>\n                        }\n                    }\n                </div>\n                <button pButton severity=\"secondary\" type=\"submit\"><span pButtonLabel>Submit</span></button>\n            </form>\n        </div>\n    `,\n    standalone: true,\n    imports: [FormField, InputOtpModule, MessageModule, ButtonModule]\n})\nexport class InputOtpSignalFormsDemo {\n    messageService = inject(MessageService);\n    formSubmitted = signal(false);\n    model = signal({ value: '' });\n    exampleForm = form(this.model, (path) => {\n        required(path.value, { message: 'Passcode is required.' });\n        minLength(path.value, 4, { message: 'Passcode must be at least 4 characters.' });\n    });\n\n    onSubmit(event: Event) {\n        event.preventDefault();\n        this.formSubmitted.set(true);\n        \n        if (this.exampleForm().valid()) {\n            this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Form is submitted', life: 3000 });\n            this.model.set({ value: '' });\n            this.formSubmitted.set(false);\n        }\n    }\n\n    isInvalid(field: FieldTree<string>) {\n        const state = field();\n        \n        return state.invalid() && (state.touched() || this.formSubmitted());\n    }\n}"
+      },
+      "metadata": {
+        "services": [],
+        "primeNGServices": [],
+        "extFiles": [],
+        "imports": [
+          "InputOtpModule",
+          "MessageModule",
+          "ButtonModule"
         ]
       }
     },
@@ -6852,6 +7042,25 @@
         ]
       }
     },
+    "knob-signal-forms-demo": {
+      "key": "knob-signal-forms-demo",
+      "selector": "knob-signal-forms-demo",
+      "component": "knob",
+      "section": "signalforms",
+      "code": {
+        "typescript": "import { Component, inject, signal } from '@angular/core';\nimport { form, FormField, max, min, type FieldTree } from '@angular/forms/signals';\nimport { KnobModule } from 'primeng/knob';\nimport { MessageModule } from 'primeng/message';\nimport { ButtonModule } from 'primeng/button';\nimport { MessageService } from 'primeng/api';\n\n@Component({\n    template: `\n        <div class=\"flex justify-center\">\n            <form (submit)=\"onSubmit($event)\" class=\"flex flex-col items-center gap-4\">\n                <div class=\"flex flex-col items-center gap-1\">\n                    <p-knob [formField]=\"exampleForm.value\" />\n                    @if (isInvalid(exampleForm.value)) {\n                        @for (error of exampleForm.value().errors(); track error.kind) {\n                            <p-message severity=\"error\" size=\"small\" variant=\"simple\">{{ error.message }}</p-message>\n                        }\n                    }\n                </div>\n                <button pButton severity=\"secondary\" type=\"submit\"><span pButtonLabel>Submit</span></button>\n            </form>\n        </div>\n    `,\n    standalone: true,\n    imports: [FormField, KnobModule, MessageModule, ButtonModule]\n})\nexport class KnobSignalFormsDemo {\n    messageService = inject(MessageService);\n    formSubmitted = signal(false);\n    model = signal({ value: 15 });\n    exampleForm = form(this.model, (path) => {\n        min(path.value, 25, { message: 'Value must be greater than 15.' });\n        max(path.value, 75, { message: 'Must be less than 75.' });\n    });\n\n    onSubmit(event: Event) {\n        event.preventDefault();\n        this.formSubmitted.set(true);\n        \n        if (this.exampleForm().valid()) {\n            this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Form is submitted', life: 3000 });\n            this.model.set({ value: 15 });\n            this.formSubmitted.set(false);\n        }\n    }\n\n    isInvalid(field: FieldTree<number>) {\n        const state = field();\n        \n        return state.invalid() && (state.dirty() || this.formSubmitted());\n    }\n}"
+      },
+      "metadata": {
+        "services": [],
+        "primeNGServices": [],
+        "extFiles": [],
+        "imports": [
+          "KnobModule",
+          "MessageModule",
+          "ButtonModule"
+        ]
+      }
+    },
     "knob-readonly-demo": {
       "key": "knob-readonly-demo",
       "selector": "knob-readonly-demo",
@@ -7054,6 +7263,25 @@
         "imports": [
           "ListboxModule",
           "FormsModule"
+        ]
+      }
+    },
+    "listbox-signal-forms-demo": {
+      "key": "listbox-signal-forms-demo",
+      "selector": "listbox-signal-forms-demo",
+      "component": "listbox",
+      "section": "signalforms",
+      "code": {
+        "typescript": "import { Component, inject, signal } from '@angular/core';\nimport { form, FormField, required, type FieldTree } from '@angular/forms/signals';\nimport { ListboxModule } from 'primeng/listbox';\nimport { MessageModule } from 'primeng/message';\nimport { ButtonModule } from 'primeng/button';\nimport { MessageService } from 'primeng/api';\n\ninterface City {\n    name: string;\n    code: string;\n}\n\n@Component({\n    template: `\n        <div class=\"flex justify-center\">\n            <form (submit)=\"onSubmit($event)\" class=\"flex flex-col gap-4 sm:w-56\">\n                <div class=\"flex flex-col gap-1\">\n                    <p-listbox [options]=\"cities\" [formField]=\"exampleForm.selectedCity\" optionLabel=\"name\" class=\"w-full md:w-56\" />\n                    @if (isInvalid(exampleForm.selectedCity)) {\n                        @for (error of exampleForm.selectedCity().errors(); track error.kind) {\n                            <p-message severity=\"error\" size=\"small\" variant=\"simple\">{{ error.message }}</p-message>\n                        }\n                    }\n                </div>\n                <button pButton severity=\"secondary\" type=\"submit\"><span pButtonLabel>Submit</span></button>\n            </form>\n        </div>\n    `,\n    standalone: true,\n    imports: [FormField, ListboxModule, MessageModule, ButtonModule]\n})\nexport class ListboxSignalFormsDemo {\n    messageService = inject(MessageService);\n    formSubmitted = signal(false);\n    cities: City[] = [\n        { name: 'New York', code: 'NY' },\n        { name: 'Rome', code: 'RM' },\n        { name: 'London', code: 'LDN' },\n        { name: 'Istanbul', code: 'IST' },\n        { name: 'Paris', code: 'PRS' }\n    ];\n    model = signal<{ selectedCity: City | null }>({ selectedCity: null });\n    exampleForm = form(this.model, (path) => {\n        required(path.selectedCity, { message: 'City is required.' });\n    });\n\n    onSubmit(event: Event) {\n        event.preventDefault();\n        this.formSubmitted.set(true);\n        \n        if (this.exampleForm().valid()) {\n            this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Form is submitted', life: 3000 });\n            this.model.set({ selectedCity: null });\n            this.formSubmitted.set(false);\n        }\n    }\n\n    isInvalid(field: FieldTree<City | null>) {\n        const state = field();\n        \n        return state.invalid() && (state.touched() || this.formSubmitted());\n    }\n}"
+      },
+      "metadata": {
+        "services": [],
+        "primeNGServices": [],
+        "extFiles": [],
+        "imports": [
+          "ListboxModule",
+          "MessageModule",
+          "ButtonModule"
         ]
       }
     },
@@ -7614,6 +7842,25 @@
         ]
       }
     },
+    "message-signal-forms-demo": {
+      "key": "message-signal-forms-demo",
+      "selector": "message-signal-forms-demo",
+      "component": "message",
+      "section": "signal-forms",
+      "code": {
+        "typescript": "import { Component, signal } from '@angular/core';\nimport { form, FormField, required, type FieldTree } from '@angular/forms/signals';\nimport { InputMaskModule } from 'primeng/inputmask';\nimport { MessageModule } from 'primeng/message';\nimport { InputTextModule } from 'primeng/inputtext';\n\n@Component({\n    template: `\n        <div class=\"flex justify-center\">\n            <div class=\"flex flex-col gap-4\">\n                <p-message severity=\"error\" icon=\"pi pi-times-circle\" class=\"mb-2\">Validation Failed</p-message>\n                <div class=\"flex flex-col gap-1\">\n                    <input pInputText placeholder=\"Username\" aria-label=\"username\" [formField]=\"exampleForm.username\" />\n                    @if (isInvalid(exampleForm.username)) {\n                        @for (error of exampleForm.username().errors(); track error.kind) {\n                            <p-message severity=\"error\" variant=\"simple\" size=\"small\">{{ error.message }}</p-message>\n                        }\n                    }\n                </div>\n                <div class=\"flex flex-col gap-1\">\n                    <p-inputmask mask=\"(999) 999-9999\" placeholder=\"Phone\" [formField]=\"exampleForm.phone\" />\n                    @if (isInvalid(exampleForm.phone)) {\n                        @for (error of exampleForm.phone().errors(); track error.kind) {\n                            <p-message severity=\"error\" variant=\"simple\" size=\"small\">{{ error.message }}</p-message>\n                        }\n                    }\n                </div>\n            </div>\n        </div>\n    `,\n    standalone: true,\n    imports: [FormField, InputMaskModule, MessageModule, InputTextModule]\n})\nexport class MessageSignalFormsDemo {\n    model = signal({ username: '', phone: '' });\n    exampleForm = form(this.model, (path) => {\n        required(path.username, { message: 'Username is required' });\n        required(path.phone, { message: 'Phone number is required' });\n    });\n\n    isInvalid(field: FieldTree<string>) {\n        return field().invalid();\n    }\n}"
+      },
+      "metadata": {
+        "services": [],
+        "primeNGServices": [],
+        "extFiles": [],
+        "imports": [
+          "InputMaskModule",
+          "MessageModule",
+          "InputTextModule"
+        ]
+      }
+    },
     "message-severity-demo": {
       "key": "message-severity-demo",
       "selector": "message-severity-demo",
@@ -7957,6 +8204,27 @@
         "imports": [
           "MultiSelectModule",
           "FormsModule"
+        ]
+      }
+    },
+    "multiselect-signal-forms-demo": {
+      "key": "multiselect-signal-forms-demo",
+      "selector": "multiselect-signal-forms-demo",
+      "component": "multiselect",
+      "section": "signalforms",
+      "code": {
+        "typescript": "import { Component, inject, signal } from '@angular/core';\nimport { form, FormField, required, type FieldTree } from '@angular/forms/signals';\nimport { MessageModule } from 'primeng/message';\nimport { MultiSelectModule } from 'primeng/multiselect';\nimport { ButtonModule } from 'primeng/button';\nimport { MessageService } from 'primeng/api';\n\ninterface City {\n    name: string;\n    code: string;\n}\n\n@Component({\n    template: `\n        <div class=\"flex justify-center\">\n            <form (submit)=\"onSubmit($event)\" class=\"flex justify-center flex-col gap-4 w-full md:w-80\">\n                <div class=\"flex flex-col gap-1\">\n                    <p-multiselect [options]=\"cities\" [formField]=\"exampleForm.city\" optionLabel=\"name\" placeholder=\"Select Cities\" [maxSelectedLabels]=\"3\" [fluid]=\"true\" />\n                    @if (isInvalid(exampleForm.city)) {\n                        @for (error of exampleForm.city().errors(); track error.kind) {\n                            <p-message severity=\"error\" size=\"small\" variant=\"simple\">{{ error.message }}</p-message>\n                        }\n                    }\n                </div>\n                <button pButton severity=\"secondary\" type=\"submit\"><span pButtonLabel>Submit</span></button>\n            </form>\n        </div>\n    `,\n    standalone: true,\n    imports: [FormField, MessageModule, MultiSelectModule, ButtonModule],\n    providers: [MessageService]\n})\nexport class MultiSelectSignalFormsDemo {\n    private messageService = inject(MessageService);\n    messageService = inject(MessageService);\n    formSubmitted = signal(false);\n    cities: City[] = [\n        { name: 'New York', code: 'NY' },\n        { name: 'Rome', code: 'RM' },\n        { name: 'London', code: 'LDN' },\n        { name: 'Istanbul', code: 'IST' },\n        { name: 'Paris', code: 'PRS' }\n    ];\n    model = signal<{ city: City[] | null }>({ city: null });\n    exampleForm = form(this.model, (path) => {\n        required(path.city, { message: 'City is required.' });\n    });\n\n    onSubmit(event: Event) {\n        event.preventDefault();\n        this.formSubmitted.set(true);\n        \n        if (this.exampleForm().valid()) {\n            this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Form Submitted', life: 3000 });\n            this.model.set({ city: null });\n            this.formSubmitted.set(false);\n        }\n    }\n\n    isInvalid(field: FieldTree<City[] | null>) {\n        const state = field();\n        \n        return state.invalid() && (state.touched() || this.formSubmitted());\n    }\n}"
+      },
+      "metadata": {
+        "services": [],
+        "primeNGServices": [
+          "MessageService"
+        ],
+        "extFiles": [],
+        "imports": [
+          "MessageModule",
+          "MultiSelectModule",
+          "ButtonModule"
         ]
       }
     },
@@ -8896,6 +9164,27 @@
         ]
       }
     },
+    "password-signal-forms-demo": {
+      "key": "password-signal-forms-demo",
+      "selector": "password-signal-forms-demo",
+      "component": "password",
+      "section": "signalforms",
+      "code": {
+        "typescript": "import { Component, inject, signal } from '@angular/core';\nimport { form, FormField, required, type FieldTree } from '@angular/forms/signals';\nimport { MessageModule } from 'primeng/message';\nimport { PasswordModule } from 'primeng/password';\nimport { ButtonModule } from 'primeng/button';\nimport { MessageService } from 'primeng/api';\n\n@Component({\n    template: `\n        <div class=\"flex justify-center\">\n            <form (submit)=\"onSubmit($event)\" class=\"flex flex-col gap-4 sm:w-56\">\n                <div class=\"flex flex-col gap-1\">\n                    <p-password [formField]=\"exampleForm.value\" [feedback]=\"false\" autocomplete=\"off\" fluid />\n                    @if (isInvalid(exampleForm.value)) {\n                        @for (error of exampleForm.value().errors(); track error.kind) {\n                            <p-message severity=\"error\" size=\"small\" variant=\"simple\">{{ error.message }}</p-message>\n                        }\n                    }\n                </div>\n                <button pButton severity=\"secondary\" type=\"submit\"><span pButtonLabel>Submit</span></button>\n            </form>\n        </div>\n    `,\n    standalone: true,\n    imports: [FormField, MessageModule, PasswordModule, ButtonModule],\n    providers: [MessageService]\n})\nexport class PasswordSignalFormsDemo {\n    private messageService = inject(MessageService);\n    messageService = inject(MessageService);\n    formSubmitted = signal(false);\n    model = signal({ value: '' });\n    exampleForm = form(this.model, (path) => {\n        required(path.value, { message: 'Password is required.' });\n    });\n\n    onSubmit(event: Event) {\n        event.preventDefault();\n        this.formSubmitted.set(true);\n        \n        if (this.exampleForm().valid()) {\n            this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Form is submitted', life: 3000 });\n            this.model.set({ value: '' });\n            this.formSubmitted.set(false);\n        }\n    }\n\n    isInvalid(field: FieldTree<string>) {\n        const state = field();\n        \n        return state.invalid() && (state.touched() || this.formSubmitted());\n    }\n}"
+      },
+      "metadata": {
+        "services": [],
+        "primeNGServices": [
+          "MessageService"
+        ],
+        "extFiles": [],
+        "imports": [
+          "MessageModule",
+          "PasswordModule",
+          "ButtonModule"
+        ]
+      }
+    },
     "password-reactive-forms-demo": {
       "key": "password-reactive-forms-demo",
       "selector": "password-reactive-forms-demo",
@@ -9494,6 +9783,25 @@
         ]
       }
     },
+    "radiobutton-signal-forms-demo": {
+      "key": "radiobutton-signal-forms-demo",
+      "selector": "radiobutton-signal-forms-demo",
+      "component": "radiobutton",
+      "section": "signalforms",
+      "code": {
+        "typescript": "import { Component, inject, signal } from '@angular/core';\nimport { form, FormField, required, type FieldTree } from '@angular/forms/signals';\nimport { MessageModule } from 'primeng/message';\nimport { RadioButtonModule } from 'primeng/radiobutton';\nimport { ButtonModule } from 'primeng/button';\nimport { MessageService } from 'primeng/api';\n\n@Component({\n    template: `\n        <div class=\"flex justify-center\">\n            <form (submit)=\"onSubmit($event)\" class=\"flex flex-col gap-4\">\n                <div class=\"flex flex-wrap gap-4\">\n                    @for (category of categories; track category.key) {\n                        <div class=\"flex items-center gap-2\">\n                            <p-radiobutton [formField]=\"exampleForm.selectedCategory\" name=\"selectedCategory\" [inputId]=\"category.key\" [value]=\"category.key\" />\n                            <label [for]=\"category.key\" class=\"text-sm\"> {{ category.name }} </label>\n                        </div>\n                    }\n                </div>\n                @if (isInvalid(exampleForm.selectedCategory)) {\n                    @for (error of exampleForm.selectedCategory().errors(); track error.kind) {\n                        <p-message severity=\"error\" size=\"small\" variant=\"simple\">{{ error.message }}</p-message>\n                    }\n                }\n                <button pButton severity=\"secondary\" type=\"submit\">\n                    <span pButtonLabel>Submit</span>\n                </button>\n            </form>\n        </div>\n    `,\n    standalone: true,\n    imports: [FormField, MessageModule, RadioButtonModule, ButtonModule]\n})\nexport class RadioButtonSignalFormsDemo {\n    messageService = inject(MessageService);\n    formSubmitted = signal(false);\n    categories: any[] = [\n        { name: 'Cheese', key: 'C' },\n        { name: 'Mushroom', key: 'M' },\n        { name: 'Pepper', key: 'P' },\n        { name: 'Onion', key: 'O' }\n    ];\n    model = signal({ selectedCategory: '' });\n    exampleForm = form(this.model, (path) => {\n        required(path.selectedCategory, { message: 'At least one ingredient must be selected.' });\n    });\n\n    onSubmit(event: Event) {\n        event.preventDefault();\n        this.formSubmitted.set(true);\n        \n        if (this.exampleForm().valid()) {\n            this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Form Submitted', life: 3000 });\n            this.model.set({ selectedCategory: '' });\n            this.formSubmitted.set(false);\n        }\n    }\n\n    isInvalid(field: FieldTree<string>) {\n        const state = field();\n        \n        return state.invalid() && (state.touched() || this.formSubmitted());\n    }\n}"
+      },
+      "metadata": {
+        "services": [],
+        "primeNGServices": [],
+        "extFiles": [],
+        "imports": [
+          "MessageModule",
+          "RadioButtonModule",
+          "ButtonModule"
+        ]
+      }
+    },
     "radiobutton-reactive-forms-demo": {
       "key": "radiobutton-reactive-forms-demo",
       "selector": "radiobutton-reactive-forms-demo",
@@ -9676,6 +9984,27 @@
         "imports": [
           "RatingModule",
           "FormsModule"
+        ]
+      }
+    },
+    "rating-signal-forms-demo": {
+      "key": "rating-signal-forms-demo",
+      "selector": "rating-signal-forms-demo",
+      "component": "rating",
+      "section": "signalforms",
+      "code": {
+        "typescript": "import { Component, inject, signal } from '@angular/core';\nimport { form, FormField, required, type FieldTree } from '@angular/forms/signals';\nimport { MessageModule } from 'primeng/message';\nimport { RatingModule } from 'primeng/rating';\nimport { ButtonModule } from 'primeng/button';\nimport { MessageService } from 'primeng/api';\n\n@Component({\n    template: `\n        <div class=\"flex justify-center\">\n            <form (submit)=\"onSubmit($event)\" class=\"flex flex-col gap-4 w-40\">\n                <div class=\"flex flex-col items-center gap-2\">\n                    <p-rating [formField]=\"exampleForm.ratingValue\" />\n                    @if (isInvalid(exampleForm.ratingValue)) {\n                        @for (error of exampleForm.ratingValue().errors(); track error.kind) {\n                            <p-message severity=\"error\" size=\"small\" variant=\"simple\">{{ error.message }}</p-message>\n                        }\n                    }\n                </div>\n                <button pButton severity=\"secondary\" type=\"submit\"><span pButtonLabel>Submit</span></button>\n            </form>\n        </div>\n    `,\n    standalone: true,\n    imports: [FormField, MessageModule, RatingModule, ButtonModule],\n    providers: [MessageService]\n})\nexport class RatingSignalFormsDemo {\n    private messageService = inject(MessageService);\n    messageService = inject(MessageService);\n    formSubmitted = signal(false);\n    model = signal<{ ratingValue: number | null }>({ ratingValue: null });\n    exampleForm = form(this.model, (path) => {\n        required(path.ratingValue, { message: 'Value is required.' });\n    });\n\n    onSubmit(event: Event) {\n        event.preventDefault();\n        this.formSubmitted.set(true);\n        \n        if (this.exampleForm().valid()) {\n            this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Form Submitted', life: 3000 });\n            this.model.set({ ratingValue: null });\n            this.formSubmitted.set(false);\n        }\n    }\n\n    isInvalid(field: FieldTree<number | null>) {\n        const state = field();\n        \n        return state.invalid() && (state.touched() || this.formSubmitted());\n    }\n}"
+      },
+      "metadata": {
+        "services": [],
+        "primeNGServices": [
+          "MessageService"
+        ],
+        "extFiles": [],
+        "imports": [
+          "MessageModule",
+          "RatingModule",
+          "ButtonModule"
         ]
       }
     },
@@ -10142,6 +10471,25 @@
         ]
       }
     },
+    "select-signal-forms-demo": {
+      "key": "select-signal-forms-demo",
+      "selector": "select-signal-forms-demo",
+      "component": "select",
+      "section": "signalforms",
+      "code": {
+        "typescript": "import { Component, inject, signal } from '@angular/core';\nimport { form, FormField, required, type FieldTree } from '@angular/forms/signals';\nimport { SelectModule } from 'primeng/select';\nimport { MessageModule } from 'primeng/message';\nimport { ButtonModule } from 'primeng/button';\nimport { MessageService } from 'primeng/api';\n\ninterface City {\n    name: string;\n    code: string;\n}\n\n@Component({\n    template: `\n        <div class=\"flex justify-center\">\n            <form (submit)=\"onSubmit($event)\" class=\"flex flex-col gap-4 w-full sm:w-56\">\n                <div class=\"flex flex-col gap-1\">\n                    <p-select [formField]=\"exampleForm.city\" [options]=\"cities\" optionLabel=\"name\" placeholder=\"Select a City\" class=\"w-full md:w-56\" />\n                    @if (isInvalid(exampleForm.city)) {\n                        @for (error of exampleForm.city().errors(); track error.kind) {\n                            <p-message severity=\"error\" size=\"small\" variant=\"simple\">{{ error.message }}</p-message>\n                        }\n                    }\n                </div>\n                <button pButton severity=\"secondary\" type=\"submit\"><span pButtonLabel>Submit</span></button>\n            </form>\n        </div>\n    `,\n    standalone: true,\n    imports: [FormField, SelectModule, MessageModule, ButtonModule]\n})\nexport class SelectSignalFormsDemo {\n    messageService = inject(MessageService);\n    formSubmitted = signal(false);\n    cities: City[] = [\n        { name: 'New York', code: 'NY' },\n        { name: 'Rome', code: 'RM' },\n        { name: 'London', code: 'LDN' },\n        { name: 'Istanbul', code: 'IST' },\n        { name: 'Paris', code: 'PRS' }\n    ];\n    model = signal<{ city: City | null }>({ city: null });\n    exampleForm = form(this.model, (path) => {\n        required(path.city, { message: 'City is required.' });\n    });\n\n    onSubmit(event: Event) {\n        event.preventDefault();\n        this.formSubmitted.set(true);\n        \n        if (this.exampleForm().valid()) {\n            this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Form Submitted', life: 3000 });\n            this.model.set({ city: null });\n            this.formSubmitted.set(false);\n        }\n    }\n\n    isInvalid(field: FieldTree<City | null>) {\n        const state = field();\n        \n        return state.invalid() && (state.touched() || this.formSubmitted());\n    }\n}"
+      },
+      "metadata": {
+        "services": [],
+        "primeNGServices": [],
+        "extFiles": [],
+        "imports": [
+          "SelectModule",
+          "MessageModule",
+          "ButtonModule"
+        ]
+      }
+    },
     "select-reactive-forms-demo": {
       "key": "select-reactive-forms-demo",
       "selector": "select-reactive-forms-demo",
@@ -10574,6 +10922,25 @@
         ]
       }
     },
+    "selectbutton-signal-forms-demo": {
+      "key": "selectbutton-signal-forms-demo",
+      "selector": "selectbutton-signal-forms-demo",
+      "component": "selectbutton",
+      "section": "signalforms",
+      "code": {
+        "typescript": "import { Component, inject, signal } from '@angular/core';\nimport { form, FormField, required, type FieldTree } from '@angular/forms/signals';\nimport { MessageModule } from 'primeng/message';\nimport { SelectButtonModule } from 'primeng/selectbutton';\nimport { ButtonModule } from 'primeng/button';\nimport { MessageService } from 'primeng/api';\n\n@Component({\n    template: `\n        <div class=\"flex justify-center\">\n            <form (submit)=\"onSubmit($event)\" class=\"flex flex-col gap-4\">\n                <div class=\"flex flex-col gap-1\">\n                    <p-selectbutton [options]=\"stateOptions\" [formField]=\"exampleForm.value\" optionLabel=\"label\" optionValue=\"value\" />\n                    @if (isInvalid(exampleForm.value)) {\n                        @for (error of exampleForm.value().errors(); track error.kind) {\n                            <p-message severity=\"error\" size=\"small\" variant=\"simple\">{{ error.message }}</p-message>\n                        }\n                    }\n                </div>\n                <button pButton type=\"submit\"><span pButtonLabel>Submit</span></button>\n            </form>\n        </div>\n    `,\n    standalone: true,\n    imports: [FormField, MessageModule, SelectButtonModule, ButtonModule]\n})\nexport class SelectButtonSignalFormsDemo {\n    messageService = inject(MessageService);\n    formSubmitted = signal(false);\n    stateOptions: any[] = [\n        { label: 'One-Way', value: 'one-way' },\n        { label: 'Return', value: 'return' }\n    ];\n    model = signal({ value: '' });\n    exampleForm = form(this.model, (path) => {\n        required(path.value, { message: 'Selection is required' });\n    });\n\n    onSubmit(event: Event) {\n        event.preventDefault();\n        this.formSubmitted.set(true);\n        \n        if (this.exampleForm().valid()) {\n            this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Form Submitted', life: 3000 });\n            this.model.set({ value: '' });\n            this.formSubmitted.set(false);\n        }\n    }\n\n    isInvalid(field: FieldTree<string>) {\n        const state = field();\n        \n        return state.invalid() && (state.touched() || this.formSubmitted());\n    }\n}"
+      },
+      "metadata": {
+        "services": [],
+        "primeNGServices": [],
+        "extFiles": [],
+        "imports": [
+          "MessageModule",
+          "SelectButtonModule",
+          "ButtonModule"
+        ]
+      }
+    },
     "selectbutton-reactive-forms-demo": {
       "key": "selectbutton-reactive-forms-demo",
       "selector": "selectbutton-reactive-forms-demo",
@@ -10836,6 +11203,25 @@
         "imports": [
           "SliderModule",
           "FormsModule"
+        ]
+      }
+    },
+    "slider-signal-forms-demo": {
+      "key": "slider-signal-forms-demo",
+      "selector": "slider-signal-forms-demo",
+      "component": "slider",
+      "section": "signalforms",
+      "code": {
+        "typescript": "import { Component, inject, signal } from '@angular/core';\nimport { form, FormField, required, type FieldTree } from '@angular/forms/signals';\nimport { MessageModule } from 'primeng/message';\nimport { SliderModule } from 'primeng/slider';\nimport { ButtonModule } from 'primeng/button';\nimport { MessageService } from 'primeng/api';\n\n@Component({\n    template: `\n        <div class=\"flex justify-center\">\n            <form (submit)=\"onSubmit($event)\" class=\"flex flex-col gap-4\">\n                <div class=\"flex flex-col gap-4\">\n                    <p-slider [formField]=\"exampleForm.value\" class=\"w-56\" />\n                    @if (isInvalid(exampleForm.value)) {\n                        @for (error of exampleForm.value().errors(); track error.kind) {\n                            <p-message severity=\"error\" size=\"small\" variant=\"simple\">{{ error.message }}</p-message>\n                        }\n                    }\n                </div>\n                <button pButton severity=\"secondary\" type=\"submit\"><span pButtonLabel>Submit</span></button>\n            </form>\n        </div>\n    `,\n    standalone: true,\n    imports: [FormField, MessageModule, SliderModule, ButtonModule]\n})\nexport class SliderSignalFormsDemo {\n    messageService = inject(MessageService);\n    formSubmitted = signal(false);\n    model = signal<{ value: number | null }>({ value: null });\n    exampleForm = form(this.model, (path) => {\n        required(path.value, { message: 'Must be greater than 25.' });\n    });\n\n    onSubmit(event: Event) {\n        event.preventDefault();\n        this.formSubmitted.set(true);\n        \n        if (this.exampleForm().valid()) {\n            this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Form is submitted', life: 3000 });\n            this.model.set({ value: null });\n            this.formSubmitted.set(false);\n        }\n    }\n\n    isInvalid(field: FieldTree<number | null>) {\n        const state = field();\n        \n        return state.invalid() && (state.touched() || this.formSubmitted());\n    }\n}"
+      },
+      "metadata": {
+        "services": [],
+        "primeNGServices": [],
+        "extFiles": [],
+        "imports": [
+          "MessageModule",
+          "SliderModule",
+          "ButtonModule"
         ]
       }
     },
@@ -13223,6 +13609,24 @@
         ]
       }
     },
+    "textarea-signal-forms-demo": {
+      "key": "textarea-signal-forms-demo",
+      "selector": "textarea-signal-forms-demo",
+      "component": "textarea",
+      "section": "signalforms",
+      "code": {
+        "typescript": "import { Component, inject, signal } from '@angular/core';\nimport { form, FormField, required, type FieldTree } from '@angular/forms/signals';\nimport { MessageModule } from 'primeng/message';\nimport { ButtonModule } from 'primeng/button';\nimport { MessageService } from 'primeng/api';\n\n@Component({\n    template: `\n        <div class=\"flex justify-center\">\n            <form (submit)=\"onSubmit($event)\" class=\"flex flex-col gap-4\">\n                <div class=\"flex flex-col gap-1\">\n                    <textarea rows=\"5\" cols=\"30\" pTextarea [formField]=\"exampleForm.address\"></textarea>\n                    @if (isInvalid(exampleForm.address)) {\n                        @for (error of exampleForm.address().errors(); track error.kind) {\n                            <p-message severity=\"error\" size=\"small\" variant=\"simple\">{{ error.message }}</p-message>\n                        }\n                    }\n                </div>\n                <button pButton severity=\"secondary\" type=\"submit\"><span pButtonLabel>Submit</span></button>\n            </form>\n        </div>\n    `,\n    standalone: true,\n    imports: [FormField, MessageModule, ButtonModule]\n})\nexport class TextareaSignalFormsDemo {\n    messageService = inject(MessageService);\n    formSubmitted = signal(false);\n    model = signal({ address: '' });\n    exampleForm = form(this.model, (path) => {\n        required(path.address, { message: 'Address is required.' });\n    });\n\n    onSubmit(event: Event) {\n        event.preventDefault();\n        this.formSubmitted.set(true);\n        \n        if (this.exampleForm().valid()) {\n            this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Form is submitted', life: 3000 });\n            this.model.set({ address: '' });\n            this.formSubmitted.set(false);\n        }\n    }\n\n    isInvalid(field: FieldTree<string>) {\n        const state = field();\n        \n        return state.invalid() && (state.touched() || this.formSubmitted());\n    }\n}"
+      },
+      "metadata": {
+        "services": [],
+        "primeNGServices": [],
+        "extFiles": [],
+        "imports": [
+          "MessageModule",
+          "ButtonModule"
+        ]
+      }
+    },
     "textarea-reactive-forms-demo": {
       "key": "textarea-reactive-forms-demo",
       "selector": "textarea-reactive-forms-demo",
@@ -13882,6 +14286,25 @@
         ]
       }
     },
+    "togglebutton-signal-forms-demo": {
+      "key": "togglebutton-signal-forms-demo",
+      "selector": "togglebutton-signal-forms-demo",
+      "component": "togglebutton",
+      "section": "signalforms",
+      "code": {
+        "typescript": "import { Component, inject, signal } from '@angular/core';\nimport { form, FormField, required, type FieldTree } from '@angular/forms/signals';\nimport { MessageModule } from 'primeng/message';\nimport { ToggleButtonModule } from 'primeng/togglebutton';\nimport { ButtonModule } from 'primeng/button';\nimport { MessageService } from 'primeng/api';\n\n@Component({\n    template: `\n        <div class=\"flex justify-center\">\n            <form (submit)=\"onSubmit($event)\" class=\"flex flex-col items-center gap-4\">\n                <div class=\"flex flex-col items-center gap-1\">\n                    <p-togglebutton name=\"consent\" [formField]=\"exampleForm.checked\" onLabel=\"Accept All\" offLabel=\"Reject All\" class=\"min-w-40\" />\n                    @if (isInvalid(exampleForm.checked)) {\n                        @for (error of exampleForm.checked().errors(); track error.kind) {\n                            <p-message severity=\"error\" size=\"small\" variant=\"simple\">{{ error.message }}</p-message>\n                        }\n                    }\n                </div>\n                <button pButton type=\"submit\"><span pButtonLabel>Submit</span></button>\n            </form>\n        </div>\n    `,\n    standalone: true,\n    imports: [FormField, MessageModule, ToggleButtonModule, ButtonModule]\n})\nexport class ToggleButtonSignalFormsDemo {\n    messageService = inject(MessageService);\n    formSubmitted = signal(false);\n    model = signal({ checked: false });\n    exampleForm = form(this.model, (path) => {\n        required(path.checked, { message: 'Consent is mandatory.' });\n    });\n\n    onSubmit(event: Event) {\n        event.preventDefault();\n        this.formSubmitted.set(true);\n        \n        if (this.exampleForm().valid()) {\n            this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Form Submitted', life: 3000 });\n            this.model.set({ checked: false });\n            this.formSubmitted.set(false);\n        }\n    }\n\n    isInvalid(field: FieldTree<boolean>) {\n        const state = field();\n        \n        return state.invalid() && (state.touched() || this.formSubmitted());\n    }\n}"
+      },
+      "metadata": {
+        "services": [],
+        "primeNGServices": [],
+        "extFiles": [],
+        "imports": [
+          "MessageModule",
+          "ToggleButtonModule",
+          "ButtonModule"
+        ]
+      }
+    },
     "togglebutton-reactive-forms-demo": {
       "key": "togglebutton-reactive-forms-demo",
       "selector": "togglebutton-reactive-forms-demo",
@@ -14043,6 +14466,25 @@
           "ToggleSwitchModule",
           "FormsModule",
           "CommonModule"
+        ]
+      }
+    },
+    "toggleswitch-signal-forms-demo": {
+      "key": "toggleswitch-signal-forms-demo",
+      "selector": "toggleswitch-signal-forms-demo",
+      "component": "toggleswitch",
+      "section": "signalforms",
+      "code": {
+        "typescript": "import { Component, inject, signal } from '@angular/core';\nimport { form, FormField, required, type FieldTree } from '@angular/forms/signals';\nimport { MessageModule } from 'primeng/message';\nimport { ToggleSwitchModule } from 'primeng/toggleswitch';\nimport { ButtonModule } from 'primeng/button';\nimport { MessageService } from 'primeng/api';\n\n@Component({\n    template: `\n        <div class=\"flex justify-center\">\n            <form (submit)=\"onSubmit($event)\" class=\"flex flex-col gap-4 w-48\">\n                <div class=\"flex flex-col items-center gap-2\">\n                    <p-toggleswitch name=\"activation\" [formField]=\"exampleForm.activation\" />\n                    @if (isInvalid(exampleForm.activation)) {\n                        @for (error of exampleForm.activation().errors(); track error.kind) {\n                            <p-message severity=\"error\" size=\"small\" variant=\"simple\">{{ error.message }}</p-message>\n                        }\n                    }\n                </div>\n                <button pButton severity=\"secondary\" type=\"submit\"><span pButtonLabel>Submit</span></button>\n            </form>\n        </div>\n    `,\n    standalone: true,\n    imports: [FormField, MessageModule, ToggleSwitchModule, ButtonModule]\n})\nexport class ToggleSwitchSignalFormsDemo {\n    messageService = inject(MessageService);\n    formSubmitted = signal(false);\n    model = signal({ activation: false });\n    exampleForm = form(this.model, (path) => {\n        required(path.activation, { message: 'Activation is required.' });\n    });\n\n    onSubmit(event: Event) {\n        event.preventDefault();\n        this.formSubmitted.set(true);\n        \n        if (this.exampleForm().valid()) {\n            this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Form Submitted', life: 3000 });\n            this.model.set({ activation: false });\n            this.formSubmitted.set(false);\n        }\n    }\n\n    isInvalid(field: FieldTree<boolean>) {\n        const state = field();\n        \n        return state.invalid() && (state.touched() || this.formSubmitted());\n    }\n}"
+      },
+      "metadata": {
+        "services": [],
+        "primeNGServices": [],
+        "extFiles": [],
+        "imports": [
+          "MessageModule",
+          "ToggleSwitchModule",
+          "ButtonModule"
         ]
       }
     },
@@ -14667,6 +15109,27 @@
         "imports": [
           "TreeSelectModule",
           "FormsModule"
+        ]
+      }
+    },
+    "treeselect-signal-forms-demo": {
+      "key": "treeselect-signal-forms-demo",
+      "selector": "treeselect-signal-forms-demo",
+      "component": "treeselect",
+      "section": "signalforms",
+      "code": {
+        "typescript": "import { Component, OnInit, inject, signal } from '@angular/core';\nimport { form, FormField, required, type FieldTree } from '@angular/forms/signals';\nimport { MessageModule } from 'primeng/message';\nimport { TreeSelectModule } from 'primeng/treeselect';\nimport { ButtonModule } from 'primeng/button';\nimport { NodeService } from '@/service/nodeservice';\nimport { TreeNode, MessageService } from 'primeng/api';\n\n@Component({\n    template: `\n        <div class=\"flex justify-center\">\n            <form (submit)=\"onSubmit($event)\" class=\"flex flex-col gap-4 w-full md:w-80\">\n                <div class=\"flex flex-col gap-1\">\n                    <p-treeselect class=\"md:w-80 w-full\" [formField]=\"exampleForm.selectedNodes\" [options]=\"nodes\" placeholder=\"Select Item\" />\n                    @if (isInvalid(exampleForm.selectedNodes)) {\n                        @for (error of exampleForm.selectedNodes().errors(); track error.kind) {\n                            <p-message severity=\"error\" size=\"small\" variant=\"simple\">{{ error.message }}</p-message>\n                        }\n                    }\n                </div>\n                <button pButton severity=\"secondary\" type=\"submit\"><span pButtonLabel>Submit</span></button>\n            </form>\n        </div>\n    `,\n    standalone: true,\n    imports: [FormField, MessageModule, TreeSelectModule, ButtonModule],\n    providers: [NodeService]\n})\nexport class TreeSelectSignalFormsDemo implements OnInit {\n    private nodeService = inject(NodeService);\n    messageService = inject(MessageService);\n    nodeService = inject(NodeService);\n    formSubmitted = signal(false);\n    nodes!: any[];\n    model = signal<{ selectedNodes: TreeNode | null }>({ selectedNodes: null });\n    exampleForm = form(this.model, (path) => {\n        required(path.selectedNodes, { message: 'Selection is required.' });\n    });\n\n    constructor() {\n        this.nodeService.getFiles().then((files) => (this.nodes = files));\n    }\n\n    ngOnInit() {\n    }\n\n    onSubmit(event: Event) {\n        event.preventDefault();\n        this.formSubmitted.set(true);\n        \n        if (this.exampleForm().valid()) {\n            this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Form is submitted', life: 3000 });\n            this.model.set({ selectedNodes: null });\n            this.formSubmitted.set(false);\n        }\n    }\n\n    isInvalid(field: FieldTree<TreeNode | null>) {\n        const state = field();\n        \n        return state.invalid() && (state.touched() || this.formSubmitted());\n    }\n}"
+      },
+      "metadata": {
+        "services": [
+          "NodeService"
+        ],
+        "primeNGServices": [],
+        "extFiles": [],
+        "imports": [
+          "MessageModule",
+          "TreeSelectModule",
+          "ButtonModule"
         ]
       }
     },
