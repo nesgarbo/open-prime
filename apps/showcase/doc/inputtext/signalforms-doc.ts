@@ -56,6 +56,7 @@ export class SignalFormsDoc {
     onSubmit(event: Event) {
         event.preventDefault();
         this.formSubmitted.set(true);
+
         if (this.exampleForm().valid()) {
             this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Form Submitted', life: 3000 });
             this.model.set({ username: '', email: '' });
@@ -65,6 +66,7 @@ export class SignalFormsDoc {
 
     isInvalid(field: FieldTree<string>) {
         const state = field();
+
         return state.invalid() && (state.touched() || this.formSubmitted());
     }
 }

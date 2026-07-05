@@ -3,6 +3,7 @@ import eslint from '@eslint/js';
 import angular from 'angular-eslint';
 import prettierConfig from 'eslint-config-prettier';
 import prettier from 'eslint-plugin-prettier';
+import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
 const paddingLineBetweenStatements = [
@@ -65,6 +66,26 @@ export default tseslint.config(
             'no-console': 'off',
             'prefer-const': 'off',
             'padding-line-between-statements': paddingLineBetweenStatements
+        }
+    },
+    {
+        files: ['**/*.js', '**/*.mjs', '**/*.cjs'],
+        extends: [eslint.configs.recommended],
+        languageOptions: {
+            globals: {
+                ...globals.node
+            }
+        },
+        rules: {
+            'no-console': 'off',
+            'no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_', caughtErrors: 'none', ignoreRestSiblings: true }]
+        }
+    },
+    {
+        // Showcase docs and demo pages use their own selectors (e.g. `basic-doc`, `app-code`) by design
+        files: ['apps/showcase/**/*.ts'],
+        rules: {
+            '@angular-eslint/component-selector': 'off'
         }
     },
     {

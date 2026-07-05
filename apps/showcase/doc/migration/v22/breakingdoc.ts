@@ -19,17 +19,20 @@ import { RouterModule } from '@angular/router';
             <app-code [code]="importCode" [hideToggleCode]="true" [hideStackBlitz]="true"></app-code>
             <p>Bind the value from the template instead:</p>
             <app-code [code]="fixCode" [hideToggleCode]="true" [hideStackBlitz]="true"></app-code>
+            <p>
+                This also affects reading input values: properties like <i>PrimeTemplate.type</i> and <i>PrimeTemplate.name</i> are now signals, so code that queries templates with <i>&#64;ContentChildren(PrimeTemplate)</i> and compares
+                <i>template.type === 'header'</i> must call the signal instead — <i>template.type() === 'header'</i> (or keep using <i>template.getType()</i>, which is unchanged). A plain property access compiles but silently compares against the
+                signal function itself, never matching.
+            </p>
 
             <h3>Form inputs</h3>
             <p>
                 The lowercase <i>minlength</i>/<i>maxlength</i> inputs are deprecated in favor of <i>minLength</i>/<i>maxLength</i> (the names bound by the Signal Forms <i>[formField]</i> directive). The <i>pattern</i> input now accepts a string, a
                 <i>RegExp</i> or an array of patterns and is normalized to <i>readonly RegExp[]</i> to match the Angular <i>FormValueControl</i> contract; reading <i>pattern()</i> returns a <i>RegExp</i> array rather than a string.
             </p>
-
-            <h3>Animations</h3>
             <p>
-                The legacy <i>&#64;angular/animations</i> triggers were removed in favor of the built-in motion system introduced in v21. See the
-                <a routerLink="/guides/animations" class="text-primary font-medium hover:underline">animations documentation</a> for the current approach.
+                Components that previously declared their own <i>readonly</i> input with a <i>false</i> default (Knob, Rating, InputOtp, Editor) now inherit it from <i>BaseEditableHolder</i>, whose default is <i>undefined</i>. Behavior is unchanged
+                for bindings and truthiness checks, but code comparing strictly against <i>false</i> (<i>readonly() === false</i>) must be updated.
             </p>
 
             <p>Other than these cases, v22 should be a drop-in replacement on Angular 22. If you face any issues during the upgrade, please report an issue at GitHub.</p>
@@ -50,6 +53,6 @@ export class IconDirective implements OnInit {
     };
 
     fixCode = {
-        html: `<p-icon [spin]="isSpinning" />`
+        html: `<svg data-p-icon="spinner" [spin]="isSpinning" />`
     };
 }

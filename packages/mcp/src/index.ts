@@ -30,10 +30,9 @@ const migrationGuides = {
         from: 'v21',
         breaking: [
             'PrimeNG v22 requires Angular 22+',
-            'Component and directive inputs are now signal inputs (`input()`), which return a read-only `InputSignal`. Setting an input imperatively from outside the component (e.g. `iconRef.spin = true` or `iconRef.spin.set(true)`) no longer works — bind the value through the template (`[spin]="..."`) instead. This affects any code that injected a component/directive (such as `BaseIcon`) and wrote to its `@Input` property directly.',
-            'Form components now expose the signal-forms state contract; the `minlength`/`maxlength` inputs are deprecated in favor of `minLength`/`maxLength`',
+            'Component and directive inputs are now signal inputs (`input()`), which return a read-only `InputSignal`. Setting an input imperatively from outside the component (e.g. `iconRef.spin = true` or `iconRef.spin.set(true)`) no longer works — bind the value through the template (`[spin]="..."`) instead. This affects any code that injected a component/directive (such as `BaseIcon`) and wrote to its `@Input` property directly. Reading is affected too: e.g. `PrimeTemplate.type`/`PrimeTemplate.name` are now signals, so `template.type === "header"` silently never matches — call `template.type()` (or `template.getType()`) instead.',
             'The `pattern` input now accepts a string, a RegExp or an array of patterns and is normalized to `readonly RegExp[]` to match the Angular signal-forms FormValueControl contract',
-            'Legacy `@angular/animations` triggers removed in favor of the built-in motion system'
+            'Components that declared their own `readonly` input with a `false` default (Knob, Rating, InputOtp, Editor) now inherit it from `BaseEditableHolder`, whose default is `undefined` — strict comparisons like `readonly() === false` must be updated (truthiness checks are unaffected)'
         ],
         deprecations: [
             'Lowercase `minlength`/`maxlength` inputs deprecated in favor of `minLength`/`maxLength`',
