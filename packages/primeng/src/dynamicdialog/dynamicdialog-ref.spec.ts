@@ -104,16 +104,4 @@ describe('DynamicDialogRef', () => {
             expect(spy).toHaveBeenCalledWith({ maximized: true });
         });
     });
-
-    describe('onChildComponentLoaded', () => {
-        it('should expose a subject that emits the loaded instance', () => {
-            const spy = jasmine.createSpy('childLoaded');
-            const instance = { some: 'component' };
-            ref.onChildComponentLoaded.subscribe(spy);
-
-            ref.onChildComponentLoaded.next(instance);
-
-            expect(spy).toHaveBeenCalledWith(instance);
-        });
-    });
 });

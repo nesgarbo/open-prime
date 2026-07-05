@@ -226,7 +226,7 @@ export class RadioButton extends BaseEditableHolder<RadioButtonPassThrough> {
     }
 
     onChange(event) {
-        if (!this.$disabled()) {
+        if (!this.$disabled() && !this.readonly()) {
             this.select(event);
         }
     }
