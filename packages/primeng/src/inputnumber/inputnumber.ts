@@ -732,8 +732,12 @@ export class InputNumber extends BaseInput<InputNumberPassThrough> {
         let currentValue = this.parseValue(this.input()?.nativeElement.value) || 0;
         let newValue = this.validateValue((currentValue as number) + step);
         const max = this.$maxLength();
-        if (max && max < this.formatValue(newValue).length) {
-            return;
+        if (max && newValue != null) {
+            const newValueStr = this.parseValue(this.formatValue(newValue))?.toString() ?? '';
+            const currentValueStr = currentValue.toString();
+            if (newValueStr.length > max && newValueStr.length > currentValueStr.length) {
+                return;
+            }
         }
 
         this.updateInput(newValue, null, 'spin', null);

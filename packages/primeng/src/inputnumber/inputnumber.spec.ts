@@ -552,6 +552,43 @@ describe('InputNumber', () => {
         });
     });
 
+    describe('Spin with maxlength', () => {
+        it('should spin when the plain value fits maxlength even if the formatted value is longer', () => {
+            fixture.componentRef.setInput('locale', 'en-US');
+            fixture.componentRef.setInput('maxlength', 3);
+            fixture.componentRef.setInput('minFractionDigits', 2);
+            fixture.detectChanges();
+
+            component.spin(new Event('mousedown'), 1);
+
+            expect(component.value).toBe(1);
+            expect(component.input().nativeElement.value).toBe('1.00');
+        });
+
+        it('should allow decrementing a value that already exceeds maxlength', () => {
+            fixture.componentRef.setInput('locale', 'en-US');
+            fixture.componentRef.setInput('maxlength', 3);
+            fixture.detectChanges();
+
+            component.input().nativeElement.value = '5,000';
+            component.spin(new Event('mousedown'), -1);
+
+            expect(component.value).toBe(4999);
+        });
+
+        it('should not spin beyond maxlength', () => {
+            fixture.componentRef.setInput('locale', 'en-US');
+            fixture.componentRef.setInput('maxlength', 3);
+            fixture.detectChanges();
+
+            component.input().nativeElement.value = '999';
+            component.spin(new Event('mousedown'), 1);
+
+            expect(component.value).toBeUndefined();
+            expect(component.input().nativeElement.value).toBe('999');
+        });
+    });
+
     describe('Clear Functionality', () => {
         let testComponent: TestBasicInputNumberComponent;
         let testFixture: ComponentFixture<TestBasicInputNumberComponent>;
