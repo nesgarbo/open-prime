@@ -365,6 +365,10 @@ function extractClassProperties(content) {
                 // Check for inject() pattern: inject(ServiceName)
                 else if (defaultVal.match(/^inject\(\w+\)$/)) {
                     propMatch = [null, noTypeMatch[1], '', '__inject__', defaultVal];
+                }
+                // Check for signal forms form() declarations: keep as-is, the type is inferred
+                else if (defaultVal.startsWith('form(')) {
+                    propMatch = [null, noTypeMatch[1], '', '__form__', defaultVal];
                 } else if (defaultVal === '[]' || defaultVal.startsWith('[')) {
                     inferredType = 'any[]';
                     propMatch = [null, noTypeMatch[1], '', inferredType, defaultVal];
@@ -1178,6 +1182,16 @@ function generateTypescript(componentName, template, services = [], fileContent 
         importStatements += `import { ReactiveFormsModule } from '@angular/forms';\n`;
     }
 
+    // Add Signal Forms imports if needed - reuse the original import statement
+    // (e.g. `import { email, form, FormField, required, type FieldTree } from '@angular/forms/signals';`)
+    const signalFormsImportMatch = fileContent.match(/import\s*\{[^}]+\}\s*from\s*['"`]@angular\/forms\/signals['"`];?/);
+    const usesFormField = /\bformField\b/.test(template);
+    if (signalFormsImportMatch) {
+        importStatements += `${signalFormsImportMatch[0].replace(/;?$/, ';')}\n`;
+    } else if (usesFormField) {
+        importStatements += `import { FormField } from '@angular/forms/signals';\n`;
+    }
+
     // Add PrimeNG modules (will be modified below to include named exports)
     const primeNGImports = primeModules.filter((m) => !['CommonModule', 'FormsModule', 'ReactiveFormsModule'].includes(m));
 
@@ -1250,6 +1264,7 @@ function generateTypescript(componentName, template, services = [], fileContent 
 
     // Build imports array for decorator (actual modules, not ImportsModule)
     const decoratorImports = [
+        ...(usesFormField ? ['FormField'] : []),
         ...primeModules.filter((m) => m !== 'CommonModule'),
         ...iconNames.map((n) =>
             n
@@ -1292,8 +1307,8 @@ function generateTypescript(componentName, template, services = [], fileContent 
     if (properties.length > 0) {
         if (allServices.length === 0) classBody += '\n';
         for (const prop of properties) {
-            if (prop.type === '__signal__' || prop.type === '__inject__') {
-                // Signal/inject properties: name = signal<Type>(value); or name = inject(Service);
+            if (prop.type === '__signal__' || prop.type === '__inject__' || prop.type === '__form__') {
+                // Signal/inject/form properties: name = signal<Type>(value); or name = inject(Service);
                 classBody += `    ${prop.name} = ${prop.defaultValue};\n`;
             } else if (prop.defaultValue) {
                 classBody += `    ${prop.name}${prop.optional}: ${prop.type} = ${prop.defaultValue};\n`;

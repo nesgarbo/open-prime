@@ -1,7 +1,7 @@
 {
   "version": "1.0.0",
-  "generatedAt": "2026-07-01T13:18:51.319Z",
-  "totalDemos": 831,
+  "generatedAt": "2026-07-05T07:55:01.283Z",
+  "totalDemos": 832,
   "demos": {
     "Image-template-demo": {
       "key": "Image-template-demo",
@@ -6487,6 +6487,25 @@
         "imports": [
           "InputTextModule",
           "FormsModule"
+        ]
+      }
+    },
+    "inputtext-signal-forms-demo": {
+      "key": "inputtext-signal-forms-demo",
+      "selector": "inputtext-signal-forms-demo",
+      "component": "inputtext",
+      "section": "signalforms",
+      "code": {
+        "typescript": "import { Component, inject, signal } from '@angular/core';\nimport { email, form, FormField, required, type FieldTree } from '@angular/forms/signals';\nimport { MessageModule } from 'primeng/message';\nimport { ButtonModule } from 'primeng/button';\nimport { InputTextModule } from 'primeng/inputtext';\nimport { MessageService } from 'primeng/api';\n\n@Component({\n    template: `\n        <div class=\"flex justify-center\">\n            <form (submit)=\"onSubmit($event)\" class=\"flex flex-col gap-4 w-full sm:w-56\">\n                <div class=\"flex flex-col gap-1\">\n                    <input pInputText type=\"text\" id=\"username\" placeholder=\"Username\" [formField]=\"exampleForm.username\" />\n                    @if (isInvalid(exampleForm.username)) {\n                        @for (error of exampleForm.username().errors(); track error.kind) {\n                            <p-message severity=\"error\" size=\"small\" variant=\"simple\">{{ error.message }}</p-message>\n                        }\n                    }\n                </div>\n                <div class=\"flex flex-col gap-1\">\n                    <input pInputText type=\"email\" id=\"email\" placeholder=\"Email\" [formField]=\"exampleForm.email\" />\n                    @if (isInvalid(exampleForm.email)) {\n                        @for (error of exampleForm.email().errors(); track error.kind) {\n                            <p-message severity=\"error\" size=\"small\" variant=\"simple\">{{ error.message }}</p-message>\n                        }\n                    }\n                </div>\n                <button pButton severity=\"secondary\" type=\"submit\"><span pButtonLabel>Submit</span></button>\n            </form>\n        </div>\n    `,\n    standalone: true,\n    imports: [FormField, MessageModule, ButtonModule, InputTextModule]\n})\nexport class InputTextSignalFormsDemo {\n    messageService = inject(MessageService);\n    formSubmitted = signal(false);\n    model = signal({ username: '', email: '' });\n    exampleForm = form(this.model, (path) => {\n        required(path.username, { message: 'Username is required.' });\n        required(path.email, { message: 'Email is required.' });\n        email(path.email, { message: 'Please enter a valid email.' });\n    });\n\n    onSubmit(event: Event) {\n        event.preventDefault();\n        this.formSubmitted.set(true);\n        if (this.exampleForm().valid()) {\n            this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Form Submitted', life: 3000 });\n            this.model.set({ username: '', email: '' });\n            this.formSubmitted.set(false);\n        }\n    }\n\n    isInvalid(field: FieldTree<string>) {\n        const state = field();\n        return state.invalid() && (state.touched() || this.formSubmitted());\n    }\n}"
+      },
+      "metadata": {
+        "services": [],
+        "primeNGServices": [],
+        "extFiles": [],
+        "imports": [
+          "MessageModule",
+          "ButtonModule",
+          "InputTextModule"
         ]
       }
     },
