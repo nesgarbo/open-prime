@@ -200,7 +200,7 @@ export class ToggleButton extends BaseEditableHolder<ToggleButtonPassThrough> {
 
     @HostListener('click', ['$event'])
     toggle(event: Event) {
-        if (!this.$disabled() && !(this.allowEmpty() === false && this.checked())) {
+        if (!this.$disabled() && !this.readonly() && !(this.allowEmpty() === false && this.checked())) {
             this.checked.set(!this.checked());
             this.writeModelValue(this.checked());
             this.onModelChange(this.checked());

@@ -1085,7 +1085,7 @@ export class DatePicker extends BaseInput<DatePickerPassThrough> {
 
     requiredAttr = computed(() => (this.required() ? '' : undefined));
 
-    readonlyAttr = computed(() => (this.readonlyInput() ? '' : undefined));
+    readonlyAttr = computed(() => (this.readonlyInput() || this.readonly() ? '' : undefined));
 
     disabledAttr = computed(() => (this.$disabled() ? '' : undefined));
 
@@ -1653,7 +1653,7 @@ export class DatePicker extends BaseInput<DatePickerPassThrough> {
     }
 
     onDateSelect(event: Event, dateMeta: any) {
-        if (this.$disabled() || !dateMeta.selectable) {
+        if (this.$disabled() || this.readonly() || !dateMeta.selectable) {
             event.preventDefault();
             return;
         }
@@ -2141,6 +2141,10 @@ export class DatePicker extends BaseInput<DatePickerPassThrough> {
     }
 
     clear() {
+        if (this.readonly()) {
+            return;
+        }
+
         this.value = null;
         this.inputFieldValue.set(null);
         this.writeModelValue(this.value);
@@ -2839,6 +2843,11 @@ export class DatePicker extends BaseInput<DatePickerPassThrough> {
     }
 
     incrementHour(event: any) {
+        if (this.readonly()) {
+            event.preventDefault();
+            return;
+        }
+
         const prevHour = this.currentHour() ?? 0;
         let newHour = (this.currentHour() ?? 0) + this.stepHour();
         let newPM = this.pm();
@@ -2870,21 +2879,21 @@ export class DatePicker extends BaseInput<DatePickerPassThrough> {
     }
 
     onTimePickerElementMouseDown(event: Event, type: number, direction: number) {
-        if (!this.$disabled()) {
+        if (!this.$disabled() && !this.readonly()) {
             this.repeat(event, null, type, direction);
             event.preventDefault();
         }
     }
 
     onTimePickerElementMouseUp(event: Event) {
-        if (!this.$disabled()) {
+        if (!this.$disabled() && !this.readonly()) {
             this.clearTimePickerTimer();
             this.updateTime();
         }
     }
 
     onTimePickerElementMouseLeave() {
-        if (!this.$disabled() && this.timePickerTimer) {
+        if (!this.$disabled() && !this.readonly() && this.timePickerTimer) {
             this.clearTimePickerTimer();
             this.updateTime();
         }
@@ -2926,6 +2935,11 @@ export class DatePicker extends BaseInput<DatePickerPassThrough> {
     }
 
     decrementHour(event: any) {
+        if (this.readonly()) {
+            event.preventDefault();
+            return;
+        }
+
         let newHour = (this.currentHour() ?? 0) - this.stepHour();
         let newPM = this.pm();
         if (this.hourFormat() == '24') newHour = newHour < 0 ? 24 + newHour : newHour;
@@ -2945,6 +2959,11 @@ export class DatePicker extends BaseInput<DatePickerPassThrough> {
     }
 
     incrementMinute(event: any) {
+        if (this.readonly()) {
+            event.preventDefault();
+            return;
+        }
+
         let newMinute = (this.currentMinute() ?? 0) + this.stepMinute();
         newMinute = newMinute > 59 ? newMinute - 60 : newMinute;
         const [hour, minute, second] = this.constrainTime(this.currentHour() || 0, newMinute, this.currentSecond()!, this.pm()!);
@@ -2955,6 +2974,11 @@ export class DatePicker extends BaseInput<DatePickerPassThrough> {
     }
 
     decrementMinute(event: any) {
+        if (this.readonly()) {
+            event.preventDefault();
+            return;
+        }
+
         let newMinute = (this.currentMinute() ?? 0) - this.stepMinute();
         newMinute = newMinute < 0 ? 60 + newMinute : newMinute;
         const [hour, minute, second] = this.constrainTime(this.currentHour() || 0, newMinute, this.currentSecond() || 0, this.pm()!);
@@ -2965,6 +2989,11 @@ export class DatePicker extends BaseInput<DatePickerPassThrough> {
     }
 
     incrementSecond(event: any) {
+        if (this.readonly()) {
+            event.preventDefault();
+            return;
+        }
+
         let newSecond = <any>this.currentSecond() + this.stepSecond();
         newSecond = newSecond > 59 ? newSecond - 60 : newSecond;
         const [hour, minute, second] = this.constrainTime(this.currentHour() || 0, this.currentMinute() || 0, newSecond, this.pm()!);
@@ -2975,6 +3004,11 @@ export class DatePicker extends BaseInput<DatePickerPassThrough> {
     }
 
     decrementSecond(event: any) {
+        if (this.readonly()) {
+            event.preventDefault();
+            return;
+        }
+
         let newSecond = <any>this.currentSecond() - this.stepSecond();
         newSecond = newSecond < 0 ? 60 + newSecond : newSecond;
         const [hour, minute, second] = this.constrainTime(this.currentHour() || 0, this.currentMinute() || 0, newSecond, this.pm()!);
@@ -3018,6 +3052,11 @@ export class DatePicker extends BaseInput<DatePickerPassThrough> {
     }
 
     toggleAMPM(event: any) {
+        if (this.readonly()) {
+            event.preventDefault();
+            return;
+        }
+
         const newPM = !this.pm();
         this.pm.set(newPM);
         const [hour, minute, second] = this.constrainTime(this.currentHour() || 0, this.currentMinute() || 0, this.currentSecond() || 0, newPM);
@@ -3660,6 +3699,10 @@ export class DatePicker extends BaseInput<DatePickerPassThrough> {
     }
 
     onClearButtonClick(event: any) {
+        if (this.readonly()) {
+            return;
+        }
+
         this.updateModel(null);
         this.updateInputfield();
         this.hideOverlay();

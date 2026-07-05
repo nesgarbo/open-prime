@@ -212,7 +212,7 @@ export class SelectButton extends BaseEditableHolder<SelectButtonPassThrough> {
     }
 
     onOptionSelect(event: ToggleButtonChangeEvent, option: any, index: number) {
-        if (this.$disabled() || this.isOptionDisabled(option)) {
+        if (this.$disabled() || this.readonly() || this.isOptionDisabled(option)) {
             return;
         }
 
