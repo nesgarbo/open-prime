@@ -2325,6 +2325,56 @@ describe('AutoComplete', () => {
         });
     });
 
+    describe('Size Property', () => {
+        let fixture: ComponentFixture<AutoComplete>;
+        let autocompleteElement: HTMLElement;
+
+        beforeEach(async () => {
+            fixture = TestBed.createComponent(AutoComplete);
+            fixture.componentRef.setInput('suggestions', mockCountries);
+            fixture.changeDetectorRef.markForCheck();
+            await fixture.whenStable();
+            autocompleteElement = fixture.nativeElement;
+        });
+
+        it('should apply size classes to the root element', async () => {
+            fixture.componentRef.setInput('size', 'small');
+            fixture.changeDetectorRef.markForCheck();
+            await fixture.whenStable();
+
+            expect(autocompleteElement.classList.contains('p-autocomplete-sm')).toBe(true);
+            expect(autocompleteElement.classList.contains('p-inputfield-sm')).toBe(true);
+
+            fixture.componentRef.setInput('size', 'large');
+            fixture.changeDetectorRef.markForCheck();
+            await fixture.whenStable();
+
+            expect(autocompleteElement.classList.contains('p-autocomplete-lg')).toBe(true);
+            expect(autocompleteElement.classList.contains('p-inputfield-lg')).toBe(true);
+        });
+
+        it('should apply size classes to the root element in multiple mode', async () => {
+            fixture.componentRef.setInput('multiple', true);
+            fixture.componentRef.setInput('size', 'large');
+            fixture.changeDetectorRef.markForCheck();
+            await fixture.whenStable();
+
+            expect(autocompleteElement.querySelector('ul[role="listbox"]')).toBeTruthy();
+            expect(autocompleteElement.classList.contains('p-autocomplete-lg')).toBe(true);
+            expect(autocompleteElement.classList.contains('p-inputfield-lg')).toBe(true);
+        });
+
+        it('should not render the size attribute on the multiple input when pSize is set', async () => {
+            fixture.componentRef.setInput('multiple', true);
+            fixture.componentRef.setInput('size', 'large');
+            fixture.changeDetectorRef.markForCheck();
+            await fixture.whenStable();
+
+            const inputElement = autocompleteElement.querySelector('input') as HTMLInputElement;
+            expect(inputElement.getAttribute('size')).toBeNull();
+        });
+    });
+
     describe('PassThrough (PT) Tests', () => {
         let fixture: ComponentFixture<AutoComplete>;
         let autocompleteElement: HTMLElement;

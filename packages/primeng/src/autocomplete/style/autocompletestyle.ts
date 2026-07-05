@@ -60,6 +60,34 @@ p-autocomplete.ng-invalid.ng-dirty .p-autocomplete-input::placeholder {
 .p-autocomplete:has(.p-autocomplete-clear-icon) .p-autocomplete-selected-item {
     padding-inline-end: calc((dt('form.field.padding.x') * 2) + dt('icon.size'));
 }
+
+.p-autocomplete-sm .p-autocomplete-input-multiple {
+    font-size: dt('form.field.sm.font.size');
+    padding-block: calc(dt('form.field.sm.padding.y') / 2);
+    padding-inline: dt('form.field.sm.padding.x');
+}
+
+.p-autocomplete-sm .p-autocomplete-input-chip input {
+    font-size: dt('form.field.sm.font.size');
+}
+
+.p-autocomplete-sm .p-autocomplete-dropdown {
+    width: dt('autocomplete.dropdown.sm.width');
+}
+
+.p-autocomplete-lg .p-autocomplete-input-multiple {
+    font-size: dt('form.field.lg.font.size');
+    padding-block: calc(dt('form.field.lg.padding.y') / 2);
+    padding-inline: dt('form.field.lg.padding.x');
+}
+
+.p-autocomplete-lg .p-autocomplete-input-chip input {
+    font-size: dt('form.field.lg.font.size');
+}
+
+.p-autocomplete-lg .p-autocomplete-dropdown {
+    width: dt('autocomplete.dropdown.lg.width');
+}
 `;
 
 const inlineStyles = {
@@ -76,7 +104,9 @@ const classes = {
             'p-inputwrapper-focus': (instance.focused() && !instance.$disabled()) || instance.autofocus() || instance.overlayVisible(),
             'p-autocomplete-open': instance.overlayVisible(),
             'p-autocomplete-clearable': instance.showClear() && !instance.$disabled(),
-            'p-autocomplete-fluid': instance.hasFluid
+            'p-autocomplete-fluid': instance.hasFluid,
+            'p-autocomplete-sm p-inputfield-sm': instance.size() === 'small',
+            'p-autocomplete-lg p-inputfield-lg': instance.size() === 'large'
         }
     ],
     pcInputText: 'p-autocomplete-input',
