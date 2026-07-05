@@ -238,9 +238,15 @@ importers:
       '@primeicons/angular':
         specifier: 'catalog:'
         version: 8.0.0-alpha.7(@angular/core@22.0.4(@angular/compiler@22.0.4)(rxjs@7.8.2))
+      '@primeuix/motion':
+        specifier: 'catalog:'
+        version: 0.0.10
       '@primeuix/styled':
         specifier: 'catalog:'
         version: 0.7.4
+      '@primeuix/styles':
+        specifier: 'catalog:'
+        version: 3.0.0-rc.1
       '@primeuix/themes':
         specifier: 'catalog:'
         version: 3.0.0-rc.1
