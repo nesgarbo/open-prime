@@ -246,6 +246,30 @@ class TestCommandMenubarComponent {
 
 @Component({
     standalone: false,
+    selector: 'test-item-template-command-menubar',
+    template: `
+        <p-menubar [model]="model">
+            <ng-template #item let-item>
+                <span class="custom-template-item">{{ item.label }}</span>
+            </ng-template>
+        </p-menubar>
+    `
+})
+class TestItemTemplateCommandMenubarComponent {
+    commandExecuted: any;
+
+    model: MenuItem[] = [
+        {
+            label: 'Custom Command Item',
+            command: (event) => {
+                this.commandExecuted = event;
+            }
+        }
+    ];
+}
+
+@Component({
+    standalone: false,
     selector: 'test-autohide-menubar',
     template: ` <p-menubar [model]="model" [autoHide]="autoHide" [autoHideDelay]="autoHideDelay"> </p-menubar> `
 })
@@ -283,6 +307,7 @@ describe('Menubar', () => {
                 TestMinimalMenubarComponent,
                 TestDynamicMenubarComponent,
                 TestCommandMenubarComponent,
+                TestItemTemplateCommandMenubarComponent,
                 TestAutoHideMenubarComponent
             ],
             imports: [
@@ -707,6 +732,21 @@ describe('Menubar', () => {
             expect(menubarInstance.hide).toHaveBeenCalled();
         });
 
+        it('should trigger item command with enter key when using custom item template', async () => {
+            const templateFixture = TestBed.createComponent(TestItemTemplateCommandMenubarComponent);
+            templateFixture.changeDetectorRef.markForCheck();
+            await templateFixture.whenStable();
+
+            const templateMenubar = templateFixture.debugElement.query(By.directive(Menubar)).componentInstance as Menubar;
+            templateMenubar.focused = true;
+            templateMenubar.focusedItemInfo.set({ index: 0, level: 0, parentKey: '', item: null });
+
+            const keyEvent = new KeyboardEvent('keydown', { code: 'Enter' });
+            templateMenubar.onKeyDown(keyEvent);
+
+            expect(templateFixture.componentInstance.commandExecuted).toBeTruthy();
+        });
+
         it('should handle printable character search', () => {
             const keyEvent = new KeyboardEvent('keydown', { key: 'f' });
             spyOn(menubarInstance, 'searchItems');
@@ -965,7 +1005,7 @@ describe('Menubar', () => {
 
         it('should call show method programmatically', () => {
             spyOn(menubarInstance, 'findFirstFocusedItemIndex').and.returnValue(0);
-            spyOn(menubarInstance, 'findVisibleItem').and.returnValue({ item: { label: 'Test' } } as any);
+            spyOn(menubarInstance, 'findVisibleItem').and.returnValue({ item: { label: 'Test' } } as ProcessedMenuItem);
 
             menubarInstance.show();
 
