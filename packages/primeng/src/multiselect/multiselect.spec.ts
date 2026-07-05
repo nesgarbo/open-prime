@@ -3832,3 +3832,51 @@ describe('MultiSelect Selected Items On Top', () => {
         expect(multiSelect.visibleOptions().map((option: any) => option.value)).toEqual([2, 3, 1, 4]);
     });
 });
+
+@Component({
+    standalone: false,
+    template: `
+        <p-multiselect [options]="options" [(ngModel)]="selectedValues" optionLabel="name" optionValue="code">
+            <ng-template #selectedItems let-value>
+                <span class="alias-selected">{{ value?.length || 0 }} selected</span>
+            </ng-template>
+        </p-multiselect>
+    `
+})
+class TestSelectedItemsAliasMultiSelectComponent {
+    options = [
+        { name: 'Option 1', code: 'o1' },
+        { name: 'Option 2', code: 'o2' }
+    ];
+    selectedValues: any[] = ['o1', 'o2'];
+}
+
+describe('MultiSelect - selectedItems Template Alias', () => {
+    let fixture: ComponentFixture<TestSelectedItemsAliasMultiSelectComponent>;
+    let multiSelectInstance: MultiSelect;
+
+    beforeEach(async () => {
+        await TestBed.configureTestingModule({
+            imports: [MultiSelectModule, FormsModule],
+            declarations: [TestSelectedItemsAliasMultiSelectComponent],
+            providers: [provideNoopAnimations(), provideZonelessChangeDetection()]
+        }).compileComponents();
+
+        fixture = TestBed.createComponent(TestSelectedItemsAliasMultiSelectComponent);
+        multiSelectInstance = fixture.debugElement.query(By.css('p-multiselect')).componentInstance;
+        fixture.detectChanges();
+    });
+
+    it('should resolve the camelCase #selectedItems template name', () => {
+        expect(multiSelectInstance.selectedItemsTemplate()).toBeTruthy();
+    });
+
+    it('should render the aliased selected items template', async () => {
+        await fixture.whenStable();
+        fixture.detectChanges();
+
+        const selected = fixture.debugElement.query(By.css('.alias-selected'));
+        expect(selected).toBeTruthy();
+        expect(selected.nativeElement.textContent).toContain('2 selected');
+    });
+});

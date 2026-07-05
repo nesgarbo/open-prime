@@ -2686,3 +2686,52 @@ describe('AutoComplete', () => {
         });
     });
 });
+
+@Component({
+    standalone: false,
+    template: `
+        <p-autocomplete [(ngModel)]="value" [suggestions]="suggestions" optionLabel="name" [multiple]="true" (completeMethod)="search()">
+            <ng-template #selectedItem let-item>
+                <span class="alias-selected">{{ item.name }}</span>
+            </ng-template>
+        </p-autocomplete>
+    `
+})
+class TestSelectedItemAliasAutocompleteComponent {
+    value: any[] = [{ name: 'Afghanistan', code: 'AF' }];
+    suggestions: any[] = [];
+
+    search() {
+        this.suggestions = [...mockCountries];
+    }
+}
+
+describe('AutoComplete - selectedItem Template Alias', () => {
+    let fixture: ComponentFixture<TestSelectedItemAliasAutocompleteComponent>;
+    let autocompleteInstance: AutoComplete;
+
+    beforeEach(async () => {
+        await TestBed.configureTestingModule({
+            imports: [AutoCompleteModule, FormsModule],
+            declarations: [TestSelectedItemAliasAutocompleteComponent],
+            providers: [provideZonelessChangeDetection()]
+        }).compileComponents();
+
+        fixture = TestBed.createComponent(TestSelectedItemAliasAutocompleteComponent);
+        autocompleteInstance = fixture.debugElement.query(By.css('p-autocomplete')).componentInstance;
+        fixture.detectChanges();
+    });
+
+    it('should resolve the camelCase #selectedItem template name', () => {
+        expect(autocompleteInstance.selectedItemTemplate()).toBeTruthy();
+    });
+
+    it('should render the aliased selected item template', async () => {
+        await fixture.whenStable();
+        fixture.detectChanges();
+
+        const selected = fixture.debugElement.query(By.css('.alias-selected'));
+        expect(selected).toBeTruthy();
+        expect(selected.nativeElement.textContent).toContain('Afghanistan');
+    });
+});

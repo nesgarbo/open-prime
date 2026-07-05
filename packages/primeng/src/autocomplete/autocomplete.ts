@@ -768,11 +768,15 @@ export class AutoComplete extends BaseInput<AutoCompletePassThrough> {
      */
     footerTemplate = contentChild<TemplateRef<void>>('footer', { descendants: false });
 
+    _selectedItemTemplate = contentChild<TemplateRef<AutoCompleteSelectedItemTemplateContext>>('selecteditem', { descendants: false });
+
+    _selectedItemTemplateAlias = contentChild<TemplateRef<AutoCompleteSelectedItemTemplateContext>>('selectedItem', { descendants: false });
+
     /**
-     * Custom selected item template.
+     * Custom selected item template. Accepts both the `selecteditem` and `selectedItem` template names for consistency with Select.
      * @group Templates
      */
-    selectedItemTemplate = contentChild<TemplateRef<AutoCompleteSelectedItemTemplateContext>>('selecteditem', { descendants: false });
+    selectedItemTemplate = computed(() => this._selectedItemTemplate() ?? this._selectedItemTemplateAlias());
 
     /**
      * Custom group template.

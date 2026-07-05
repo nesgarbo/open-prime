@@ -893,11 +893,15 @@ export class MultiSelect extends BaseEditableHolder<MultiSelectPassThrough> {
      */
     emptyTemplate = contentChild<TemplateRef<void>>('empty', { descendants: false });
 
+    _selectedItemsTemplate = contentChild<TemplateRef<MultiSelectSelectedItemsTemplateContext>>('selecteditems', { descendants: false });
+
+    _selectedItemsTemplateAlias = contentChild<TemplateRef<MultiSelectSelectedItemsTemplateContext>>('selectedItems', { descendants: false });
+
     /**
-     * Custom selected items template.
+     * Custom selected items template. Accepts both the `selecteditems` and `selectedItems` template names for consistency with Select.
      * @group Templates
      */
-    selectedItemsTemplate = contentChild<TemplateRef<MultiSelectSelectedItemsTemplateContext>>('selecteditems', { descendants: false });
+    selectedItemsTemplate = computed(() => this._selectedItemsTemplate() ?? this._selectedItemsTemplateAlias());
 
     /**
      * Custom loading icon template.
