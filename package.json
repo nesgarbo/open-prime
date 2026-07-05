@@ -57,14 +57,11 @@
         "@commitlint/cli": "^21.2.0",
         "@commitlint/config-conventional": "^21.2.0",
         "@eslint/js": "^10",
-        "@typescript-eslint/eslint-plugin": "^8.62.1",
         "angular-eslint": "^22",
+        "chart.js": "4.5.1",
         "cross-env": "^10.1.0",
         "eslint": "^10.6.0",
         "eslint-config-prettier": "^10.1.8",
-        "eslint-plugin-import": "^2.32.0",
-        "eslint-plugin-jsdoc": "^63.0.10",
-        "eslint-plugin-prefer-arrow": "^1.2.3",
         "eslint-plugin-prettier": "^5.5.6",
         "fs-extra": "^11.3.6",
         "glob": "^13.0.6",
@@ -72,8 +69,9 @@
         "husky": "^9.1.7",
         "lint-staged": "^17.0.8",
         "ng-packagr": "catalog:angular22",
-        "pnpm": "^10.28.2",
+        "pnpm": "^11.10.0",
         "prettier": "^3.9.4",
+        "quill": "2.0.3",
         "tsup": "^8.5.1",
         "typescript": "catalog:angular22",
         "typescript-eslint": "^8.62.1"
@@ -81,7 +79,10 @@
     "publishConfig": {
         "access": "public"
     },
-    "packageManager": "pnpm@9.6.0",
+    "packageManager": "pnpm@11.10.0",
+    "engines": {
+        "node": ">=22.13"
+    },
     "lint-staged": {
         "packages/**/*.{js,mjs,ts,mts,d.ts,html}": [
             "prettier --write"
