@@ -645,6 +645,55 @@ describe('InputNumber', () => {
         });
     });
 
+    describe('Leading Zero', () => {
+        const pressBackspaceAt = (inputEl: HTMLInputElement, position: number) => {
+            inputEl.setSelectionRange(position, position);
+            inputEl.dispatchEvent(new KeyboardEvent('keydown', { key: 'Backspace', cancelable: true }));
+        };
+
+        it('should keep leading zeros while editing when leadingZero is enabled', () => {
+            fixture.componentRef.setInput('locale', 'en-US');
+            fixture.componentRef.setInput('leadingZero', true);
+            fixture.componentRef.setInput('minFractionDigits', 2);
+            fixture.detectChanges();
+
+            const inputEl = component.input().nativeElement;
+            inputEl.value = '305.00';
+            pressBackspaceAt(inputEl, 1);
+
+            expect(inputEl.value).toBe('05.00');
+            expect(component.value).toBe(5);
+        });
+
+        it('should remove leading zeros while editing by default', () => {
+            fixture.componentRef.setInput('locale', 'en-US');
+            fixture.componentRef.setInput('minFractionDigits', 2);
+            fixture.detectChanges();
+
+            const inputEl = component.input().nativeElement;
+            inputEl.value = '305.00';
+            pressBackspaceAt(inputEl, 1);
+
+            expect(inputEl.value).toBe('5.00');
+            expect(component.value).toBe(5);
+        });
+
+        it('should normalize leading zeros when the input loses focus', () => {
+            fixture.componentRef.setInput('locale', 'en-US');
+            fixture.componentRef.setInput('leadingZero', true);
+            fixture.componentRef.setInput('minFractionDigits', 2);
+            fixture.detectChanges();
+
+            const inputEl = component.input().nativeElement;
+            inputEl.value = '305.00';
+            pressBackspaceAt(inputEl, 1);
+            inputEl.dispatchEvent(new FocusEvent('blur'));
+
+            expect(inputEl.value).toBe('5.00');
+            expect(component.value).toBe(5);
+        });
+    });
+
     describe('Clear Functionality', () => {
         let testComponent: TestBasicInputNumberComponent;
         let testFixture: ComponentFixture<TestBasicInputNumberComponent>;

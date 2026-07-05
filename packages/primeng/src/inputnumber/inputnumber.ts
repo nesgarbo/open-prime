@@ -243,6 +243,11 @@ export class InputNumber extends BaseInput<InputNumberPassThrough> {
      */
     format = input(true, { transform: booleanAttribute });
     /**
+     * When enabled, leading zeros are preserved while editing instead of being removed when the value is reformatted. The value is normalized when the input loses focus.
+     * @group Props
+     */
+    leadingZero = input(false, { transform: booleanAttribute });
+    /**
      * Layout of the buttons, valid values are "stacked" (default), "horizontal" and "vertical".
      * @group Props
      */
@@ -1295,11 +1300,28 @@ export class InputNumber extends BaseInput<InputNumberPassThrough> {
 
     handleOnInput(event: Event, currentValue: string, newValue: any) {
         if (this.isValueChanged(currentValue, newValue)) {
-            this.input().nativeElement.value = this.formatValue(newValue);
+            if (!(this.leadingZero() && this.parseValue(this.input().nativeElement.value) === newValue)) {
+                this.input().nativeElement.value = this.formatValue(newValue);
+            }
             this.input()?.nativeElement.setAttribute('aria-valuenow', newValue);
             this.updateModel(event, newValue);
             this.onInput.emit({ originalEvent: event, value: newValue, formattedValue: currentValue });
         }
+    }
+
+    hasLeadingZero(valueStr: string): boolean {
+        const zeroChar = new Intl.NumberFormat(this.locale(), { useGrouping: false }).format(0);
+        const integerPart = valueStr
+            .replace(this._suffix as RegExp, '')
+            .replace(this._prefix as RegExp, '')
+            .trim()
+            .replace(/\s/g, '')
+            .replace(this._currency as RegExp, '')
+            .replace(this._minusSign, '')
+            .replace(this._group, '')
+            .split(this._decimal)[0];
+
+        return integerPart.length > 1 && integerPart.startsWith(zeroChar);
     }
 
     isValueChanged(currentValue: string, newValue: string) {
@@ -1340,7 +1362,9 @@ export class InputNumber extends BaseInput<InputNumberPassThrough> {
         let newValue = this.formatValue(value);
         let currentLength = inputValue.length;
 
-        if (newValue !== valueStr) {
+        if (this.leadingZero() && valueStr != null && this.hasLeadingZero(valueStr) && this.parseValue(valueStr) === value) {
+            newValue = valueStr;
+        } else if (newValue !== valueStr) {
             newValue = this.concatValues(newValue, valueStr as string);
         }
 
