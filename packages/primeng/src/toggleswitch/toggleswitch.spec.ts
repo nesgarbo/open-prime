@@ -639,7 +639,7 @@ describe('ToggleSwitch', () => {
 // Test Components
 @Component({
     standalone: true,
-    imports: [ToggleSwitch, FormsModule, AutoFocus],
+    imports: [ToggleSwitch, FormsModule],
     template: `
         <p-toggleswitch [(ngModel)]="checked" [readonly]="readonly" [disabled]="disabled" [autofocus]="autofocus" [ariaLabel]="ariaLabel" [ariaLabelledBy]="ariaLabelledBy" [tabindex]="tabindex" (onChange)="onToggleChange($event)"> </p-toggleswitch>
     `
