@@ -1,4 +1,4 @@
-import { Component, DebugElement, provideZonelessChangeDetection } from '@angular/core';
+import { Component, DebugElement, provideZonelessChangeDetection, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { AnimateOnScroll, AnimateOnScrollModule } from './animateonscroll';
@@ -56,26 +56,29 @@ class MockIntersectionObserver implements IntersectionObserver {
 }
 
 @Component({
-    standalone: false,
+    standalone: true,
+    imports: [AnimateOnScrollModule],
     template: `<div pAnimateOnScroll>Basic AnimateOnScroll</div>`
 })
 class TestBasicAnimateOnScrollComponent {}
 
 @Component({
-    standalone: false,
-    template: ` <div pAnimateOnScroll [enterClass]="enterClass" [leaveClass]="leaveClass" [root]="root" [rootMargin]="rootMargin" [threshold]="threshold" [once]="once">Custom AnimateOnScroll</div> `
+    standalone: true,
+    imports: [AnimateOnScrollModule],
+    template: ` <div pAnimateOnScroll [enterClass]="enterClass()" [leaveClass]="leaveClass()" [root]="root()" [rootMargin]="rootMargin()" [threshold]="threshold()" [once]="once()">Custom AnimateOnScroll</div> `
 })
 class TestCustomAnimateOnScrollComponent {
-    enterClass: string | undefined;
-    leaveClass: string | undefined;
-    root: HTMLElement | undefined | null;
-    rootMargin: string | undefined;
-    threshold: number | undefined;
-    once: boolean = false;
+    enterClass = signal<string | undefined>(undefined);
+    leaveClass = signal<string | undefined>(undefined);
+    root = signal<HTMLElement | undefined | null>(undefined);
+    rootMargin = signal<string | undefined>(undefined);
+    threshold = signal<number | undefined>(undefined);
+    once = signal(false);
 }
 
 @Component({
-    standalone: false,
+    standalone: true,
+    imports: [AnimateOnScrollModule],
     template: `
         <div class="container">
             <div pAnimateOnScroll enterClass="fade-in" leaveClass="fade-out">Element 1</div>
@@ -87,26 +90,29 @@ class TestCustomAnimateOnScrollComponent {
 class TestMultipleAnimateOnScrollComponent {}
 
 @Component({
-    standalone: false,
+    standalone: true,
+    imports: [AnimateOnScrollModule],
     template: ` <div pAnimateOnScroll enterClass="animate__fadeIn" [once]="true">Once Animation Element</div> `
 })
 class TestOnceAnimateOnScrollComponent {}
 
 @Component({
-    standalone: false,
+    standalone: true,
+    imports: [AnimateOnScrollModule],
     template: ` <div pAnimateOnScroll enterClass="custom-enter" leaveClass="custom-leave" [threshold]="0.8" rootMargin="10px">Advanced Config Element</div> `
 })
 class TestAdvancedConfigComponent {}
 
 @Component({
-    standalone: false,
-    template: ` <div pAnimateOnScroll [enterClass]="enterClass" [leaveClass]="leaveClass" [once]="once" [threshold]="threshold">Dynamic Config Element</div> `
+    standalone: true,
+    imports: [AnimateOnScrollModule],
+    template: ` <div pAnimateOnScroll [enterClass]="enterClass()" [leaveClass]="leaveClass()" [once]="once()" [threshold]="threshold()">Dynamic Config Element</div> `
 })
 class TestDynamicConfigComponent {
-    enterClass = 'initial-enter';
-    leaveClass = 'initial-leave';
-    once = false;
-    threshold = 0.5;
+    enterClass = signal('initial-enter');
+    leaveClass = signal('initial-leave');
+    once = signal(false);
+    threshold = signal(0.5);
 }
 
 describe('AnimateOnScroll', () => {
@@ -128,8 +134,7 @@ describe('AnimateOnScroll', () => {
         };
 
         TestBed.configureTestingModule({
-            imports: [AnimateOnScrollModule],
-            declarations: [TestBasicAnimateOnScrollComponent, TestCustomAnimateOnScrollComponent, TestMultipleAnimateOnScrollComponent, TestOnceAnimateOnScrollComponent, TestAdvancedConfigComponent, TestDynamicConfigComponent],
+            imports: [AnimateOnScrollModule, TestBasicAnimateOnScrollComponent, TestCustomAnimateOnScrollComponent, TestMultipleAnimateOnScrollComponent, TestOnceAnimateOnScrollComponent, TestAdvancedConfigComponent, TestDynamicConfigComponent],
             providers: [provideZonelessChangeDetection()]
         });
     });
@@ -179,7 +184,7 @@ describe('AnimateOnScroll', () => {
         it('should set initial opacity when enterClass is provided', async () => {
             const customFixture = TestBed.createComponent(TestCustomAnimateOnScrollComponent);
             const customComponent = customFixture.componentInstance;
-            customComponent.enterClass = 'fade-in';
+            customComponent.enterClass.set('fade-in');
             customFixture.changeDetectorRef.markForCheck();
             await customFixture.whenStable();
 
@@ -197,8 +202,8 @@ describe('AnimateOnScroll', () => {
         beforeEach(async () => {
             fixture = TestBed.createComponent(TestCustomAnimateOnScrollComponent);
             component = fixture.componentInstance;
-            component.enterClass = 'fade-in';
-            component.leaveClass = 'fade-out';
+            component.enterClass.set('fade-in');
+            component.leaveClass.set('fade-out');
             fixture.changeDetectorRef.markForCheck();
             await fixture.whenStable();
 
@@ -250,8 +255,8 @@ describe('AnimateOnScroll', () => {
         beforeEach(async () => {
             fixture = TestBed.createComponent(TestCustomAnimateOnScrollComponent);
             component = fixture.componentInstance;
-            component.enterClass = 'fade-in';
-            component.leaveClass = 'fade-out';
+            component.enterClass.set('fade-in');
+            component.leaveClass.set('fade-out');
             fixture.changeDetectorRef.markForCheck();
             await fixture.whenStable();
 
@@ -314,7 +319,7 @@ describe('AnimateOnScroll', () => {
         });
 
         it('should use custom threshold', async () => {
-            component.threshold = 0.8;
+            component.threshold.set(0.8);
             fixture.changeDetectorRef.markForCheck();
             await fixture.whenStable();
 
@@ -323,7 +328,7 @@ describe('AnimateOnScroll', () => {
         });
 
         it('should use custom rootMargin', async () => {
-            component.rootMargin = '10px';
+            component.rootMargin.set('10px');
             fixture.changeDetectorRef.markForCheck();
             await fixture.whenStable();
 
@@ -333,7 +338,7 @@ describe('AnimateOnScroll', () => {
 
         it('should use custom root element', async () => {
             const rootElement = document.createElement('div');
-            component.root = rootElement;
+            component.root.set(rootElement);
             fixture.changeDetectorRef.markForCheck();
             await fixture.whenStable();
 
@@ -342,7 +347,7 @@ describe('AnimateOnScroll', () => {
         });
 
         it('should default threshold to 0.5 when undefined', async () => {
-            component.threshold = undefined as any;
+            component.threshold.set(undefined as any);
             fixture.changeDetectorRef.markForCheck();
             await fixture.whenStable();
 
@@ -360,8 +365,8 @@ describe('AnimateOnScroll', () => {
         beforeEach(async () => {
             fixture = TestBed.createComponent(TestCustomAnimateOnScrollComponent);
             component = fixture.componentInstance;
-            component.enterClass = 'fade-in';
-            component.once = true;
+            component.enterClass.set('fade-in');
+            component.once.set(true);
             fixture.changeDetectorRef.markForCheck();
             await fixture.whenStable();
 
@@ -381,7 +386,7 @@ describe('AnimateOnScroll', () => {
         });
 
         it('should not unbind observer when once is false', async () => {
-            component.once = false;
+            component.once.set(false);
             fixture.changeDetectorRef.markForCheck();
             await fixture.whenStable();
 
@@ -403,8 +408,8 @@ describe('AnimateOnScroll', () => {
         beforeEach(async () => {
             fixture = TestBed.createComponent(TestCustomAnimateOnScrollComponent);
             component = fixture.componentInstance;
-            component.enterClass = 'fade-in';
-            component.leaveClass = 'fade-out';
+            component.enterClass.set('fade-in');
+            component.leaveClass.set('fade-out');
             fixture.changeDetectorRef.markForCheck();
             await fixture.whenStable();
 
@@ -499,7 +504,7 @@ describe('AnimateOnScroll', () => {
         });
 
         it('should handle dynamic enterClass changes', async () => {
-            component.enterClass = 'new-enter-class';
+            component.enterClass.set('new-enter-class');
             fixture.changeDetectorRef.markForCheck();
             await fixture.whenStable();
 
@@ -507,7 +512,7 @@ describe('AnimateOnScroll', () => {
         });
 
         it('should handle dynamic threshold changes', async () => {
-            component.threshold = 0.9;
+            component.threshold.set(0.9);
             fixture.changeDetectorRef.markForCheck();
             await fixture.whenStable();
 
@@ -516,7 +521,7 @@ describe('AnimateOnScroll', () => {
         });
 
         it('should handle dynamic once property changes', async () => {
-            component.once = true;
+            component.once.set(true);
             fixture.changeDetectorRef.markForCheck();
             await fixture.whenStable();
 
@@ -533,8 +538,8 @@ describe('AnimateOnScroll', () => {
         beforeEach(async () => {
             fixture = TestBed.createComponent(TestCustomAnimateOnScrollComponent);
             component = fixture.componentInstance;
-            component.enterClass = 'fade-in';
-            component.leaveClass = 'fade-out';
+            component.enterClass.set('fade-in');
+            component.leaveClass.set('fade-out');
             fixture.changeDetectorRef.markForCheck();
             await fixture.whenStable();
 
@@ -572,15 +577,16 @@ describe('AnimateOnScroll', () => {
         });
 
         it('should handle undefined enterClass and leaveClass', async () => {
-            component.enterClass = undefined as any;
-            component.leaveClass = undefined as any;
+            component.enterClass.set(undefined as any);
+            component.leaveClass.set(undefined as any);
             fixture.changeDetectorRef.markForCheck();
 
-            await expectAsync(fixture.whenStable()).toBeResolved();
+            await fixture.whenStable();
+            expect(fixture).toBeTruthy();
         });
 
         it('should handle null root element', async () => {
-            component.root = null as any;
+            component.root.set(null as any);
             fixture.changeDetectorRef.markForCheck();
             await fixture.whenStable();
 
@@ -589,7 +595,7 @@ describe('AnimateOnScroll', () => {
         });
 
         it('should handle elements with top <= 0', async () => {
-            component.enterClass = 'fade-in';
+            component.enterClass.set('fade-in');
             fixture.changeDetectorRef.markForCheck();
             await fixture.whenStable();
 
@@ -616,7 +622,7 @@ describe('AnimateOnScroll', () => {
         beforeEach(async () => {
             fixture = TestBed.createComponent(TestCustomAnimateOnScrollComponent);
             component = fixture.componentInstance;
-            component.enterClass = 'fade-in';
+            component.enterClass.set('fade-in');
             fixture.changeDetectorRef.markForCheck();
             await fixture.whenStable();
 
@@ -663,7 +669,7 @@ describe('AnimateOnScroll', () => {
         it('should handle rapid create and destroy cycles', async () => {
             for (let i = 0; i < 5; i++) {
                 const testFixture = TestBed.createComponent(TestCustomAnimateOnScrollComponent);
-                testFixture.componentInstance.enterClass = 'fade-in';
+                testFixture.componentInstance.enterClass.set('fade-in');
                 testFixture.changeDetectorRef.markForCheck();
                 await testFixture.whenStable();
                 testFixture.destroy();
