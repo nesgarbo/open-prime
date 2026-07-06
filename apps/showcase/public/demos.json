@@ -1,7 +1,7 @@
 {
   "version": "1.0.0",
-  "generatedAt": "2026-07-05T09:23:21.451Z",
-  "totalDemos": 855,
+  "generatedAt": "2026-07-06T05:12:55.622Z",
+  "totalDemos": 856,
   "demos": {
     "Image-template-demo": {
       "key": "Image-template-demo",
@@ -9402,6 +9402,23 @@
         "primeNGServices": [],
         "extFiles": [],
         "imports": []
+      }
+    },
+    "picklist-virtual-scroll-demo": {
+      "key": "picklist-virtual-scroll-demo",
+      "selector": "picklist-virtual-scroll-demo",
+      "component": "picklist",
+      "section": "virtualscroll",
+      "code": {
+        "typescript": "import { Component, signal } from '@angular/core';\nimport { PickListModule } from 'primeng/picklist';\n\n@Component({\n    template: `\n        <p-picklist [source]=\"sourceItems()\" [target]=\"targetItems()\" [dragdrop]=\"true\" [virtualScroll]=\"true\" [virtualScrollItemSize]=\"43\" scrollHeight=\"250px\" breakpoint=\"1400px\">\n            <ng-template let-item #item>\n                {{ item.label }}\n            </ng-template>\n        </p-picklist>\n    `,\n    standalone: true,\n    imports: [PickListModule]\n})\nexport class PickListVirtualScrollDemo {\n    sourceItems = signal(Array.from({ length: 10000 }, (_, i) => ({ label: `Item #${i}`, value: i })));\n    targetItems = signal<{ label: string; value: number }[]>([]);\n}"
+      },
+      "metadata": {
+        "services": [],
+        "primeNGServices": [],
+        "extFiles": [],
+        "imports": [
+          "PickListModule"
+        ]
       }
     },
     "picklist-templates-demo": {
