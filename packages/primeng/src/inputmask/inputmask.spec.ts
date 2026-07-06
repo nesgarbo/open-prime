@@ -73,7 +73,7 @@ class TestBasicInputMaskComponent {
     onInputBlur(_event: Event) {}
     onInputChange(_event: Event) {}
     onKeydownEvent(_event: Event) {}
-    onClearEvent() {}
+    onClearEvent(_event?: any) {}
 }
 
 @Component({
@@ -659,14 +659,9 @@ describe('InputMask', () => {
 
         it('should handle android chrome specific behavior', () => {
             component.androidChrome = true;
-            component.inputViewChild = {
-                nativeElement: {
-                    value: '123'
-                }
-            } as any;
 
-            vi.spyOn(component, 'handleAndroidInput');
-            vi.spyOn(component, 'handleInputChange');
+            vi.spyOn(component, 'handleAndroidInput').mockImplementation(() => {});
+            vi.spyOn(component, 'handleInputChange').mockImplementation(() => {});
 
             const inputEvent = new Event('input');
             component.onInputChange(inputEvent);
