@@ -279,7 +279,7 @@ describe('KeyFilter', () => {
             directive.isAndroid = true;
             directive.lastValue = '123';
             inputElement.value = '123a';
-            spyOn(directive.ngModelChange, 'emit');
+            vi.spyOn(directive.ngModelChange, 'emit');
 
             const inputEvent = new Event('input');
             inputElement.dispatchEvent(inputEvent);
@@ -294,7 +294,7 @@ describe('KeyFilter', () => {
             directive.isAndroid = true;
             directive.lastValue = '';
             inputElement.value = 'abc123'; // pasted mixed content
-            spyOn(directive.ngModelChange, 'emit');
+            vi.spyOn(directive.ngModelChange, 'emit');
 
             const inputEvent = new Event('input');
             inputElement.dispatchEvent(inputEvent);
@@ -331,7 +331,7 @@ describe('KeyFilter', () => {
         it('should allow valid characters', () => {
             inputElement.value = '123';
             const keyEvent = new KeyboardEvent('keypress', { keyCode: 52, charCode: 52 }); // '4'
-            spyOn(keyEvent, 'preventDefault');
+            vi.spyOn(keyEvent, 'preventDefault');
 
             inputElement.dispatchEvent(keyEvent);
 
@@ -341,7 +341,7 @@ describe('KeyFilter', () => {
         it('should prevent invalid characters', () => {
             inputElement.value = '123';
             const keyEvent = new KeyboardEvent('keypress', { keyCode: 97, charCode: 97 }); // 'a'
-            spyOn(keyEvent, 'preventDefault');
+            vi.spyOn(keyEvent, 'preventDefault');
 
             inputElement.dispatchEvent(keyEvent);
 
@@ -350,7 +350,7 @@ describe('KeyFilter', () => {
 
         it('should allow navigation keys', () => {
             const enterEvent = new KeyboardEvent('keypress', { keyCode: 13 });
-            spyOn(enterEvent, 'preventDefault');
+            vi.spyOn(enterEvent, 'preventDefault');
 
             inputElement.dispatchEvent(enterEvent);
 
@@ -359,7 +359,7 @@ describe('KeyFilter', () => {
 
         it('should allow ctrl+key combinations', () => {
             const ctrlAEvent = new KeyboardEvent('keypress', { keyCode: 97, ctrlKey: true });
-            spyOn(ctrlAEvent, 'preventDefault');
+            vi.spyOn(ctrlAEvent, 'preventDefault');
 
             inputElement.dispatchEvent(ctrlAEvent);
 
@@ -369,7 +369,7 @@ describe('KeyFilter', () => {
         it('should skip processing on Android', () => {
             directive.isAndroid = true;
             const keyEvent = new KeyboardEvent('keypress', { keyCode: 97, charCode: 97 }); // 'a'
-            spyOn(keyEvent, 'preventDefault');
+            vi.spyOn(keyEvent, 'preventDefault');
 
             inputElement.dispatchEvent(keyEvent);
 
@@ -382,7 +382,7 @@ describe('KeyFilter', () => {
             await fixture.whenStable();
 
             const keyEvent = new KeyboardEvent('keypress', { keyCode: 97, charCode: 97 }); // 'a'
-            spyOn(keyEvent, 'preventDefault');
+            vi.spyOn(keyEvent, 'preventDefault');
 
             inputElement.dispatchEvent(keyEvent);
 
@@ -402,12 +402,12 @@ describe('KeyFilter', () => {
         it('should allow valid pasted content', () => {
             // Mock clipboard data
             const mockClipboardData = {
-                getData: jasmine.createSpy('getData').and.returnValue('12345')
+                getData: vi.fn().mockReturnValue('12345')
             };
 
             const pasteEvent = new Event('paste') as any;
             pasteEvent.clipboardData = mockClipboardData;
-            spyOn(pasteEvent, 'preventDefault');
+            vi.spyOn(pasteEvent, 'preventDefault');
 
             inputElement.dispatchEvent(pasteEvent);
 
@@ -417,12 +417,12 @@ describe('KeyFilter', () => {
         it('should prevent invalid pasted content', () => {
             // Mock clipboard data with invalid content
             const mockClipboardData = {
-                getData: jasmine.createSpy('getData').and.returnValue('123abc')
+                getData: vi.fn().mockReturnValue('123abc')
             };
 
             const pasteEvent = new Event('paste') as any;
             pasteEvent.clipboardData = mockClipboardData;
-            spyOn(pasteEvent, 'preventDefault');
+            vi.spyOn(pasteEvent, 'preventDefault');
 
             inputElement.dispatchEvent(pasteEvent);
 
@@ -435,12 +435,12 @@ describe('KeyFilter', () => {
             await fixture.whenStable();
 
             const mockClipboardData = {
-                getData: jasmine.createSpy('getData').and.returnValue('123')
+                getData: vi.fn().mockReturnValue('123')
             };
 
             const pasteEvent = new Event('paste') as any;
             pasteEvent.clipboardData = mockClipboardData;
-            spyOn(pasteEvent, 'preventDefault');
+            vi.spyOn(pasteEvent, 'preventDefault');
 
             inputElement.dispatchEvent(pasteEvent);
 
@@ -453,12 +453,12 @@ describe('KeyFilter', () => {
             await fixture.whenStable();
 
             const mockClipboardData = {
-                getData: jasmine.createSpy('getData').and.returnValue('1234') // too many digits
+                getData: vi.fn().mockReturnValue('1234') // too many digits
             };
 
             const pasteEvent = new Event('paste') as any;
             pasteEvent.clipboardData = mockClipboardData;
-            spyOn(pasteEvent, 'preventDefault');
+            vi.spyOn(pasteEvent, 'preventDefault');
 
             inputElement.dispatchEvent(pasteEvent);
 
@@ -606,7 +606,7 @@ describe('KeyFilter', () => {
         it('should handle empty clipboard data', () => {
             const pasteEvent = new Event('paste') as any;
             pasteEvent.clipboardData = null as any;
-            spyOn(pasteEvent, 'preventDefault');
+            vi.spyOn(pasteEvent, 'preventDefault');
 
             expect(() => {
                 inputEl.nativeElement.dispatchEvent(pasteEvent);
@@ -692,14 +692,14 @@ describe('KeyFilter', () => {
 
             // Test valid keypress
             const validKeyEvent = new KeyboardEvent('keypress', { keyCode: 53, charCode: 53 }); // '5'
-            spyOn(validKeyEvent, 'preventDefault');
+            vi.spyOn(validKeyEvent, 'preventDefault');
             inputElement.dispatchEvent(validKeyEvent);
 
             expect(validKeyEvent.preventDefault).not.toHaveBeenCalled();
 
             // Test invalid keypress
             const invalidKeyEvent = new KeyboardEvent('keypress', { keyCode: 97, charCode: 97 }); // 'a'
-            spyOn(invalidKeyEvent, 'preventDefault');
+            vi.spyOn(invalidKeyEvent, 'preventDefault');
             inputElement.dispatchEvent(invalidKeyEvent);
 
             expect(invalidKeyEvent.preventDefault).toHaveBeenCalled();
@@ -707,7 +707,7 @@ describe('KeyFilter', () => {
             // Test valid paste
             const validPasteEvent = new Event('paste') as any;
             validPasteEvent.clipboardData = { getData: () => '123' };
-            spyOn(validPasteEvent, 'preventDefault');
+            vi.spyOn(validPasteEvent, 'preventDefault');
             inputElement.dispatchEvent(validPasteEvent);
 
             expect(validPasteEvent.preventDefault).not.toHaveBeenCalled();
@@ -719,8 +719,8 @@ describe('KeyFilter', () => {
     describe('Model Change Events', () => {
         it('should emit ngModelChange on Android input correction', async () => {
             directive.isAndroid = true;
-            spyOn(testComponent, 'onModelChange');
-            spyOn(directive.ngModelChange, 'emit');
+            vi.spyOn(testComponent, 'onModelChange');
+            vi.spyOn(directive.ngModelChange, 'emit');
 
             testComponent.pattern = 'pint';
             fixture.changeDetectorRef.markForCheck();

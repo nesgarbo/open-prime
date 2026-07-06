@@ -457,7 +457,7 @@ describe('OrderList', () => {
 
         it('should move selected items up', async () => {
             const initialOrder = [...component.products];
-            spyOn(component, 'onReorder');
+            vi.spyOn(component, 'onReorder');
 
             orderList.moveUp();
             await fixture.whenStable();
@@ -473,7 +473,7 @@ describe('OrderList', () => {
 
         it('should move selected items to top', async () => {
             [...component.products];
-            spyOn(component, 'onReorder');
+            vi.spyOn(component, 'onReorder');
 
             orderList.moveTop();
             await fixture.whenStable();
@@ -486,7 +486,7 @@ describe('OrderList', () => {
 
         it('should move selected items down', async () => {
             [...component.products];
-            spyOn(component, 'onReorder');
+            vi.spyOn(component, 'onReorder');
 
             orderList.moveDown();
             await fixture.whenStable();
@@ -500,7 +500,7 @@ describe('OrderList', () => {
 
         it('should move selected items to bottom', async () => {
             [...component.products];
-            spyOn(component, 'onReorder');
+            vi.spyOn(component, 'onReorder');
 
             orderList.moveBottom();
             await fixture.whenStable();
@@ -530,7 +530,7 @@ describe('OrderList', () => {
             await fixture.whenStable();
 
             const initialOrder = [...component.products];
-            spyOn(component, 'onReorder');
+            vi.spyOn(component, 'onReorder');
 
             orderList.moveUp();
             await fixture.whenStable();
@@ -553,7 +553,7 @@ describe('OrderList', () => {
             await fixture.whenStable();
 
             const initialOrder = [...component.products];
-            spyOn(component, 'onReorder');
+            vi.spyOn(component, 'onReorder');
 
             orderList.moveDown();
             await fixture.whenStable();
@@ -668,7 +668,7 @@ describe('OrderList', () => {
 
     describe('Event Handling', () => {
         it('should emit selectionChange event', async () => {
-            spyOn(component, 'onSelectionChange');
+            vi.spyOn(component, 'onSelectionChange');
             const newSelection = [component.products[0], component.products[1]];
 
             orderList.onChangeSelection({
@@ -682,7 +682,7 @@ describe('OrderList', () => {
         });
 
         it('should emit onSelectionChange event with originalEvent', async () => {
-            spyOn(component, 'onSelectionChangeEvent');
+            vi.spyOn(component, 'onSelectionChangeEvent');
             const event = new Event('change');
             const newSelection = [component.products[0]];
 
@@ -699,7 +699,7 @@ describe('OrderList', () => {
         });
 
         it('should emit onReorder event when moving items', () => {
-            spyOn(component, 'onReorder');
+            vi.spyOn(component, 'onReorder');
             component.selection = [component.products[1]];
             fixture.detectChanges();
 
@@ -711,7 +711,7 @@ describe('OrderList', () => {
         it('should emit onFilterEvent when filtering', async () => {
             component.filterBy = 'name';
             fixture.detectChanges();
-            spyOn(component, 'onFilterEvent');
+            vi.spyOn(component, 'onFilterEvent');
 
             const event = new KeyboardEvent('keyup', { key: 'a' });
             Object.defineProperty(event, 'target', {
@@ -727,7 +727,7 @@ describe('OrderList', () => {
         });
 
         it('should emit onFocus event', () => {
-            spyOn(component, 'onFocus');
+            vi.spyOn(component, 'onFocus');
             const event = new FocusEvent('focus');
 
             orderList.onListFocus(event);
@@ -736,7 +736,7 @@ describe('OrderList', () => {
         });
 
         it('should emit onBlur event', () => {
-            spyOn(component, 'onBlur');
+            vi.spyOn(component, 'onBlur');
             const event = new FocusEvent('blur');
 
             orderList.onListBlur(event);
@@ -921,7 +921,7 @@ describe('OrderList', () => {
             component.dragdrop = true;
             component.selection = [component.products[0]];
             fixture.detectChanges();
-            spyOn(component, 'onReorder');
+            vi.spyOn(component, 'onReorder');
 
             const dragDropEvent: CdkDragDrop<string[]> = {
                 previousIndex: 0,
@@ -966,7 +966,7 @@ describe('OrderList', () => {
         it('should not handle drop event when indices are same', () => {
             component.dragdrop = true;
             fixture.detectChanges();
-            spyOn(component, 'onReorder');
+            vi.spyOn(component, 'onReorder');
 
             const dragDropEvent: CdkDragDrop<string[]> = {
                 previousIndex: 1,
@@ -991,7 +991,7 @@ describe('OrderList', () => {
                 // Select multiple items (first, third items - indices 0 and 2)
                 component.selection = [component.products[0], component.products[2]];
                 fixture.detectChanges();
-                spyOn(component, 'onReorder');
+                vi.spyOn(component, 'onReorder');
 
                 const dragDropEvent: CdkDragDrop<string[]> = {
                     previousIndex: 0, // dragging first item
@@ -1022,7 +1022,7 @@ describe('OrderList', () => {
                 // Select first and third items, but drag the second item (not selected)
                 component.selection = [component.products[0], component.products[2]];
                 fixture.detectChanges();
-                spyOn(component, 'onReorder');
+                vi.spyOn(component, 'onReorder');
 
                 const dragDropEvent: CdkDragDrop<string[]> = {
                     previousIndex: 1, // dragging second item (not selected)
@@ -1048,7 +1048,7 @@ describe('OrderList', () => {
                 component.dragdrop = true;
                 component.selection = []; // no selection
                 fixture.detectChanges();
-                spyOn(component, 'onReorder');
+                vi.spyOn(component, 'onReorder');
 
                 const dragDropEvent: CdkDragDrop<string[]> = {
                     previousIndex: 1,
@@ -1075,7 +1075,7 @@ describe('OrderList', () => {
                 // Select items in order: 0, 2, 3 (maintain relative positioning)
                 component.selection = [component.products[0], component.products[2], component.products[3]];
                 fixture.detectChanges();
-                spyOn(component, 'onReorder');
+                vi.spyOn(component, 'onReorder');
 
                 const dragDropEvent: CdkDragDrop<string[]> = {
                     previousIndex: 0, // dragging first selected item
@@ -1214,8 +1214,8 @@ describe('OrderList', () => {
         });
 
         it('should handle selection change events', async () => {
-            spyOn(component, 'onSelectionChange');
-            spyOn(component, 'onSelectionChangeEvent');
+            vi.spyOn(component, 'onSelectionChange');
+            vi.spyOn(component, 'onSelectionChangeEvent');
 
             const changeEvent = {
                 originalEvent: new Event('change'),
@@ -1268,8 +1268,8 @@ describe('OrderList', () => {
         });
 
         it('should handle focus and blur events', () => {
-            spyOn(component, 'onFocus');
-            spyOn(component, 'onBlur');
+            vi.spyOn(component, 'onFocus');
+            vi.spyOn(component, 'onBlur');
 
             const focusEvent = new FocusEvent('focus');
             const blurEvent = new FocusEvent('blur');
@@ -1458,7 +1458,7 @@ describe('OrderList', () => {
         });
 
         it('should handle ngOnInit correctly', async () => {
-            spyOn(orderList, 'createStyle');
+            vi.spyOn(orderList, 'createStyle');
 
             component.responsive = true;
             component.filterBy = 'name';
@@ -1488,7 +1488,7 @@ describe('OrderList', () => {
             orderList.ngOnInit();
             orderList.createStyle();
 
-            spyOn(orderList, 'destroyStyle');
+            vi.spyOn(orderList, 'destroyStyle');
             orderList.ngOnDestroy();
 
             expect(orderList.destroyStyle).toHaveBeenCalled();
@@ -1510,7 +1510,7 @@ describe('OrderList', () => {
             await fixture.whenStable();
 
             orderList.filterValue.set('test');
-            spyOn(orderList, 'filter');
+            vi.spyOn(orderList, 'filter');
 
             const newProducts = [{ id: '10', code: 'P010', name: 'Test Product', description: 'Test Description', price: 1000, quantity: 1, inventoryStatus: 'INSTOCK', category: 'Test Category' }];
 

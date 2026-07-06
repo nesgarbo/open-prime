@@ -390,7 +390,7 @@ describe('Chip', () => {
         });
 
         it('should emit onImageError event', async () => {
-            spyOn(component, 'onImageError');
+            vi.spyOn(component, 'onImageError');
             const imageElement = fixture.debugElement.query(By.css('.p-chip-image'));
             const errorEvent = new Event('error');
 
@@ -467,7 +467,7 @@ describe('Chip', () => {
         });
 
         it('should emit onRemove event', async () => {
-            spyOn(component, 'onRemove');
+            vi.spyOn(component, 'onRemove');
             const removeIconElement = fixture.debugElement.query(By.css('[data-pc-section="removeicon"]'));
 
             removeIconElement.triggerEventHandler('click', new MouseEvent('click'));
@@ -495,7 +495,7 @@ describe('Chip', () => {
         });
 
         it('should handle keyboard events on remove icon', async () => {
-            spyOn(component, 'onRemove');
+            vi.spyOn(component, 'onRemove');
             const removeIconElement = fixture.debugElement.query(By.css('[data-pc-section="removeicon"]'));
 
             // Test Enter key
@@ -505,7 +505,7 @@ describe('Chip', () => {
             expect(component.onRemove).toHaveBeenCalled();
 
             // Reset spy
-            (component.onRemove as jasmine.Spy).calls.reset();
+            (component.onRemove as any).mockClear();
 
             // Test Backspace key
             const backspaceEvent = new KeyboardEvent('keydown', { key: 'Backspace' });
@@ -515,7 +515,7 @@ describe('Chip', () => {
         });
 
         it('should not handle other keyboard events', async () => {
-            spyOn(component, 'onRemove');
+            vi.spyOn(component, 'onRemove');
             const removeIconElement = fixture.debugElement.query(By.css('[data-pc-section="removeicon"]'));
 
             const spaceEvent = new KeyboardEvent('keydown', { key: ' ' });
@@ -845,7 +845,7 @@ describe('Chip', () => {
         });
 
         it('should emit onRemove event on close', async () => {
-            spyOn(chipComponent.onRemove, 'emit');
+            vi.spyOn(chipComponent.onRemove, 'emit');
             const mockEvent = new MouseEvent('click');
 
             chipComponent.close(mockEvent);
@@ -855,7 +855,7 @@ describe('Chip', () => {
         });
 
         it('should handle keydown events correctly', async () => {
-            spyOn(chipComponent, 'close');
+            vi.spyOn(chipComponent, 'close');
 
             // Test Enter key
             const enterEvent = new KeyboardEvent('keydown', { key: 'Enter' });
@@ -869,7 +869,7 @@ describe('Chip', () => {
 
             // Test other key (should not trigger close)
             const spaceEvent = new KeyboardEvent('keydown', { key: ' ' });
-            (chipComponent.close as jasmine.Spy).calls.reset();
+            (chipComponent.close as any).mockClear();
             chipComponent.onKeydown(spaceEvent);
             expect(chipComponent.close).not.toHaveBeenCalled();
         });

@@ -336,7 +336,7 @@ describe('Inplace', () => {
         });
 
         it('should emit onActivate event', async () => {
-            spyOn(component, 'onActivate');
+            vi.spyOn(component, 'onActivate');
             const displayDiv = element.querySelector('div[role="button"]') as HTMLElement;
 
             displayDiv.click();
@@ -374,7 +374,7 @@ describe('Inplace', () => {
         });
 
         it('should emit onDeactivate event', async () => {
-            spyOn(component, 'onDeactivate');
+            vi.spyOn(component, 'onDeactivate');
 
             // Activate first
             inplaceComponent.activate();
@@ -677,7 +677,7 @@ describe('Inplace', () => {
             const displayDiv = element.querySelector('div[role="button"]') as HTMLElement;
             if (displayDiv) {
                 const enterEvent = new KeyboardEvent('keydown', { code: 'Enter' });
-                spyOn(enterEvent, 'preventDefault');
+                vi.spyOn(enterEvent, 'preventDefault');
 
                 displayDiv.dispatchEvent(enterEvent);
 

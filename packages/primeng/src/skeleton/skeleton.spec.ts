@@ -902,13 +902,13 @@ describe('Skeleton', () => {
         });
 
         it('should call super.ngOnInit', () => {
-            spyOn(BaseComponent.prototype, 'ngOnInit');
+            vi.spyOn(BaseComponent.prototype, 'ngOnInit');
             skeleton.ngOnInit();
             expect(BaseComponent.prototype.ngOnInit).toHaveBeenCalled();
         });
 
         it('should call super.ngOnDestroy', () => {
-            spyOn(BaseComponent.prototype, 'ngOnDestroy');
+            vi.spyOn(BaseComponent.prototype, 'ngOnDestroy');
             skeleton.ngOnDestroy();
             expect(BaseComponent.prototype.ngOnDestroy).toHaveBeenCalled();
         });

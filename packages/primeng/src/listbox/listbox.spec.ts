@@ -168,7 +168,7 @@ describe('Listbox', () => {
         });
 
         it('should handle option selection', async () => {
-            spyOn(testComponent, 'onSelectionChange');
+            vi.spyOn(testComponent, 'onSelectionChange');
 
             const firstOption = testFixture.debugElement.query(By.css('.p-listbox-option'));
             firstOption.nativeElement.click();
@@ -270,7 +270,7 @@ describe('Listbox', () => {
         });
 
         it('should not respond to clicks when disabled', async () => {
-            spyOn(testComponent, 'onSelectionChange');
+            vi.spyOn(testComponent, 'onSelectionChange');
 
             const firstOption = testFixture.debugElement.query(By.css('.p-listbox-option'));
             firstOption.nativeElement.click();
@@ -333,7 +333,7 @@ describe('Listbox', () => {
         });
 
         it('should emit onChange event when selection changes', async () => {
-            spyOn(testComponent, 'onSelectionChange');
+            vi.spyOn(testComponent, 'onSelectionChange');
 
             const firstOption = testFixture.debugElement.query(By.css('.p-listbox-option'));
             firstOption.nativeElement.click();
@@ -366,7 +366,7 @@ describe('Listbox', () => {
 
         it('should handle touch events', async () => {
             const listboxComponent = testFixture.debugElement.query(By.css('p-listbox')).componentInstance;
-            spyOn(listboxComponent, 'onOptionTouchEnd').and.callThrough();
+            vi.spyOn(listboxComponent, 'onOptionTouchEnd');
 
             const firstOption = testFixture.debugElement.query(By.css('.p-listbox-option'));
             if (firstOption) {
@@ -413,8 +413,8 @@ describe('Listbox', () => {
 
         it('should emit onDblClick event', async () => {
             const listboxComponent = testFixture.debugElement.query(By.css('p-listbox')).componentInstance;
-            spyOn(listboxComponent.onDblClick, 'emit');
-            spyOn(listboxComponent, 'onOptionDoubleClick').and.callThrough();
+            vi.spyOn(listboxComponent.onDblClick, 'emit');
+            vi.spyOn(listboxComponent, 'onOptionDoubleClick');
 
             const firstOption = testFixture.debugElement.query(By.css('.p-listbox-option'));
             if (firstOption) {
@@ -461,7 +461,7 @@ describe('Listbox', () => {
         });
 
         it('should not allow selection in readonly mode', async () => {
-            spyOn(testComponent, 'onSelectionChange');
+            vi.spyOn(testComponent, 'onSelectionChange');
 
             const firstOption = testFixture.debugElement.query(By.css('.p-listbox-option'));
             if (firstOption) {
@@ -475,7 +475,7 @@ describe('Listbox', () => {
 
         it('should not handle touch events in readonly mode', async () => {
             const listboxComponent = testFixture.debugElement.query(By.css('p-listbox')).componentInstance;
-            spyOn(listboxComponent, 'onOptionTouchEnd').and.callThrough();
+            vi.spyOn(listboxComponent, 'onOptionTouchEnd');
 
             const firstOption = testFixture.debugElement.query(By.css('.p-listbox-option'));
             if (firstOption) {
@@ -799,7 +799,7 @@ describe('Listbox', () => {
         });
 
         it('should emit onChange event', async () => {
-            spyOn(testComponent, 'onSelectionChange');
+            vi.spyOn(testComponent, 'onSelectionChange');
 
             const firstOption = testFixture.debugElement.query(By.css('.p-listbox-option'));
             firstOption?.nativeElement.click();
@@ -810,7 +810,7 @@ describe('Listbox', () => {
         });
 
         it('should emit onFocus event', async () => {
-            spyOn(testComponent, 'onFocus');
+            vi.spyOn(testComponent, 'onFocus');
 
             const listbox = testFixture.debugElement.query(By.css('[role="listbox"]'));
             listbox?.nativeElement.dispatchEvent(new FocusEvent('focus'));
@@ -821,7 +821,7 @@ describe('Listbox', () => {
         });
 
         it('should emit onBlur event', async () => {
-            spyOn(testComponent, 'onBlur');
+            vi.spyOn(testComponent, 'onBlur');
 
             const listbox = testFixture.debugElement.query(By.css('[role="listbox"]'));
             listbox?.nativeElement.dispatchEvent(new FocusEvent('blur'));
@@ -835,7 +835,7 @@ describe('Listbox', () => {
             testComponent.filter = true;
             testFixture.changeDetectorRef.markForCheck();
             await testFixture.whenStable();
-            spyOn(testComponent, 'onFilter');
+            vi.spyOn(testComponent, 'onFilter');
 
             const filterInput = testFixture.debugElement.query(By.css('input[pInputText]'));
             if (filterInput) {
@@ -849,7 +849,7 @@ describe('Listbox', () => {
         });
 
         it('should emit onDblClick event', async () => {
-            spyOn(testComponent, 'onDblClick');
+            vi.spyOn(testComponent, 'onDblClick');
 
             const firstOption = testFixture.debugElement.query(By.css('.p-listbox-option'));
             if (firstOption) {
@@ -1890,11 +1890,11 @@ describe('Listbox ViewChild and Advanced Scenarios', () => {
 
     describe('All Event Emitters Comprehensive Test', () => {
         it('should emit all events with proper data', async () => {
-            spyOn(component, 'onChangeHandler');
-            spyOn(component, 'onFilterHandler');
-            spyOn(component, 'onFocusHandler');
-            spyOn(component, 'onBlurHandler');
-            spyOn(component, 'onDblClickHandler');
+            vi.spyOn(component, 'onChangeHandler');
+            vi.spyOn(component, 'onFilterHandler');
+            vi.spyOn(component, 'onFocusHandler');
+            vi.spyOn(component, 'onBlurHandler');
+            vi.spyOn(component, 'onDblClickHandler');
 
             // Set options manually since async may not load in test
             const listboxComponent = listboxElement.componentInstance;

@@ -527,7 +527,7 @@ describe('SpeedDial', () => {
     describe('Event Handling', () => {
         it('should emit onClick event when button is clicked', async () => {
             const button = fixture.debugElement.query(By.css('p-button button'));
-            const clickSpy = spyOn(component, 'onButtonClick');
+            const clickSpy = vi.spyOn(component, 'onButtonClick');
 
             button.nativeElement.click();
             await new Promise((resolve) => setTimeout(resolve, 100));
@@ -537,8 +537,8 @@ describe('SpeedDial', () => {
         });
 
         it('should emit onVisibleChange and visibleChange events', async () => {
-            const visibleChangeSpy = spyOn(component, 'onVisibleChange');
-            const visibleChangeV2Spy = spyOn(component, 'onVisibleChangeV2');
+            const visibleChangeSpy = vi.spyOn(component, 'onVisibleChange');
+            const visibleChangeV2Spy = vi.spyOn(component, 'onVisibleChangeV2');
 
             speedDialInstance.show();
             await new Promise((resolve) => setTimeout(resolve, 100));
@@ -556,7 +556,7 @@ describe('SpeedDial', () => {
         });
 
         it('should emit onShow event when shown', async () => {
-            const showSpy = spyOn(component, 'onShow');
+            const showSpy = vi.spyOn(component, 'onShow');
 
             speedDialInstance.show();
             await new Promise((resolve) => setTimeout(resolve, 100));
@@ -566,7 +566,7 @@ describe('SpeedDial', () => {
         });
 
         it('should emit onHide event when hidden', async () => {
-            const hideSpy = spyOn(component, 'onHide');
+            const hideSpy = vi.spyOn(component, 'onHide');
 
             speedDialInstance.hide();
             await new Promise((resolve) => setTimeout(resolve, 100));
@@ -594,7 +594,7 @@ describe('SpeedDial', () => {
         });
 
         it('should not emit events when disabled', async () => {
-            const clickSpy = spyOn(component, 'onButtonClick');
+            const clickSpy = vi.spyOn(component, 'onButtonClick');
             component.disabled = true;
             fixture.changeDetectorRef.markForCheck();
             await fixture.whenStable();
@@ -670,7 +670,7 @@ describe('SpeedDial', () => {
 
         it('should handle arrow down key', async () => {
             const list = fixture.debugElement.query(By.css('ul[role="menu"]'));
-            const keydownSpy = spyOn(speedDialInstance, 'onArrowDown').and.callThrough();
+            const keydownSpy = vi.spyOn(speedDialInstance, 'onArrowDown');
 
             list.triggerEventHandler('keydown', { code: 'ArrowDown', preventDefault: () => {} });
             await new Promise((resolve) => setTimeout(resolve, 100));
@@ -681,7 +681,7 @@ describe('SpeedDial', () => {
 
         it('should handle arrow up key', async () => {
             const list = fixture.debugElement.query(By.css('ul[role="menu"]'));
-            const keydownSpy = spyOn(speedDialInstance, 'onArrowUp').and.callThrough();
+            const keydownSpy = vi.spyOn(speedDialInstance, 'onArrowUp');
 
             list.triggerEventHandler('keydown', { code: 'ArrowUp', preventDefault: () => {} });
             await new Promise((resolve) => setTimeout(resolve, 100));
@@ -692,7 +692,7 @@ describe('SpeedDial', () => {
 
         it('should handle arrow left key', async () => {
             const list = fixture.debugElement.query(By.css('ul[role="menu"]'));
-            const keydownSpy = spyOn(speedDialInstance, 'onArrowLeft').and.callThrough();
+            const keydownSpy = vi.spyOn(speedDialInstance, 'onArrowLeft');
 
             list.triggerEventHandler('keydown', { code: 'ArrowLeft', preventDefault: () => {} });
             await new Promise((resolve) => setTimeout(resolve, 100));
@@ -703,7 +703,7 @@ describe('SpeedDial', () => {
 
         it('should handle arrow right key', async () => {
             const list = fixture.debugElement.query(By.css('ul[role="menu"]'));
-            const keydownSpy = spyOn(speedDialInstance, 'onArrowRight').and.callThrough();
+            const keydownSpy = vi.spyOn(speedDialInstance, 'onArrowRight');
 
             list.triggerEventHandler('keydown', { code: 'ArrowRight', preventDefault: () => {} });
             await new Promise((resolve) => setTimeout(resolve, 100));
@@ -714,7 +714,7 @@ describe('SpeedDial', () => {
 
         it('should handle enter key', async () => {
             // Mock onEnterKey to avoid DOM dependencies in test
-            const enterKeySpy = spyOn(speedDialInstance, 'onEnterKey').and.callFake(() => {
+            const enterKeySpy = vi.spyOn(speedDialInstance, 'onEnterKey').mockImplementation(() => {
                 // Simulate successful enter key handling
             });
 
@@ -728,7 +728,7 @@ describe('SpeedDial', () => {
 
         it('should handle escape key', async () => {
             const list = fixture.debugElement.query(By.css('ul[role="menu"]'));
-            const keydownSpy = spyOn(speedDialInstance, 'onEscapeKey').and.callThrough();
+            const keydownSpy = vi.spyOn(speedDialInstance, 'onEscapeKey');
 
             list.triggerEventHandler('keydown', { code: 'Escape', preventDefault: () => {} });
             await new Promise((resolve) => setTimeout(resolve, 100));
@@ -743,7 +743,7 @@ describe('SpeedDial', () => {
 
         it('should handle home key', async () => {
             const list = fixture.debugElement.query(By.css('ul[role="menu"]'));
-            const keydownSpy = spyOn(speedDialInstance, 'onHomeKey').and.callThrough();
+            const keydownSpy = vi.spyOn(speedDialInstance, 'onHomeKey');
 
             list.triggerEventHandler('keydown', { code: 'Home', preventDefault: () => {} });
             await new Promise((resolve) => setTimeout(resolve, 100));
@@ -754,7 +754,7 @@ describe('SpeedDial', () => {
 
         it('should handle end key', async () => {
             const list = fixture.debugElement.query(By.css('ul[role="menu"]'));
-            const keydownSpy = spyOn(speedDialInstance, 'onEndKey').and.callThrough();
+            const keydownSpy = vi.spyOn(speedDialInstance, 'onEndKey');
 
             list.triggerEventHandler('keydown', { code: 'End', preventDefault: () => {} });
             await new Promise((resolve) => setTimeout(resolve, 100));
@@ -767,7 +767,7 @@ describe('SpeedDial', () => {
     describe('Toggler Keyboard Navigation', () => {
         it('should handle arrow down on toggler button', async () => {
             const pButton = fixture.debugElement.query(By.css('p-button'));
-            const keydownSpy = spyOn(speedDialInstance, 'onTogglerArrowDown').and.callThrough();
+            const keydownSpy = vi.spyOn(speedDialInstance, 'onTogglerArrowDown');
 
             pButton.triggerEventHandler('keydown', { code: 'ArrowDown', preventDefault: () => {} });
             await new Promise((resolve) => setTimeout(resolve, 100));
@@ -779,7 +779,7 @@ describe('SpeedDial', () => {
 
         it('should handle arrow up on toggler button', async () => {
             const pButton = fixture.debugElement.query(By.css('p-button'));
-            const keydownSpy = spyOn(speedDialInstance, 'onTogglerArrowUp').and.callThrough();
+            const keydownSpy = vi.spyOn(speedDialInstance, 'onTogglerArrowUp');
 
             pButton.triggerEventHandler('keydown', { code: 'ArrowUp', preventDefault: () => {} });
             await new Promise((resolve) => setTimeout(resolve, 100));
@@ -789,14 +789,14 @@ describe('SpeedDial', () => {
             expect(speedDialInstance.visible()).toBe(true);
         });
 
-        xit('should handle escape on toggler button', async () => {
+        it.skip('should handle escape on toggler button', async () => {
             speedDialInstance.show();
             await new Promise((resolve) => setTimeout(resolve, 100));
             await fixture.whenStable();
             fixture.detectChanges();
 
             const button = fixture.debugElement.query(By.css('p-button button'));
-            const keydownSpy = spyOn(speedDialInstance, 'onEscapeKey').and.callThrough();
+            const keydownSpy = vi.spyOn(speedDialInstance, 'onEscapeKey');
 
             button.triggerEventHandler('keydown', { code: 'Escape', preventDefault: () => {} });
             fixture.detectChanges();
@@ -1049,7 +1049,7 @@ describe('SpeedDial', () => {
         });
 
         it('should handle focus management', async () => {
-            const focusSpy = spyOn(speedDialInstance, 'onFocus').and.callThrough();
+            const focusSpy = vi.spyOn(speedDialInstance, 'onFocus');
             const menu = fixture.debugElement.query(By.css('ul[role="menu"]'));
 
             menu.triggerEventHandler('focus', {});
@@ -1061,7 +1061,7 @@ describe('SpeedDial', () => {
         });
 
         it('should handle blur management', async () => {
-            const blurSpy = spyOn(speedDialInstance, 'onBlur').and.callThrough();
+            const blurSpy = vi.spyOn(speedDialInstance, 'onBlur');
             const menu = fixture.debugElement.query(By.css('ul[role="menu"]'));
 
             menu.triggerEventHandler('focus', {});
@@ -1224,7 +1224,7 @@ describe('SpeedDial', () => {
     });
 
     describe('Document Click Outside', () => {
-        xit('should hide when clicked outside if hideOnClickOutside is true', async () => {
+        it.skip('should hide when clicked outside if hideOnClickOutside is true', async () => {
             speedDialInstance.show();
             fixture.detectChanges();
             await new Promise((resolve) => setTimeout(resolve, 100));
@@ -1439,7 +1439,7 @@ describe('SpeedDial', () => {
 
     describe('Cleanup', () => {
         it('should cleanup document listeners on destroy', () => {
-            const unbindSpy = spyOn(speedDialInstance, 'unbindDocumentClickListener');
+            const unbindSpy = vi.spyOn(speedDialInstance, 'unbindDocumentClickListener');
             speedDialInstance.ngOnDestroy();
             expect(unbindSpy).toHaveBeenCalled();
         });
@@ -1449,7 +1449,7 @@ describe('SpeedDial', () => {
             fixture.detectChanges();
             await fixture.whenStable();
 
-            const unbindSpy = spyOn(speedDialInstance, 'unbindDocumentClickListener');
+            const unbindSpy = vi.spyOn(speedDialInstance, 'unbindDocumentClickListener');
             speedDialInstance.visible.set(false);
             fixture.detectChanges();
             await fixture.whenStable();
@@ -1759,7 +1759,7 @@ describe('SpeedDial', () => {
 
         describe('Case 5: Event binding via PT', () => {
             it('should handle onclick event via PT on root', () => {
-                let onclickHandler = jasmine.createSpy('onclick');
+                let onclickHandler = vi.fn();
 
                 ptFixture.componentRef.setInput('pt', {
                     root: {
@@ -1795,7 +1795,7 @@ describe('SpeedDial', () => {
             });
 
             it('should handle onmouseenter event via PT on list', () => {
-                let onmouseenterHandler = jasmine.createSpy('onmouseenter');
+                let onmouseenterHandler = vi.fn();
 
                 ptFixture.componentRef.setInput('pt', {
                     list: {

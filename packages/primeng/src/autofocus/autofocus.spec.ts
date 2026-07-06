@@ -304,7 +304,7 @@ describe('AutoFocus', () => {
             const fixture = TestBed.createComponent(TestAutofocusEnabledComponent);
             const element = fixture.debugElement.query(By.css('input')).nativeElement;
 
-            spyOn(element, 'focus');
+            vi.spyOn(element, 'focus');
 
             await fixture.whenStable();
             await new Promise((resolve) => setTimeout(resolve, 10)); // Wait for setTimeout
@@ -317,7 +317,7 @@ describe('AutoFocus', () => {
             const fixture = TestBed.createComponent(TestAutofocusDisabledComponent);
             const element = fixture.debugElement.query(By.css('input')).nativeElement;
 
-            spyOn(element, 'focus');
+            vi.spyOn(element, 'focus');
 
             await fixture.whenStable();
             await new Promise((resolve) => setTimeout(resolve, 10));
@@ -329,7 +329,7 @@ describe('AutoFocus', () => {
             const fixture = TestBed.createComponent(TestAutofocusButtonComponent);
             const element = fixture.debugElement.query(By.css('button')).nativeElement;
 
-            spyOn(element, 'focus');
+            vi.spyOn(element, 'focus');
 
             await fixture.whenStable();
             await new Promise((resolve) => setTimeout(resolve, 10));
@@ -342,7 +342,7 @@ describe('AutoFocus', () => {
             const fixture = TestBed.createComponent(TestAutofocusDivComponent);
             const element = fixture.debugElement.query(By.css('div')).nativeElement;
 
-            spyOn(element, 'focus');
+            vi.spyOn(element, 'focus');
 
             await fixture.whenStable();
             await new Promise((resolve) => setTimeout(resolve, 10));
@@ -359,7 +359,7 @@ describe('AutoFocus', () => {
             const fixture = TestBed.createComponent(TestAutofocusEnabledComponent);
             const element = fixture.debugElement.query(By.css('input')).nativeElement;
 
-            spyOn(element, 'focus');
+            vi.spyOn(element, 'focus');
 
             await fixture.whenStable();
             await new Promise((resolve) => setTimeout(resolve, 10));
@@ -378,9 +378,9 @@ describe('AutoFocus', () => {
             const secondInput = fixture.debugElement.query(By.css('#second-input')).nativeElement;
             const button = fixture.debugElement.query(By.css('#button')).nativeElement;
 
-            spyOn(firstInput, 'focus');
-            spyOn(secondInput, 'focus');
-            spyOn(button, 'focus');
+            vi.spyOn(firstInput, 'focus');
+            vi.spyOn(secondInput, 'focus');
+            vi.spyOn(button, 'focus');
 
             await fixture.whenStable();
             await new Promise((resolve) => setTimeout(resolve, 10));
@@ -395,7 +395,7 @@ describe('AutoFocus', () => {
             const fixture = TestBed.createComponent(TestAutofocusNoFocusableElementsComponent);
             const containerElement = fixture.debugElement.query(By.css('div')).nativeElement;
 
-            spyOn(containerElement, 'focus');
+            vi.spyOn(containerElement, 'focus');
 
             await fixture.whenStable();
             await new Promise((resolve) => setTimeout(resolve, 10));
@@ -409,9 +409,9 @@ describe('AutoFocus', () => {
             const nestedSelect = fixture.debugElement.query(By.css('.nested-select')).nativeElement;
             const nestedTextarea = fixture.debugElement.query(By.css('.nested-textarea')).nativeElement;
 
-            spyOn(nestedInput, 'focus');
-            spyOn(nestedSelect, 'focus');
-            spyOn(nestedTextarea, 'focus');
+            vi.spyOn(nestedInput, 'focus');
+            vi.spyOn(nestedSelect, 'focus');
+            vi.spyOn(nestedTextarea, 'focus');
 
             await fixture.whenStable();
             await new Promise((resolve) => setTimeout(resolve, 10));
@@ -434,7 +434,7 @@ describe('AutoFocus', () => {
         });
 
         it('should call autoFocus in ngAfterContentChecked', () => {
-            spyOn(directive, 'autoFocus');
+            vi.spyOn(directive, 'autoFocus');
 
             directive.ngAfterContentChecked();
 
@@ -443,7 +443,7 @@ describe('AutoFocus', () => {
 
         it('should call autoFocus in ngAfterViewChecked when not focused', () => {
             directive.focused = false;
-            spyOn(directive, 'autoFocus');
+            vi.spyOn(directive, 'autoFocus');
 
             directive.ngAfterViewChecked();
 
@@ -452,7 +452,7 @@ describe('AutoFocus', () => {
 
         it('should not call autoFocus in ngAfterViewChecked when already focused', () => {
             directive.focused = true;
-            spyOn(directive, 'autoFocus');
+            vi.spyOn(directive, 'autoFocus');
 
             directive.ngAfterViewChecked();
 
@@ -461,7 +461,7 @@ describe('AutoFocus', () => {
 
         it('should not call autoFocus in ngAfterContentChecked when already focused', () => {
             directive.focused = true;
-            spyOn(directive, 'autoFocus');
+            vi.spyOn(directive, 'autoFocus');
 
             directive.ngAfterContentChecked();
 
@@ -489,7 +489,7 @@ describe('AutoFocus', () => {
 
             const input = fixture.debugElement.query(By.css('.dynamic-input'));
             if (input) {
-                spyOn(input.nativeElement, 'focus');
+                vi.spyOn(input.nativeElement, 'focus');
 
                 // Trigger ngAfterContentChecked
                 directive.ngAfterContentChecked();
@@ -516,7 +516,7 @@ describe('AutoFocus', () => {
 
             const button = fixture.debugElement.query(By.css('.dynamic-button'));
             if (button) {
-                spyOn(button.nativeElement, 'focus');
+                vi.spyOn(button.nativeElement, 'focus');
                 directive.ngAfterContentChecked();
                 await new Promise((resolve) => setTimeout(resolve, 10));
                 expect(button.nativeElement.focus).toHaveBeenCalled();
@@ -530,7 +530,7 @@ describe('AutoFocus', () => {
 
             const input = fixture.debugElement.query(By.css('.dynamic-input'));
             if (input) {
-                spyOn(input.nativeElement, 'focus');
+                vi.spyOn(input.nativeElement, 'focus');
                 directive.ngAfterContentChecked();
                 await new Promise((resolve) => setTimeout(resolve, 10));
                 expect(input.nativeElement.focus).toHaveBeenCalled();
@@ -546,8 +546,8 @@ describe('AutoFocus', () => {
             const input1 = fixture.debugElement.query(By.css('.input-1')).nativeElement;
             const input2 = fixture.debugElement.query(By.css('.input-2')).nativeElement;
 
-            spyOn(input1, 'focus');
-            spyOn(input2, 'focus');
+            vi.spyOn(input1, 'focus');
+            vi.spyOn(input2, 'focus');
 
             // Enable first input autofocus
             component.condition1 = true;
@@ -559,8 +559,8 @@ describe('AutoFocus', () => {
             expect(input2.focus).not.toHaveBeenCalled();
 
             // Reset spies
-            (input1.focus as jasmine.Spy).calls.reset();
-            (input2.focus as jasmine.Spy).calls.reset();
+            (input1.focus as any).mockClear();
+            (input2.focus as any).mockClear();
 
             // Enable second input autofocus
             component.condition2 = true;
@@ -605,7 +605,7 @@ describe('AutoFocus', () => {
             const component = fixture.componentInstance;
             const element = fixture.debugElement.query(By.css('input')).nativeElement;
 
-            spyOn(element, 'focus');
+            vi.spyOn(element, 'focus');
 
             // Rapid changes
             component.autofocusEnabled = true;
@@ -657,7 +657,7 @@ describe('AutoFocus', () => {
             const element = fixture.debugElement.query(By.css('input')).nativeElement;
             const directive = fixture.debugElement.query(By.directive(AutoFocus)).injector.get(AutoFocus);
 
-            spyOn(element, 'focus');
+            vi.spyOn(element, 'focus');
 
             // Set focused flag manually to simulate already focused state
             directive.focused = true;
@@ -674,7 +674,7 @@ describe('AutoFocus', () => {
             const element = fixture.debugElement.query(By.css('input')).nativeElement;
             const directive = fixture.debugElement.query(By.directive(AutoFocus)).injector.get(AutoFocus);
 
-            spyOn(element, 'focus');
+            vi.spyOn(element, 'focus');
 
             // Initial state - not focused
             component.autofocusEnabled = false;
@@ -703,7 +703,7 @@ describe('AutoFocus', () => {
             // Mock DomHandler.getFocusableElements
             const mockFocusableElements = [fixture.debugElement.query(By.css('#first-input')).nativeElement, fixture.debugElement.query(By.css('#second-input')).nativeElement, fixture.debugElement.query(By.css('#button')).nativeElement];
 
-            spyOn(mockFocusableElements[0], 'focus');
+            vi.spyOn(mockFocusableElements[0], 'focus');
             await fixture.whenStable();
             await new Promise((resolve) => setTimeout(resolve, 10));
 
@@ -741,7 +741,7 @@ describe('AutoFocus', () => {
 
             // Get the autofocus directive instance
             const dialogInputDirective = dialogInput.injector.get(AutoFocus);
-            spyOn(dialogInput.nativeElement, 'focus');
+            vi.spyOn(dialogInput.nativeElement, 'focus');
 
             // Simulate what happens when autofocus directive detects new content
             dialogInputDirective.focused = false; // Reset focused state
@@ -771,7 +771,7 @@ describe('AutoFocus', () => {
 
             // Get the autofocus directive instance
             const drawerSelectDirective = drawerSelect.injector.get(AutoFocus);
-            spyOn(drawerSelect.nativeElement, 'focus');
+            vi.spyOn(drawerSelect.nativeElement, 'focus');
 
             // Simulate what happens when autofocus directive detects new content
             drawerSelectDirective.focused = false; // Reset focused state
@@ -791,7 +791,7 @@ describe('AutoFocus', () => {
 
             let dialogInput = fixture.debugElement.query(By.css('.dialog-input'));
             let directive = dialogInput.injector.get(AutoFocus);
-            spyOn(dialogInput.nativeElement, 'focus');
+            vi.spyOn(dialogInput.nativeElement, 'focus');
 
             directive.focused = false; // Reset state
             directive.ngAfterContentChecked();
@@ -816,7 +816,7 @@ describe('AutoFocus', () => {
             // Should work again with new directive instance
             dialogInput = fixture.debugElement.query(By.css('.dialog-input'));
             directive = dialogInput.injector.get(AutoFocus);
-            spyOn(dialogInput.nativeElement, 'focus');
+            vi.spyOn(dialogInput.nativeElement, 'focus');
 
             directive.focused = false; // Reset state for new instance
             directive.ngAfterContentChecked();
@@ -839,8 +839,8 @@ describe('AutoFocus', () => {
             const inputDirective = dialogInput.injector.get(AutoFocus);
             const textareaDirective = dialogTextarea.injector.get(AutoFocus);
 
-            spyOn(dialogInput.nativeElement, 'focus');
-            spyOn(dialogTextarea.nativeElement, 'focus');
+            vi.spyOn(dialogInput.nativeElement, 'focus');
+            vi.spyOn(dialogTextarea.nativeElement, 'focus');
 
             // Initially input should be focused
             inputDirective.focused = false; // Reset state to allow focusing
@@ -886,8 +886,8 @@ describe('AutoFocus', () => {
             expect(dialogInput).toBeTruthy();
             expect(dialogTextarea).toBeTruthy();
 
-            spyOn(dialogInput.nativeElement, 'focus');
-            spyOn(dialogTextarea.nativeElement, 'focus');
+            vi.spyOn(dialogInput.nativeElement, 'focus');
+            vi.spyOn(dialogTextarea.nativeElement, 'focus');
 
             // Manually trigger lifecycle hooks - should not focus anything
             const inputDirective = dialogInput.injector.get(AutoFocus);
@@ -922,7 +922,7 @@ describe('AutoFocus', () => {
             expect(dialogInput).toBeTruthy();
 
             const directive = dialogInput.injector.get(AutoFocus);
-            spyOn(dialogInput.nativeElement, 'focus');
+            vi.spyOn(dialogInput.nativeElement, 'focus');
 
             // Reset focused state to allow focusing
             directive.focused = false;

@@ -470,7 +470,7 @@ describe('Checkbox', () => {
         });
 
         it('should focus programmatically', async () => {
-            spyOn(checkboxInstance.inputViewChild()!.nativeElement, 'focus');
+            vi.spyOn(checkboxInstance.inputViewChild()!.nativeElement, 'focus');
 
             checkboxInstance.focus();
 

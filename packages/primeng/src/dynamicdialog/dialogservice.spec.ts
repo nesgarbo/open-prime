@@ -126,7 +126,7 @@ describe('DialogService', () => {
     describe('lifecycle cleanup', () => {
         it('should close the dialog instance when onClose emits', () => {
             const ref = service.open(ChildComponent, new DynamicDialogConfig())!;
-            const closeSpy = spyOn(service.getInstance(ref)!, 'close');
+            const closeSpy = vi.spyOn(service.getInstance(ref)!, 'close');
 
             ref.close();
 

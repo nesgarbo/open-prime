@@ -272,7 +272,7 @@ describe('Editor', () => {
         });
 
         it('should emit onInit event', () => {
-            spyOn(component, 'onInit');
+            vi.spyOn(component, 'onInit');
 
             editorInstance.onEditorInit.emit({
                 editor: editorInstance.quill
@@ -282,7 +282,7 @@ describe('Editor', () => {
         });
 
         it('should emit onTextChange event with correct parameters', () => {
-            spyOn(component, 'onTextChange');
+            vi.spyOn(component, 'onTextChange');
 
             const testEvent: EditorTextChangeEvent = {
                 htmlValue: '<div>New text</div>',
@@ -297,7 +297,7 @@ describe('Editor', () => {
         });
 
         it('should emit onSelectionChange event with correct parameters', () => {
-            spyOn(component, 'onSelectionChange');
+            vi.spyOn(component, 'onSelectionChange');
 
             const testEvent: EditorSelectionChangeEvent = {
                 range: { index: 0, length: 5 },
@@ -311,7 +311,7 @@ describe('Editor', () => {
         });
 
         it('should emit onEditorChange event with correct parameters', () => {
-            spyOn(component, 'onEditorChange');
+            vi.spyOn(component, 'onEditorChange');
 
             const testEvent: EditorChangeEvent = {
                 eventName: 'text-change',
@@ -324,7 +324,7 @@ describe('Editor', () => {
         });
 
         it('should emit onFocus event', () => {
-            spyOn(component, 'onFocus');
+            vi.spyOn(component, 'onFocus');
 
             const testEvent: EditorFocusEvent = {
                 source: 'user'
@@ -336,7 +336,7 @@ describe('Editor', () => {
         });
 
         it('should emit onBlur event', () => {
-            spyOn(component, 'onBlur');
+            vi.spyOn(component, 'onBlur');
 
             const testEvent: EditorBlurEvent = {
                 source: 'user'
@@ -565,7 +565,7 @@ describe('Editor', () => {
         it('should cleanup event listeners on destroy', () => {
             if (editorInstance.quill && editorInstance.quill.root) {
                 const mockElement = {
-                    removeEventListener: jasmine.createSpy('removeEventListener')
+                    removeEventListener: vi.fn()
                 };
 
                 // Mock the quill root element

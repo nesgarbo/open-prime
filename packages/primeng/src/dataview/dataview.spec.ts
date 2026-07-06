@@ -280,7 +280,7 @@ describe('DataView', () => {
                 pageCount: 3
             };
 
-            spyOn(dataview.onPage, 'emit');
+            vi.spyOn(dataview.onPage, 'emit');
             dataview.paginate(paginatorState);
 
             expect(dataview.first()).toBe(3);
@@ -297,7 +297,7 @@ describe('DataView', () => {
             fixture.changeDetectorRef.markForCheck();
             await fixture.whenStable();
 
-            spyOn(dataview.onSort, 'emit');
+            vi.spyOn(dataview.onSort, 'emit');
             dataview.sort();
 
             expect(dataview.first()).toBe(0);
@@ -445,7 +445,7 @@ describe('DataView', () => {
             const lazyComponent = lazyFixture.componentInstance;
             lazyComponent.lazy = true;
 
-            spyOn(lazyComponent, 'onLazyLoadEvent');
+            vi.spyOn(lazyComponent, 'onLazyLoadEvent');
             lazyFixture.changeDetectorRef.markForCheck();
             await lazyFixture.whenStable();
             await new Promise((resolve) => setTimeout(resolve, 0));
@@ -459,7 +459,7 @@ describe('DataView', () => {
             lazyComponent.lazy = true;
             lazyComponent.lazyLoadOnInit = false;
 
-            spyOn(lazyComponent, 'onLazyLoadEvent');
+            vi.spyOn(lazyComponent, 'onLazyLoadEvent');
             lazyFixture.changeDetectorRef.markForCheck();
             await lazyFixture.whenStable();
             await new Promise((resolve) => setTimeout(resolve, 0));
@@ -472,7 +472,7 @@ describe('DataView', () => {
             fixture.changeDetectorRef.markForCheck();
             await fixture.whenStable();
 
-            spyOn(component, 'onPageEvent');
+            vi.spyOn(component, 'onPageEvent');
 
             dataview.paginate({ first: 3, rows: 2, page: 1, pageCount: 3 });
 
@@ -488,7 +488,7 @@ describe('DataView', () => {
             fixture.changeDetectorRef.markForCheck();
             await fixture.whenStable();
 
-            spyOn(component, 'onSortEvent');
+            vi.spyOn(component, 'onSortEvent');
 
             dataview.sort();
 
@@ -499,7 +499,7 @@ describe('DataView', () => {
         });
 
         it('should emit onChangeLayout event when layout changes', async () => {
-            spyOn(component, 'onChangeLayoutEvent');
+            vi.spyOn(component, 'onChangeLayoutEvent');
 
             component.layout = 'grid';
             fixture.changeDetectorRef.markForCheck();
@@ -517,7 +517,7 @@ describe('DataView', () => {
             fixture.changeDetectorRef.markForCheck();
             await fixture.whenStable();
 
-            spyOn(component, 'onLazyLoadEvent');
+            vi.spyOn(component, 'onLazyLoadEvent');
 
             dataview.paginate({ first: 3, rows: 2, page: 1, pageCount: 3 });
 
@@ -530,7 +530,7 @@ describe('DataView', () => {
             fixture.changeDetectorRef.markForCheck();
             await fixture.whenStable();
 
-            spyOn(component, 'onLazyLoadEvent');
+            vi.spyOn(component, 'onLazyLoadEvent');
 
             dataview.sort();
 
@@ -1013,7 +1013,7 @@ describe('DataView', () => {
 
             const lazyDataview = lazyFixture.debugElement.query(By.directive(DataView)).componentInstance;
 
-            spyOn(lazyDataview.onLazyLoad, 'emit');
+            vi.spyOn(lazyDataview.onLazyLoad, 'emit');
 
             lazyComponent.sortField = 'name';
             lazyFixture.changeDetectorRef.markForCheck();

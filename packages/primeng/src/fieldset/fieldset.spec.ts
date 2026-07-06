@@ -412,7 +412,7 @@ describe('Fieldset', () => {
             const toggleButton = fixture.debugElement.query(By.css('button[role="button"]'));
             const event = new KeyboardEvent('keydown', { code: 'Enter' });
 
-            spyOn(fieldset, 'toggle');
+            vi.spyOn(fieldset, 'toggle');
             toggleButton.nativeElement.dispatchEvent(event);
 
             expect(fieldset.toggle).toHaveBeenCalled();
@@ -422,7 +422,7 @@ describe('Fieldset', () => {
             const toggleButton = fixture.debugElement.query(By.css('button[role="button"]'));
             const event = new KeyboardEvent('keydown', { code: 'Space' });
 
-            spyOn(fieldset, 'toggle');
+            vi.spyOn(fieldset, 'toggle');
             toggleButton.nativeElement.dispatchEvent(event);
 
             expect(fieldset.toggle).toHaveBeenCalled();
@@ -432,7 +432,7 @@ describe('Fieldset', () => {
             const toggleButton = fixture.debugElement.query(By.css('button[role="button"]'));
             const event = new KeyboardEvent('keydown', { code: 'Tab' });
 
-            spyOn(fieldset, 'toggle');
+            vi.spyOn(fieldset, 'toggle');
             toggleButton.nativeElement.dispatchEvent(event);
 
             expect(fieldset.toggle).not.toHaveBeenCalled();
@@ -443,8 +443,8 @@ describe('Fieldset', () => {
             const enterEvent = new KeyboardEvent('keydown', { code: 'Enter' });
             const spaceEvent = new KeyboardEvent('keydown', { code: 'Space' });
 
-            spyOn(enterEvent, 'preventDefault');
-            spyOn(spaceEvent, 'preventDefault');
+            vi.spyOn(enterEvent, 'preventDefault');
+            vi.spyOn(spaceEvent, 'preventDefault');
 
             toggleButton.nativeElement.dispatchEvent(enterEvent);
             toggleButton.nativeElement.dispatchEvent(spaceEvent);
@@ -678,7 +678,7 @@ describe('Fieldset', () => {
             await fixture.whenStable();
 
             const event = new MouseEvent('click');
-            spyOn(event, 'preventDefault');
+            vi.spyOn(event, 'preventDefault');
 
             fieldset.toggle(event);
 

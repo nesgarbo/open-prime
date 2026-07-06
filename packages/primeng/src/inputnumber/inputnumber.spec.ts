@@ -356,7 +356,7 @@ describe('InputNumber', () => {
         // }));
 
         it('should handle focus events', async () => {
-            spyOn(testComponent, 'onFocusChange');
+            vi.spyOn(testComponent, 'onFocusChange');
 
             inputElement.dispatchEvent(new Event('focus'));
             testFixture.changeDetectorRef.markForCheck();
@@ -366,7 +366,7 @@ describe('InputNumber', () => {
         });
 
         it('should handle blur events', async () => {
-            spyOn(testComponent, 'onBlurChange');
+            vi.spyOn(testComponent, 'onBlurChange');
 
             inputElement.dispatchEvent(new Event('blur'));
             testFixture.changeDetectorRef.markForCheck();
@@ -415,7 +415,7 @@ describe('InputNumber', () => {
         });
 
         it('should handle Enter key', async () => {
-            spyOn(testComponent, 'onKeyDownChange');
+            vi.spyOn(testComponent, 'onKeyDownChange');
 
             const keyEvent = new KeyboardEvent('keydown', { key: 'Enter' });
             inputElement.dispatchEvent(keyEvent);
@@ -427,7 +427,7 @@ describe('InputNumber', () => {
 
         it('should allow valid numeric characters in keypress', () => {
             const keyEvent = new KeyboardEvent('keypress', { charCode: 53, which: 53 }); // '5'
-            spyOn(keyEvent, 'preventDefault');
+            vi.spyOn(keyEvent, 'preventDefault');
 
             inputElement.dispatchEvent(keyEvent);
 
@@ -437,7 +437,7 @@ describe('InputNumber', () => {
 
         it('should prevent invalid characters in keypress', () => {
             const keyEvent = new KeyboardEvent('keypress', { charCode: 97 }); // 'a'
-            spyOn(keyEvent, 'preventDefault');
+            vi.spyOn(keyEvent, 'preventDefault');
 
             inputElement.dispatchEvent(keyEvent);
 

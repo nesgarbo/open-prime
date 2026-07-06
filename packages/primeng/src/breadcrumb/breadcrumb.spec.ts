@@ -495,7 +495,7 @@ describe('Breadcrumb', () => {
 
     describe('Navigation Tests', () => {
         it('should handle item click', async () => {
-            spyOn(breadcrumbInstance, 'onClick').and.callThrough();
+            vi.spyOn(breadcrumbInstance, 'onClick');
             component.model = [{ label: 'Clickable', url: '/click' }];
             fixture.changeDetectorRef.markForCheck();
             await fixture.whenStable();
@@ -509,7 +509,7 @@ describe('Breadcrumb', () => {
         });
 
         it('should emit onItemClick event', () => {
-            spyOn(breadcrumbInstance.onItemClick, 'emit');
+            vi.spyOn(breadcrumbInstance.onItemClick, 'emit');
             const testItem: MenuItem = { label: 'Test', url: '/test' };
             const clickEvent = new MouseEvent('click');
 
@@ -522,7 +522,7 @@ describe('Breadcrumb', () => {
         });
 
         it('should execute item command when clicked', () => {
-            const commandSpy = jasmine.createSpy('command');
+            const commandSpy = vi.fn();
             const testItem: MenuItem = { label: 'Command Item', command: commandSpy };
             const clickEvent = new MouseEvent('click');
 
@@ -536,7 +536,7 @@ describe('Breadcrumb', () => {
 
         it('should prevent default for disabled items', () => {
             const clickEvent = new MouseEvent('click');
-            spyOn(clickEvent, 'preventDefault');
+            vi.spyOn(clickEvent, 'preventDefault');
             const disabledItem: MenuItem = { label: 'Disabled', disabled: true };
 
             breadcrumbInstance.onClick(clickEvent, disabledItem);
@@ -546,7 +546,7 @@ describe('Breadcrumb', () => {
 
         it('should prevent default for items without url or routerLink', () => {
             const clickEvent = new MouseEvent('click');
-            spyOn(clickEvent, 'preventDefault');
+            vi.spyOn(clickEvent, 'preventDefault');
             const noLinkItem: MenuItem = { label: 'No Link' };
 
             breadcrumbInstance.onClick(clickEvent, noLinkItem);
@@ -556,7 +556,7 @@ describe('Breadcrumb', () => {
 
         it('should not prevent default for items with url', () => {
             const clickEvent = new MouseEvent('click');
-            spyOn(clickEvent, 'preventDefault');
+            vi.spyOn(clickEvent, 'preventDefault');
             const urlItem: MenuItem = { label: 'URL Item', url: '/url' };
 
             breadcrumbInstance.onClick(clickEvent, urlItem);
@@ -1023,7 +1023,7 @@ describe('Breadcrumb', () => {
         });
 
         it('should call onClick programmatically', () => {
-            spyOn(breadcrumbInstance.onItemClick, 'emit');
+            vi.spyOn(breadcrumbInstance.onItemClick, 'emit');
 
             const testItem: MenuItem = { label: 'Test', url: '/test' };
             const mockEvent = new MouseEvent('click');
@@ -1036,7 +1036,7 @@ describe('Breadcrumb', () => {
         });
 
         it('should handle onClick with item command', () => {
-            const commandSpy = jasmine.createSpy('commandSpy');
+            const commandSpy = vi.fn();
             const testItem: MenuItem = { label: 'Command Item', command: commandSpy };
             const mockEvent = new MouseEvent('click');
 
@@ -1050,7 +1050,7 @@ describe('Breadcrumb', () => {
 
         it('should handle preventDefault in onClick for disabled items', () => {
             const mockEvent = new MouseEvent('click');
-            spyOn(mockEvent, 'preventDefault');
+            vi.spyOn(mockEvent, 'preventDefault');
             const disabledItem: MenuItem = { label: 'Disabled', disabled: true };
 
             breadcrumbInstance.onClick(mockEvent, disabledItem);
@@ -1059,7 +1059,7 @@ describe('Breadcrumb', () => {
         });
 
         it('should return early for disabled items in onClick', () => {
-            spyOn(breadcrumbInstance.onItemClick, 'emit');
+            vi.spyOn(breadcrumbInstance.onItemClick, 'emit');
             const mockEvent = new MouseEvent('click');
             const disabledItem: MenuItem = { label: 'Disabled', disabled: true };
 
@@ -1204,7 +1204,7 @@ describe('Breadcrumb', () => {
                 { label: 'Item 2', url: '/item2' }
             ];
 
-            spyOn(ptBreadcrumb, 'getPTOptions').and.callThrough();
+            vi.spyOn(ptBreadcrumb, 'getPTOptions');
             ptFixture.detectChanges();
 
             // Verify getPTOptions is called with correct parameters

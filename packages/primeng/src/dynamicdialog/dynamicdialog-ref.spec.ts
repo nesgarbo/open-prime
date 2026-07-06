@@ -9,7 +9,7 @@ describe('DynamicDialogRef', () => {
 
     describe('close', () => {
         it('should emit the result through onClose', () => {
-            const spy = jasmine.createSpy('onClose');
+            const spy = vi.fn();
             ref.onClose.subscribe(spy);
 
             ref.close('result-value');
@@ -18,7 +18,7 @@ describe('DynamicDialogRef', () => {
         });
 
         it('should emit undefined when no result is provided', () => {
-            const spy = jasmine.createSpy('onClose');
+            const spy = vi.fn();
             ref.onClose.subscribe(spy);
 
             ref.close();
@@ -27,25 +27,25 @@ describe('DynamicDialogRef', () => {
         });
 
         it('should complete onClose after the teardown delay', () => {
-            jasmine.clock().install();
+            vi.useFakeTimers();
             try {
-                const completeSpy = jasmine.createSpy('complete');
+                const completeSpy = vi.fn();
                 ref.onClose.subscribe({ complete: completeSpy });
 
                 ref.close('done');
                 expect(completeSpy).not.toHaveBeenCalled();
 
-                jasmine.clock().tick(1000);
+                vi.advanceTimersByTime(1000);
                 expect(completeSpy).toHaveBeenCalledTimes(1);
             } finally {
-                jasmine.clock().uninstall();
+                vi.useRealTimers();
             }
         });
     });
 
     describe('destroy', () => {
         it('should emit through onDestroy', () => {
-            const spy = jasmine.createSpy('onDestroy');
+            const spy = vi.fn();
             ref.onDestroy.subscribe(spy);
 
             ref.destroy();
@@ -56,7 +56,7 @@ describe('DynamicDialogRef', () => {
 
     describe('drag, resize and maximize callbacks', () => {
         it('should forward dragStart events', () => {
-            const spy = jasmine.createSpy('onDragStart');
+            const spy = vi.fn();
             const event = new MouseEvent('mousedown');
             ref.onDragStart.subscribe(spy);
 
@@ -66,7 +66,7 @@ describe('DynamicDialogRef', () => {
         });
 
         it('should forward dragEnd events', () => {
-            const spy = jasmine.createSpy('onDragEnd');
+            const spy = vi.fn();
             const event = new MouseEvent('mouseup');
             ref.onDragEnd.subscribe(spy);
 
@@ -76,7 +76,7 @@ describe('DynamicDialogRef', () => {
         });
 
         it('should forward resizeInit events', () => {
-            const spy = jasmine.createSpy('onResizeInit');
+            const spy = vi.fn();
             const event = new MouseEvent('mousedown');
             ref.onResizeInit.subscribe(spy);
 
@@ -86,7 +86,7 @@ describe('DynamicDialogRef', () => {
         });
 
         it('should forward resizeEnd events', () => {
-            const spy = jasmine.createSpy('onResizeEnd');
+            const spy = vi.fn();
             const event = new MouseEvent('mouseup');
             ref.onResizeEnd.subscribe(spy);
 
@@ -96,7 +96,7 @@ describe('DynamicDialogRef', () => {
         });
 
         it('should forward the maximize value', () => {
-            const spy = jasmine.createSpy('onMaximize');
+            const spy = vi.fn();
             ref.onMaximize.subscribe(spy);
 
             ref.maximize({ maximized: true });

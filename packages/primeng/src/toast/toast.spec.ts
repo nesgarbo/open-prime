@@ -269,8 +269,8 @@ describe('Toast', () => {
         });
 
         it('should subscribe to messageService on init', () => {
-            spyOn(messageService.messageObserver, 'subscribe').and.callThrough();
-            spyOn(messageService.clearObserver, 'subscribe').and.callThrough();
+            vi.spyOn(messageService.messageObserver, 'subscribe');
+            vi.spyOn(messageService.clearObserver, 'subscribe');
 
             const newFixture = TestBed.createComponent(TestBasicToastComponent);
             newFixture.detectChanges();
@@ -313,7 +313,7 @@ describe('Toast', () => {
             const toastInstance = toastEl.componentInstance as Toast;
 
             expect(toastInstance.messages?.length).toBe(2);
-            expect(toastInstance.messages).toEqual(jasmine.arrayContaining(messages));
+            expect(toastInstance.messages).toEqual(expect.arrayContaining(messages));
         });
 
         it('should trigger clearAll when messageService clear is called', async () => {
@@ -333,7 +333,7 @@ describe('Toast', () => {
             const toastInstance = toastEl.componentInstance as Toast;
             expect(toastInstance.messages?.length).toBe(1);
 
-            spyOn(toastInstance, 'clearAll').and.callThrough();
+            vi.spyOn(toastInstance, 'clearAll');
             messageService.clear('test');
             await new Promise((resolve) => setTimeout(resolve, 100));
             await fixture.whenStable();
@@ -359,7 +359,7 @@ describe('Toast', () => {
             const toastInstance = toastEl.componentInstance as Toast;
             expect(toastInstance.messages?.length).toBe(1);
 
-            spyOn(toastInstance, 'clearAll').and.callThrough();
+            vi.spyOn(toastInstance, 'clearAll');
             messageService.clear();
             await new Promise((resolve) => setTimeout(resolve, 100));
             await fixture.whenStable();
@@ -518,7 +518,7 @@ describe('Toast', () => {
 
             const toastEl = fixture.debugElement.query(By.css('p-toast'));
             const toastInstance = toastEl.componentInstance as Toast;
-            spyOn(toastInstance, 'onMessageClose');
+            vi.spyOn(toastInstance, 'onMessageClose');
 
             // Capture toast item reference BEFORE clicking close (it may be removed from DOM after)
             const toastItemEl = fixture.debugElement.query(By.css('p-toast-item'));
@@ -612,7 +612,7 @@ describe('Toast', () => {
         it('should handle animation start events', () => {
             const toastEl = fixture.debugElement.query(By.css('p-toast'));
             const toastInstance = toastEl.componentInstance as Toast;
-            spyOn(toastInstance, 'onAnimationStart');
+            vi.spyOn(toastInstance, 'onAnimationStart');
 
             const mockAnimationEvent = {
                 fromState: 'void',
@@ -626,7 +626,7 @@ describe('Toast', () => {
         it('should handle animation end events', () => {
             const toastEl = fixture.debugElement.query(By.css('p-toast'));
             const toastInstance = toastEl.componentInstance as Toast;
-            spyOn(toastInstance, 'onAnimationEnd');
+            vi.spyOn(toastInstance, 'onAnimationEnd');
 
             toastInstance.onAnimationEnd();
             expect(toastInstance.onAnimationEnd).toHaveBeenCalledWith();
@@ -712,8 +712,8 @@ describe('Toast', () => {
             const toastEl = fixture.debugElement.query(By.css('p-toast'));
             const toastInstance = toastEl.componentInstance as Toast;
 
-            spyOn(toastInstance.messageSubscription!, 'unsubscribe');
-            spyOn(toastInstance.clearSubscription!, 'unsubscribe');
+            vi.spyOn(toastInstance.messageSubscription!, 'unsubscribe');
+            vi.spyOn(toastInstance.clearSubscription!, 'unsubscribe');
 
             fixture.destroy();
 
@@ -731,7 +731,7 @@ describe('Toast', () => {
             const toastInstance = toastEl.componentInstance as Toast;
 
             toastInstance.ngAfterViewInit(); // This creates the style
-            spyOn(toastInstance, 'destroyStyle');
+            vi.spyOn(toastInstance, 'destroyStyle');
 
             fixture.destroy();
 
@@ -1392,7 +1392,7 @@ describe('ToastItem', () => {
                 sticky: true
             });
 
-            spyOn(window, 'setTimeout');
+            vi.spyOn(window, 'setTimeout');
             component.initTimeout();
 
             expect(window.setTimeout).not.toHaveBeenCalled();
@@ -1400,7 +1400,7 @@ describe('ToastItem', () => {
 
         it('should clear timeout', () => {
             component.timeout = setTimeout(() => {}, 1000);
-            spyOn(window, 'clearTimeout');
+            vi.spyOn(window, 'clearTimeout');
 
             component.clearTimeout();
 
@@ -1409,20 +1409,20 @@ describe('ToastItem', () => {
         });
 
         it('should handle mouse enter to clear timeout', () => {
-            spyOn(component, 'clearTimeout');
+            vi.spyOn(component, 'clearTimeout');
             component.onMouseEnter();
             expect(component.clearTimeout).toHaveBeenCalled();
         });
 
         it('should handle mouse leave to reinitialize timeout', () => {
-            spyOn(component, 'initTimeout');
+            vi.spyOn(component, 'initTimeout');
             component.onMouseLeave();
             expect(component.initTimeout).toHaveBeenCalled();
         });
 
         it('should handle close icon click', () => {
-            spyOn(component, 'clearTimeout');
-            spyOn(Event.prototype, 'preventDefault');
+            vi.spyOn(component, 'clearTimeout');
+            vi.spyOn(Event.prototype, 'preventDefault');
 
             const mockEvent = new Event('click');
             component.onCloseIconClick(mockEvent);
@@ -1593,7 +1593,7 @@ describe('ToastItem', () => {
         });
 
         it('should clear timeout on destroy', () => {
-            spyOn(component, 'clearTimeout');
+            vi.spyOn(component, 'clearTimeout');
 
             fixture.destroy();
 
@@ -1604,7 +1604,7 @@ describe('ToastItem', () => {
             fixture.componentRef.setInput('message', { ...component.message(), sticky: false });
             fixture.componentRef.setInput('life', 1000);
 
-            spyOn(component, 'clearTimeout').and.callThrough();
+            vi.spyOn(component, 'clearTimeout');
 
             // Initialize timeout multiple times
             component.initTimeout();

@@ -406,8 +406,8 @@ describe('ContextMenu', () => {
             const mockEvent = {
                 pageX: 100,
                 pageY: 150,
-                stopPropagation: jasmine.createSpy(),
-                preventDefault: jasmine.createSpy()
+                stopPropagation: vi.fn(),
+                preventDefault: vi.fn()
             };
 
             contextMenuInstance.show(mockEvent);
@@ -430,8 +430,8 @@ describe('ContextMenu', () => {
             const mockEvent = {
                 pageX: 100,
                 pageY: 150,
-                stopPropagation: jasmine.createSpy(),
-                preventDefault: jasmine.createSpy()
+                stopPropagation: vi.fn(),
+                preventDefault: vi.fn()
             };
 
             expect(contextMenuInstance.visible()).toBe(false);
@@ -444,13 +444,13 @@ describe('ContextMenu', () => {
         });
 
         it('should emit onShow when showing', () => {
-            spyOn(contextMenuInstance.onShow, 'emit');
+            vi.spyOn(contextMenuInstance.onShow, 'emit');
 
             const mockEvent = {
                 pageX: 100,
                 pageY: 150,
-                stopPropagation: jasmine.createSpy(),
-                preventDefault: jasmine.createSpy()
+                stopPropagation: vi.fn(),
+                preventDefault: vi.fn()
             };
 
             contextMenuInstance.show(mockEvent);
@@ -459,7 +459,7 @@ describe('ContextMenu', () => {
         });
 
         it('should emit onHide when hiding', () => {
-            spyOn(contextMenuInstance.onHide, 'emit');
+            vi.spyOn(contextMenuInstance.onHide, 'emit');
             contextMenuInstance.visible.set(true);
 
             contextMenuInstance.hide();
@@ -471,8 +471,8 @@ describe('ContextMenu', () => {
             const mockEvent = {
                 pageX: 100,
                 pageY: 150,
-                stopPropagation: jasmine.createSpy(),
-                preventDefault: jasmine.createSpy()
+                stopPropagation: vi.fn(),
+                preventDefault: vi.fn()
             };
 
             contextMenuInstance.show(mockEvent);
@@ -490,7 +490,7 @@ describe('ContextMenu', () => {
             const targetContextMenu = targetFixture.debugElement.query(By.directive(ContextMenu)).componentInstance;
 
             // Mock the bindTriggerEventListener BEFORE detecting changes
-            spyOn(targetContextMenu, 'bindTriggerEventListener');
+            vi.spyOn(targetContextMenu, 'bindTriggerEventListener');
 
             // Now detect changes to trigger ngOnInit
             await targetFixture.whenStable();
@@ -510,7 +510,7 @@ describe('ContextMenu', () => {
         });
 
         it('should bind trigger event listener on init', () => {
-            spyOn(contextMenuInstance, 'bindTriggerEventListener');
+            vi.spyOn(contextMenuInstance, 'bindTriggerEventListener');
 
             contextMenuInstance.onInit();
 
@@ -618,10 +618,10 @@ describe('ContextMenu', () => {
 
         it('should handle arrow down key', () => {
             const keyEvent = new KeyboardEvent('keydown', { code: 'ArrowDown' });
-            spyOn(keyEvent, 'preventDefault');
+            vi.spyOn(keyEvent, 'preventDefault');
 
             // Mock the changeFocusedItemIndex method to prevent rootmenu access errors
-            spyOn(contextMenuInstance, 'changeFocusedItemIndex');
+            vi.spyOn(contextMenuInstance, 'changeFocusedItemIndex');
 
             contextMenuInstance.onKeyDown(keyEvent);
 
@@ -630,7 +630,7 @@ describe('ContextMenu', () => {
 
         it('should handle arrow up key', () => {
             const keyEvent = new KeyboardEvent('keydown', { code: 'ArrowUp' });
-            spyOn(keyEvent, 'preventDefault');
+            vi.spyOn(keyEvent, 'preventDefault');
 
             contextMenuInstance.onKeyDown(keyEvent);
 
@@ -639,8 +639,8 @@ describe('ContextMenu', () => {
 
         it('should handle escape key', () => {
             const keyEvent = new KeyboardEvent('keydown', { code: 'Escape' });
-            spyOn(contextMenuInstance, 'hide');
-            spyOn(keyEvent, 'preventDefault');
+            vi.spyOn(contextMenuInstance, 'hide');
+            vi.spyOn(keyEvent, 'preventDefault');
 
             contextMenuInstance.onKeyDown(keyEvent);
 
@@ -650,10 +650,10 @@ describe('ContextMenu', () => {
 
         it('should handle enter key', () => {
             const keyEvent = new KeyboardEvent('keydown', { code: 'Enter' });
-            spyOn(keyEvent, 'preventDefault');
+            vi.spyOn(keyEvent, 'preventDefault');
 
             // Mock the onEnterKey method to prevent rootmenu access errors
-            spyOn(contextMenuInstance, 'onEnterKey');
+            vi.spyOn(contextMenuInstance, 'onEnterKey');
 
             contextMenuInstance.onKeyDown(keyEvent);
 
@@ -662,7 +662,7 @@ describe('ContextMenu', () => {
 
         it('should handle space key', () => {
             const keyEvent = new KeyboardEvent('keydown', { code: 'Space' });
-            spyOn(contextMenuInstance, 'onEnterKey');
+            vi.spyOn(contextMenuInstance, 'onEnterKey');
 
             contextMenuInstance.onKeyDown(keyEvent);
 
@@ -671,7 +671,7 @@ describe('ContextMenu', () => {
 
         it('should handle home key', () => {
             const keyEvent = new KeyboardEvent('keydown', { code: 'Home' });
-            spyOn(keyEvent, 'preventDefault');
+            vi.spyOn(keyEvent, 'preventDefault');
 
             contextMenuInstance.onKeyDown(keyEvent);
 
@@ -680,10 +680,10 @@ describe('ContextMenu', () => {
 
         it('should handle end key', () => {
             const keyEvent = new KeyboardEvent('keydown', { code: 'End' });
-            spyOn(keyEvent, 'preventDefault');
+            vi.spyOn(keyEvent, 'preventDefault');
 
             // Mock the onEndKey method to prevent rootmenu access errors
-            spyOn(contextMenuInstance, 'onEndKey');
+            vi.spyOn(contextMenuInstance, 'onEndKey');
 
             contextMenuInstance.onKeyDown(keyEvent);
 
@@ -692,7 +692,7 @@ describe('ContextMenu', () => {
 
         it('should handle tab key', () => {
             const keyEvent = new KeyboardEvent('keydown', { code: 'Tab' });
-            spyOn(contextMenuInstance, 'hide');
+            vi.spyOn(contextMenuInstance, 'hide');
 
             contextMenuInstance.onKeyDown(keyEvent);
 
@@ -701,7 +701,7 @@ describe('ContextMenu', () => {
 
         it('should handle printable character search', () => {
             const keyEvent = new KeyboardEvent('keydown', { key: 'f' });
-            spyOn(contextMenuInstance, 'searchItems');
+            vi.spyOn(contextMenuInstance, 'searchItems');
 
             contextMenuInstance.onKeyDown(keyEvent);
 
@@ -852,8 +852,8 @@ describe('ContextMenu', () => {
             const mockEvent = {
                 pageX: 250,
                 pageY: 300,
-                stopPropagation: jasmine.createSpy(),
-                preventDefault: jasmine.createSpy()
+                stopPropagation: vi.fn(),
+                preventDefault: vi.fn()
             };
 
             contextMenuInstance.show(mockEvent);
@@ -930,8 +930,8 @@ describe('ContextMenu', () => {
             const mockEvent = {
                 pageX: 100,
                 pageY: 150,
-                stopPropagation: jasmine.createSpy(),
-                preventDefault: jasmine.createSpy()
+                stopPropagation: vi.fn(),
+                preventDefault: vi.fn()
             };
 
             expect(() => {
@@ -1070,13 +1070,13 @@ describe('ContextMenu', () => {
         });
 
         it('should call show method programmatically', () => {
-            spyOn(contextMenuInstance.onShow, 'emit');
+            vi.spyOn(contextMenuInstance.onShow, 'emit');
 
             const mockEvent = {
                 pageX: 200,
                 pageY: 250,
-                stopPropagation: jasmine.createSpy(),
-                preventDefault: jasmine.createSpy()
+                stopPropagation: vi.fn(),
+                preventDefault: vi.fn()
             };
 
             contextMenuInstance.show(mockEvent);
@@ -1086,7 +1086,7 @@ describe('ContextMenu', () => {
         });
 
         it('should call hide method programmatically', () => {
-            spyOn(contextMenuInstance.onHide, 'emit');
+            vi.spyOn(contextMenuInstance.onHide, 'emit');
             contextMenuInstance.visible.set(true);
 
             contextMenuInstance.hide();
@@ -1099,8 +1099,8 @@ describe('ContextMenu', () => {
             const mockEvent = {
                 pageX: 150,
                 pageY: 200,
-                stopPropagation: jasmine.createSpy(),
-                preventDefault: jasmine.createSpy()
+                stopPropagation: vi.fn(),
+                preventDefault: vi.fn()
             };
 
             expect(contextMenuInstance.visible()).toBe(false);

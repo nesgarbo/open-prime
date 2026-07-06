@@ -222,7 +222,7 @@ describe('CommandMenu', () => {
         });
 
         it('should resolve option values via optionValue', async () => {
-            spyOn(fixture.componentInstance, 'onItemSelect');
+            vi.spyOn(fixture.componentInstance, 'onItemSelect');
             fixture.componentInstance.optionValue = 'id';
             fixture.componentInstance.options = [
                 { label: 'Item 1', id: 100 },
@@ -236,7 +236,7 @@ describe('CommandMenu', () => {
             fixture.changeDetectorRef.markForCheck();
             await fixture.whenStable();
 
-            expect(fixture.componentInstance.onItemSelect).toHaveBeenCalledWith(jasmine.objectContaining({ value: 100 }));
+            expect(fixture.componentInstance.onItemSelect).toHaveBeenCalledWith(expect.objectContaining({ value: 100 }));
         });
     });
 
@@ -257,11 +257,11 @@ describe('CommandMenu', () => {
         });
 
         it('should emit onSearchChange when typing', async () => {
-            spyOn(fixture.componentInstance, 'onSearchChange');
+            vi.spyOn(fixture.componentInstance, 'onSearchChange');
 
             await typeSearch(fixture, 'test');
 
-            expect(fixture.componentInstance.onSearchChange).toHaveBeenCalledWith(jasmine.objectContaining({ query: 'test' }));
+            expect(fixture.componentInstance.onSearchChange).toHaveBeenCalledWith(expect.objectContaining({ query: 'test' }));
         });
 
         it('should filter grouped options and remove empty groups', async () => {
@@ -329,7 +329,7 @@ describe('CommandMenu', () => {
         });
 
         it('should use custom filter function when provided', async () => {
-            const customFilter = jasmine.createSpy('customFilter').and.callFake((label: string, search: string) => {
+            const customFilter = vi.fn().mockImplementation((label: string, search: string) => {
                 return label.startsWith(search) ? 1 : 0;
             });
             fixture.componentInstance.filter = customFilter;
@@ -408,7 +408,7 @@ describe('CommandMenu', () => {
         });
 
         it('should select focused option with Enter', async () => {
-            spyOn(fixture.componentInstance, 'onItemSelect');
+            vi.spyOn(fixture.componentInstance, 'onItemSelect');
 
             dispatchKeydown(fixture, 'ArrowDown');
             fixture.changeDetectorRef.markForCheck();
@@ -476,7 +476,7 @@ describe('CommandMenu', () => {
         });
 
         it('should emit onItemSelect on option click', async () => {
-            spyOn(fixture.componentInstance, 'onItemSelect');
+            vi.spyOn(fixture.componentInstance, 'onItemSelect');
 
             const options = getOptions(fixture);
             options[0].click();
@@ -484,14 +484,14 @@ describe('CommandMenu', () => {
             await fixture.whenStable();
 
             expect(fixture.componentInstance.onItemSelect).toHaveBeenCalledWith(
-                jasmine.objectContaining({
-                    option: jasmine.objectContaining({ label: 'Option 1' })
+                expect.objectContaining({
+                    option: expect.objectContaining({ label: 'Option 1' })
                 })
             );
         });
 
         it('should emit correct value using optionValue', async () => {
-            spyOn(fixture.componentInstance, 'onItemSelect');
+            vi.spyOn(fixture.componentInstance, 'onItemSelect');
             fixture.componentInstance.optionValue = 'value';
             fixture.changeDetectorRef.markForCheck();
             await fixture.whenStable();
@@ -501,11 +501,11 @@ describe('CommandMenu', () => {
             fixture.changeDetectorRef.markForCheck();
             await fixture.whenStable();
 
-            expect(fixture.componentInstance.onItemSelect).toHaveBeenCalledWith(jasmine.objectContaining({ value: 'opt2' }));
+            expect(fixture.componentInstance.onItemSelect).toHaveBeenCalledWith(expect.objectContaining({ value: 'opt2' }));
         });
 
         it('should not emit onItemSelect for disabled options', async () => {
-            spyOn(fixture.componentInstance, 'onItemSelect');
+            vi.spyOn(fixture.componentInstance, 'onItemSelect');
             fixture.componentInstance.optionDisabled = 'disabled';
             fixture.componentInstance.options = [
                 { label: 'Enabled', value: 'e' },
@@ -523,7 +523,7 @@ describe('CommandMenu', () => {
         });
 
         it('should invoke option.command callback on selection', async () => {
-            const commandSpy = jasmine.createSpy('command');
+            const commandSpy = vi.fn();
             fixture.componentInstance.options = [{ label: 'With Command', value: 'cmd', command: commandSpy }];
             fixture.changeDetectorRef.markForCheck();
             await fixture.whenStable();
@@ -537,7 +537,7 @@ describe('CommandMenu', () => {
         });
 
         it('should not select when readonly', async () => {
-            spyOn(fixture.componentInstance, 'onItemSelect');
+            vi.spyOn(fixture.componentInstance, 'onItemSelect');
             fixture.componentInstance.readonly = true;
             fixture.changeDetectorRef.markForCheck();
             await fixture.whenStable();
@@ -557,7 +557,7 @@ describe('CommandMenu', () => {
 
         beforeEach(async () => {
             fixture = await createFixture(TestCommandMenuComponent);
-            spyOn(fixture.componentInstance, 'onItemSelect');
+            vi.spyOn(fixture.componentInstance, 'onItemSelect');
             fixture.componentInstance.optionDisabled = 'disabled';
             fixture.componentInstance.options = [
                 { label: 'Enabled', value: 'e' },
@@ -708,7 +708,7 @@ describe('CommandMenu', () => {
         it('should focus input via focusInput() method', () => {
             const commandMenu = fixture.debugElement.query(By.directive(CommandMenu)).componentInstance as CommandMenu;
             const input = getSearchInput(fixture);
-            spyOn(input, 'focus');
+            vi.spyOn(input, 'focus');
 
             commandMenu.focusInput();
 

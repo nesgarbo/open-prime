@@ -756,7 +756,7 @@ describe('OrganizationChart', () => {
             const nodeComponent = nodeElements[0].componentInstance as OrganizationChartNode;
 
             const event = new MouseEvent('click');
-            spyOn(event, 'preventDefault');
+            vi.spyOn(event, 'preventDefault');
 
             nodeComponent.toggleNode(event, component.data[0]);
 
@@ -939,7 +939,7 @@ describe('OrganizationChart', () => {
                 ptFixture.componentRef.setInput('value', [{ label: 'Root' }]);
                 ptFixture.componentRef.setInput('pt', {
                     root: {
-                        onclick: jasmine.createSpy('onRootClick')
+                        onclick: vi.fn()
                     }
                 });
                 ptFixture.detectChanges();

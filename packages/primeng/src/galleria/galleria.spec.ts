@@ -316,7 +316,7 @@ describe('Galleria', () => {
         });
 
         it('should emit activeIndexChange event', () => {
-            spyOn(component, 'onActiveIndexChange');
+            vi.spyOn(component, 'onActiveIndexChange');
 
             galleriaInstance.onActiveItemChange(2);
 
@@ -325,7 +325,7 @@ describe('Galleria', () => {
         });
 
         it('should not emit activeIndexChange if index is same', () => {
-            spyOn(galleriaInstance.activeIndexChange, 'emit');
+            vi.spyOn(galleriaInstance.activeIndexChange, 'emit');
 
             galleriaInstance._activeIndex.set(1);
             galleriaInstance.onActiveItemChange(1);

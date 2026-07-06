@@ -145,7 +145,7 @@ describe('ScrollTop', () => {
         });
 
         it('should initialize with window target', () => {
-            spyOn(scrollTop, 'bindDocumentScrollListener');
+            vi.spyOn(scrollTop, 'bindDocumentScrollListener');
             scrollTop.ngOnInit();
             expect(scrollTop.bindDocumentScrollListener).toHaveBeenCalled();
         });
@@ -156,7 +156,7 @@ describe('ScrollTop', () => {
             await fixture.whenStable();
             fixture.detectChanges();
 
-            spyOn(scrollTop, 'bindParentScrollListener');
+            vi.spyOn(scrollTop, 'bindParentScrollListener');
             scrollTop.ngOnInit();
             expect(scrollTop.bindParentScrollListener).toHaveBeenCalled();
         });
@@ -231,9 +231,9 @@ describe('ScrollTop', () => {
         });
 
         it('should scroll to top when clicked (window target)', () => {
-            const scrollSpy = jasmine.createSpy('scroll');
+            const scrollSpy = vi.fn();
             const mockWindow = { scroll: scrollSpy };
-            spyOnProperty(scrollTop.document, 'defaultView').and.returnValue(mockWindow as any);
+            spyOnProperty(scrollTop.document, 'defaultView').mockReturnValue(mockWindow as any);
 
             scrollTop.onClick();
 
@@ -249,9 +249,9 @@ describe('ScrollTop', () => {
             styleFixture.detectChanges();
             const autoScrollTop = styleFixture.debugElement.query(By.directive(ScrollTop)).componentInstance;
 
-            const scrollSpy = jasmine.createSpy('scroll');
+            const scrollSpy = vi.fn();
             const mockWindow = { scroll: scrollSpy };
-            spyOnProperty(autoScrollTop.document, 'defaultView').and.returnValue(mockWindow as any);
+            spyOnProperty(autoScrollTop.document, 'defaultView').mockReturnValue(mockWindow as any);
 
             autoScrollTop.onClick();
 
@@ -267,10 +267,10 @@ describe('ScrollTop', () => {
             const parentScrollTop = parentFixture.debugElement.query(By.directive(ScrollTop)).componentInstance;
 
             const parentElement = document.createElement('div');
-            const scrollSpy = jasmine.createSpy('scroll');
+            const scrollSpy = vi.fn();
             parentElement.scroll = scrollSpy;
 
-            spyOnProperty(parentScrollTop.el.nativeElement, 'parentElement').and.returnValue(parentElement);
+            spyOnProperty(parentScrollTop.el.nativeElement, 'parentElement').mockReturnValue(parentElement);
 
             parentScrollTop.onClick();
 
@@ -292,27 +292,27 @@ describe('ScrollTop', () => {
         });
 
         it('should bind document scroll listener for window target', () => {
-            const listenerSpy = jasmine.createSpy('listener');
-            spyOn(scrollTop.renderer, 'listen').and.returnValue(listenerSpy);
+            const listenerSpy = vi.fn();
+            vi.spyOn(scrollTop.renderer, 'listen').mockReturnValue(listenerSpy);
 
             scrollTop.bindDocumentScrollListener();
 
-            expect(scrollTop.renderer.listen).toHaveBeenCalledWith(scrollTop.document.defaultView, 'scroll', jasmine.any(Function));
+            expect(scrollTop.renderer.listen).toHaveBeenCalledWith(scrollTop.document.defaultView, 'scroll', expect.any(Function));
             expect(scrollTop.documentScrollListener).toBe(listenerSpy);
         });
 
         it('should bind parent scroll listener for parent target', () => {
-            const listenerSpy = jasmine.createSpy('listener');
-            spyOn(scrollTop.renderer, 'listen').and.returnValue(listenerSpy);
+            const listenerSpy = vi.fn();
+            vi.spyOn(scrollTop.renderer, 'listen').mockReturnValue(listenerSpy);
 
             scrollTop.bindParentScrollListener();
 
-            expect(scrollTop.renderer.listen).toHaveBeenCalledWith(scrollTop.el.nativeElement.parentElement, 'scroll', jasmine.any(Function));
+            expect(scrollTop.renderer.listen).toHaveBeenCalledWith(scrollTop.el.nativeElement.parentElement, 'scroll', expect.any(Function));
             expect(scrollTop.parentScrollListener).toBe(listenerSpy);
         });
 
         it('should unbind document scroll listener', () => {
-            const listenerSpy = jasmine.createSpy('listener');
+            const listenerSpy = vi.fn();
             scrollTop.documentScrollListener = listenerSpy;
 
             scrollTop.unbindDocumentScrollListener();
@@ -322,7 +322,7 @@ describe('ScrollTop', () => {
         });
 
         it('should unbind parent scroll listener', () => {
-            const listenerSpy = jasmine.createSpy('listener');
+            const listenerSpy = vi.fn();
             scrollTop.parentScrollListener = listenerSpy;
 
             scrollTop.unbindParentScrollListener();
@@ -343,7 +343,7 @@ describe('ScrollTop', () => {
             serverFixture.detectChanges();
             const serverScrollTop = serverFixture.debugElement.query(By.directive(ScrollTop)).componentInstance;
 
-            spyOn(serverScrollTop.renderer, 'listen');
+            vi.spyOn(serverScrollTop.renderer, 'listen');
 
             serverScrollTop.bindDocumentScrollListener();
             serverScrollTop.bindParentScrollListener();
@@ -437,7 +437,7 @@ describe('ScrollTop', () => {
             // Check if the component received the button props
             if (scrollTop.buttonProps() && scrollTop.buttonProps().severity === 'danger') {
                 expect(scrollTop.buttonProps()).toEqual(
-                    jasmine.objectContaining({
+                    expect.objectContaining({
                         rounded: false,
                         severity: 'danger'
                     })
@@ -487,10 +487,10 @@ describe('ScrollTop', () => {
         });
 
         it('should monitor parent scroll', async () => {
-            const checkVisibilitySpy = spyOn(scrollTop, 'checkVisibility');
+            const checkVisibilitySpy = vi.spyOn(scrollTop, 'checkVisibility');
 
             // Set up the parent element relationship
-            spyOnProperty(scrollTop.el.nativeElement, 'parentElement').and.returnValue(scrollContainer);
+            spyOnProperty(scrollTop.el.nativeElement, 'parentElement').mockReturnValue(scrollContainer);
 
             // Mock the parent scroll listener functionality
             const mockScrollListener = () => {
@@ -509,9 +509,9 @@ describe('ScrollTop', () => {
         });
 
         it('should scroll parent to top when clicked', () => {
-            const scrollSpy = jasmine.createSpy('scroll');
+            const scrollSpy = vi.fn();
             scrollContainer.scroll = scrollSpy;
-            spyOnProperty(scrollTop.el.nativeElement, 'parentElement').and.returnValue(scrollContainer);
+            spyOnProperty(scrollTop.el.nativeElement, 'parentElement').mockReturnValue(scrollContainer);
 
             scrollTop.onClick();
 
@@ -582,10 +582,10 @@ describe('ScrollTop', () => {
         });
 
         it('should clean up on destroy for window target', () => {
-            spyOn(scrollTop, 'unbindDocumentScrollListener');
+            vi.spyOn(scrollTop, 'unbindDocumentScrollListener');
             const overlayElement = document.createElement('div');
             scrollTop.overlay = overlayElement;
-            spyOn(ZIndexUtils, 'clear');
+            vi.spyOn(ZIndexUtils, 'clear');
 
             scrollTop.ngOnDestroy();
 
@@ -598,7 +598,7 @@ describe('ScrollTop', () => {
             const parentFixture = TestBed.createComponent(TestScrollTopWithParentComponent);
             parentFixture.detectChanges();
             const parentScrollTop = parentFixture.debugElement.query(By.directive(ScrollTop)).componentInstance;
-            spyOn(parentScrollTop, 'unbindParentScrollListener');
+            vi.spyOn(parentScrollTop, 'unbindParentScrollListener');
 
             parentScrollTop.ngOnDestroy();
 
@@ -606,13 +606,13 @@ describe('ScrollTop', () => {
         });
 
         it('should call super.ngOnInit', () => {
-            spyOn(BaseComponent.prototype, 'ngOnInit');
+            vi.spyOn(BaseComponent.prototype, 'ngOnInit');
             scrollTop.ngOnInit();
             expect(BaseComponent.prototype.ngOnInit).toHaveBeenCalled();
         });
 
         it('should call super.ngOnDestroy', () => {
-            spyOn(BaseComponent.prototype, 'ngOnDestroy');
+            vi.spyOn(BaseComponent.prototype, 'ngOnDestroy');
             scrollTop.ngOnDestroy();
             expect(BaseComponent.prototype.ngOnDestroy).toHaveBeenCalled();
         });
@@ -669,10 +669,10 @@ describe('ScrollTop', () => {
             parentFixture.detectChanges();
             const parentScrollTop = parentFixture.debugElement.query(By.directive(ScrollTop)).componentInstance;
 
-            spyOnProperty(parentScrollTop.el.nativeElement, 'parentElement').and.returnValue(null);
+            spyOnProperty(parentScrollTop.el.nativeElement, 'parentElement').mockReturnValue(null);
 
             // Mock the scroll method on parent element to avoid null access
-            spyOn(parentScrollTop, 'onClick').and.callFake(() => {
+            vi.spyOn(parentScrollTop, 'onClick').mockImplementation(() => {
                 // Simulate safe onClick behavior when parent is null
                 if (!parentScrollTop.el.nativeElement.parentElement) {
                     return;
@@ -683,10 +683,10 @@ describe('ScrollTop', () => {
         });
 
         it('should handle null document.defaultView', () => {
-            spyOnProperty(scrollTop.document, 'defaultView').and.returnValue(null as any);
+            spyOnProperty(scrollTop.document, 'defaultView').mockReturnValue(null as any);
 
             // Mock onClick to safely handle null defaultView
-            spyOn(scrollTop, 'onClick').and.callFake(() => {
+            vi.spyOn(scrollTop, 'onClick').mockImplementation(() => {
                 try {
                     const defaultView = scrollTop.document.defaultView;
                     if (defaultView) {
@@ -701,7 +701,7 @@ describe('ScrollTop', () => {
         });
 
         it('should handle multiple unbind calls', () => {
-            const listenerSpy = jasmine.createSpy('listener');
+            const listenerSpy = vi.fn();
             scrollTop.documentScrollListener = listenerSpy;
 
             scrollTop.unbindDocumentScrollListener();
@@ -761,7 +761,7 @@ describe('ScrollTop', () => {
         });
 
         it('should not create multiple listeners', () => {
-            spyOn(scrollTop.renderer, 'listen').and.returnValue(() => {});
+            vi.spyOn(scrollTop.renderer, 'listen').mockReturnValue(() => {});
 
             scrollTop.bindDocumentScrollListener();
             scrollTop.bindDocumentScrollListener();

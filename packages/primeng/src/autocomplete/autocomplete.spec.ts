@@ -775,7 +775,7 @@ describe('AutoComplete', () => {
         });
 
         it('should emit completeMethod event', async () => {
-            spyOn(testComponent, 'onSearch').and.callThrough();
+            vi.spyOn(testComponent, 'onSearch');
 
             const inputElement = testFixture.debugElement.query(By.css('input'));
             inputElement.nativeElement.value = 'test';
@@ -786,7 +786,7 @@ describe('AutoComplete', () => {
             await testFixture.whenStable();
 
             expect(testComponent.onSearch).toHaveBeenCalled();
-            const callArgs = (testComponent.onSearch as jasmine.Spy).calls.mostRecent().args[0];
+            const callArgs = (testComponent.onSearch as any).mock.calls.at(-1)[0];
             expect(callArgs.query).toBe('test');
         });
 
@@ -1437,7 +1437,7 @@ describe('AutoComplete', () => {
         });
 
         it('should handle rapid input changes with debouncing', async () => {
-            spyOn(testComponent, 'onSearch');
+            vi.spyOn(testComponent, 'onSearch');
 
             const inputElement = testFixture.debugElement.query(By.css('input'));
 
@@ -1461,7 +1461,7 @@ describe('AutoComplete', () => {
 
         it('should handle minimum length constraint', async () => {
             testComponent.minLength = 3;
-            spyOn(testComponent, 'onSearch').and.callThrough();
+            vi.spyOn(testComponent, 'onSearch');
             testFixture.changeDetectorRef.markForCheck();
             await testFixture.whenStable();
 
@@ -1566,7 +1566,7 @@ describe('AutoComplete', () => {
         it('should handle completeOnFocus feature', async () => {
             testComponent.completeOnFocus = true;
             testComponent.suggestions = mockItems;
-            spyOn(testComponent, 'onSearch').and.callThrough();
+            vi.spyOn(testComponent, 'onSearch');
 
             const inputElement = testFixture.debugElement.query(By.css('input'));
             inputElement.nativeElement.value = ''; // completeOnFocus works with empty value
@@ -1607,7 +1607,7 @@ describe('AutoComplete', () => {
 
         it('should handle search method errors gracefully', async () => {
             // Spy on console.error to avoid cluttering test output
-            spyOn(console, 'error');
+            vi.spyOn(console, 'error');
 
             testComponent.onSearch = () => {
                 console.error('Search failed');
@@ -1640,7 +1640,7 @@ describe('AutoComplete', () => {
 
         it('should handle delay configuration for performance', async () => {
             testComponent.delay = 500;
-            spyOn(testComponent, 'onSearch').and.callThrough();
+            vi.spyOn(testComponent, 'onSearch');
             testFixture.changeDetectorRef.markForCheck();
             await testFixture.whenStable();
 
@@ -1856,7 +1856,7 @@ describe('AutoComplete', () => {
                         getData: () => 'Item1,Item2,Item3'
                     },
                     target: inputElement.nativeElement,
-                    preventDefault: jasmine.createSpy('preventDefault')
+                    preventDefault: vi.fn()
                 };
 
                 autocompleteComponent.onInputPaste(pasteEvent);
@@ -2003,7 +2003,7 @@ describe('AutoComplete', () => {
                         getData: () => 'Item1,Item2,Item3'
                     },
                     target: inputElement.nativeElement,
-                    preventDefault: jasmine.createSpy('preventDefault')
+                    preventDefault: vi.fn()
                 };
 
                 autocompleteComponent.onInputPaste(pasteEvent);

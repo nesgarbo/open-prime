@@ -413,7 +413,7 @@ describe('FocusTrap', () => {
             const select = element.querySelector('.select') as HTMLElement;
             const firstHidden = directive.firstHiddenFocusableElement;
 
-            spyOn(select, 'focus');
+            vi.spyOn(select, 'focus');
 
             const focusEvent = new FocusEvent('focus', {
                 relatedTarget: null,
@@ -559,7 +559,7 @@ describe('FocusTrap', () => {
             expect(textarea.readOnly).toBe(true);
 
             // Readonly elements should still be focusable
-            spyOn(textarea, 'focus');
+            vi.spyOn(textarea, 'focus');
 
             const lastHidden = directive.lastHiddenFocusableElement;
             const focusEvent = new FocusEvent('focus', {
@@ -580,7 +580,7 @@ describe('FocusTrap', () => {
             expect(focusableDiv.getAttribute('tabindex')).toBe('0');
 
             // Should include div with tabindex in focus trap
-            spyOn(focusableDiv, 'focus');
+            vi.spyOn(focusableDiv, 'focus');
 
             const focusEvent = new FocusEvent('focus', {
                 relatedTarget: null,
@@ -599,7 +599,7 @@ describe('FocusTrap', () => {
             expect(linkElement.href).toBeTruthy();
 
             // Links should be included in focus trap
-            spyOn(linkElement, 'focus');
+            vi.spyOn(linkElement, 'focus');
 
             const focusEvent = new FocusEvent('focus', {
                 relatedTarget: null,
@@ -752,7 +752,7 @@ describe('FocusTrap', () => {
         it('should handle elements that cannot receive focus', () => {
             const nonFocusableElement = document.createElement('div');
             // Mock focus method that throws error
-            nonFocusableElement.focus = jasmine.createSpy('focus').and.throwError('Cannot focus');
+            nonFocusableElement.focus = vi.fn().mockImplementation(() => { throw new Error('Cannot focus'); });
 
             // Should handle gracefully when focus fails
             expect(() => {

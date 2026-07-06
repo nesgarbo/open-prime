@@ -409,7 +409,7 @@ describe('Dock', () => {
         });
 
         it('should handle mouse enter on item', () => {
-            spyOn(dockInstance, 'onItemMouseEnter');
+            vi.spyOn(dockInstance, 'onItemMouseEnter');
 
             const itemElement = fixture.debugElement.query(By.css('li[role="menuitem"]'));
             itemElement.triggerEventHandler('mouseenter', {});
@@ -418,7 +418,7 @@ describe('Dock', () => {
         });
 
         it('should handle mouse leave on list', () => {
-            spyOn(dockInstance, 'onListMouseLeave');
+            vi.spyOn(dockInstance, 'onListMouseLeave');
 
             const listElement = fixture.debugElement.query(By.css('ul[role="menu"]'));
             listElement.triggerEventHandler('mouseleave', {});
@@ -472,8 +472,8 @@ describe('Dock', () => {
             await fixture.whenStable();
 
             const keyEvent = new KeyboardEvent('keydown', { code: 'ArrowRight' });
-            spyOn(keyEvent, 'preventDefault');
-            spyOn(dockInstance, 'onArrowDownKey');
+            vi.spyOn(keyEvent, 'preventDefault');
+            vi.spyOn(dockInstance, 'onArrowDownKey');
 
             dockInstance.onListKeyDown(keyEvent);
 
@@ -487,8 +487,8 @@ describe('Dock', () => {
             await fixture.whenStable();
 
             const keyEvent = new KeyboardEvent('keydown', { code: 'ArrowLeft' });
-            spyOn(keyEvent, 'preventDefault');
-            spyOn(dockInstance, 'onArrowUpKey');
+            vi.spyOn(keyEvent, 'preventDefault');
+            vi.spyOn(dockInstance, 'onArrowUpKey');
 
             dockInstance.onListKeyDown(keyEvent);
 
@@ -502,8 +502,8 @@ describe('Dock', () => {
             await fixture.whenStable();
 
             const keyEvent = new KeyboardEvent('keydown', { code: 'ArrowDown' });
-            spyOn(keyEvent, 'preventDefault');
-            spyOn(dockInstance, 'onArrowDownKey');
+            vi.spyOn(keyEvent, 'preventDefault');
+            vi.spyOn(dockInstance, 'onArrowDownKey');
 
             dockInstance.onListKeyDown(keyEvent);
 
@@ -517,8 +517,8 @@ describe('Dock', () => {
             await fixture.whenStable();
 
             const keyEvent = new KeyboardEvent('keydown', { code: 'ArrowUp' });
-            spyOn(keyEvent, 'preventDefault');
-            spyOn(dockInstance, 'onArrowUpKey');
+            vi.spyOn(keyEvent, 'preventDefault');
+            vi.spyOn(dockInstance, 'onArrowUpKey');
 
             dockInstance.onListKeyDown(keyEvent);
 
@@ -528,8 +528,8 @@ describe('Dock', () => {
 
         it('should handle home key', () => {
             const keyEvent = new KeyboardEvent('keydown', { code: 'Home' });
-            spyOn(keyEvent, 'preventDefault');
-            spyOn(dockInstance, 'onHomeKey');
+            vi.spyOn(keyEvent, 'preventDefault');
+            vi.spyOn(dockInstance, 'onHomeKey');
 
             dockInstance.onListKeyDown(keyEvent);
 
@@ -539,8 +539,8 @@ describe('Dock', () => {
 
         it('should handle end key', () => {
             const keyEvent = new KeyboardEvent('keydown', { code: 'End' });
-            spyOn(keyEvent, 'preventDefault');
-            spyOn(dockInstance, 'onEndKey');
+            vi.spyOn(keyEvent, 'preventDefault');
+            vi.spyOn(dockInstance, 'onEndKey');
 
             dockInstance.onListKeyDown(keyEvent);
 
@@ -550,8 +550,8 @@ describe('Dock', () => {
 
         it('should handle enter key', () => {
             const keyEvent = new KeyboardEvent('keydown', { code: 'Enter' });
-            spyOn(keyEvent, 'preventDefault');
-            spyOn(dockInstance, 'onSpaceKey');
+            vi.spyOn(keyEvent, 'preventDefault');
+            vi.spyOn(dockInstance, 'onSpaceKey');
 
             dockInstance.onListKeyDown(keyEvent);
 
@@ -561,8 +561,8 @@ describe('Dock', () => {
 
         it('should handle space key', () => {
             const keyEvent = new KeyboardEvent('keydown', { code: 'Space' });
-            spyOn(keyEvent, 'preventDefault');
-            spyOn(dockInstance, 'onSpaceKey');
+            vi.spyOn(keyEvent, 'preventDefault');
+            vi.spyOn(dockInstance, 'onSpaceKey');
 
             dockInstance.onListKeyDown(keyEvent);
 
@@ -573,7 +573,7 @@ describe('Dock', () => {
 
     describe('Focus Management Tests', () => {
         it('should emit onFocus when list gains focus', () => {
-            spyOn(dockInstance.onFocus, 'emit');
+            vi.spyOn(dockInstance.onFocus, 'emit');
             const focusEvent = new FocusEvent('focus');
 
             dockInstance.onListFocus(focusEvent);
@@ -583,7 +583,7 @@ describe('Dock', () => {
         });
 
         it('should emit onBlur when list loses focus', () => {
-            spyOn(dockInstance.onBlur, 'emit');
+            vi.spyOn(dockInstance.onBlur, 'emit');
             const blurEvent = new FocusEvent('blur');
             dockInstance.focused.set(true);
 
@@ -597,8 +597,8 @@ describe('Dock', () => {
         it('should handle focus and blur events from template', () => {
             const listElement = fixture.debugElement.query(By.css('ul[role="menu"]'));
 
-            spyOn(component, 'onFocus');
-            spyOn(component, 'onBlur');
+            vi.spyOn(component, 'onFocus');
+            vi.spyOn(component, 'onBlur');
 
             listElement.triggerEventHandler('focus', new FocusEvent('focus'));
             expect(component.onFocus).toHaveBeenCalled();
@@ -856,7 +856,7 @@ describe('Dock', () => {
         });
 
         it('should handle memory cleanup on destroy', () => {
-            spyOn(dockInstance, 'unbindMatchMediaListener');
+            vi.spyOn(dockInstance, 'unbindMatchMediaListener');
 
             dockInstance.ngOnDestroy();
 
@@ -873,7 +873,7 @@ describe('Dock', () => {
         });
 
         it('should bind match media listener on init', () => {
-            spyOn(dockInstance, 'bindMatchMediaListener');
+            vi.spyOn(dockInstance, 'bindMatchMediaListener');
 
             dockInstance.ngOnInit();
 
@@ -881,7 +881,7 @@ describe('Dock', () => {
         });
 
         it('should unbind match media listener on destroy', () => {
-            spyOn(dockInstance, 'unbindMatchMediaListener');
+            vi.spyOn(dockInstance, 'unbindMatchMediaListener');
 
             dockInstance.ngOnDestroy();
 
@@ -1096,7 +1096,7 @@ describe('Dock', () => {
                 { label: 'Item 2', icon: 'pi pi-pencil' }
             ];
 
-            spyOn(ptDock, 'getPTOptions').and.callThrough();
+            vi.spyOn(ptDock, 'getPTOptions');
             ptFixture.changeDetectorRef.markForCheck();
             await ptFixture.whenStable();
 

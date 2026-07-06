@@ -670,7 +670,7 @@ describe('MegaMenu', () => {
         });
 
         it('should handle arrow down key', () => {
-            spyOn(megaMenuInstance, 'onArrowDownKey');
+            vi.spyOn(megaMenuInstance, 'onArrowDownKey');
             const keyEvent = new KeyboardEvent('keydown', { code: 'ArrowDown' });
 
             megaMenuInstance.onKeyDown(keyEvent);
@@ -679,7 +679,7 @@ describe('MegaMenu', () => {
         });
 
         it('should handle arrow up key', () => {
-            spyOn(megaMenuInstance, 'onArrowUpKey');
+            vi.spyOn(megaMenuInstance, 'onArrowUpKey');
             const keyEvent = new KeyboardEvent('keydown', { code: 'ArrowUp' });
 
             megaMenuInstance.onKeyDown(keyEvent);
@@ -688,7 +688,7 @@ describe('MegaMenu', () => {
         });
 
         it('should handle arrow left key', () => {
-            spyOn(megaMenuInstance, 'onArrowLeftKey');
+            vi.spyOn(megaMenuInstance, 'onArrowLeftKey');
             const keyEvent = new KeyboardEvent('keydown', { code: 'ArrowLeft' });
 
             megaMenuInstance.onKeyDown(keyEvent);
@@ -697,7 +697,7 @@ describe('MegaMenu', () => {
         });
 
         it('should handle arrow right key', () => {
-            spyOn(megaMenuInstance, 'onArrowRightKey');
+            vi.spyOn(megaMenuInstance, 'onArrowRightKey');
             const keyEvent = new KeyboardEvent('keydown', { code: 'ArrowRight' });
 
             megaMenuInstance.onKeyDown(keyEvent);
@@ -706,7 +706,7 @@ describe('MegaMenu', () => {
         });
 
         it('should handle home key', () => {
-            spyOn(megaMenuInstance, 'onHomeKey');
+            vi.spyOn(megaMenuInstance, 'onHomeKey');
             const keyEvent = new KeyboardEvent('keydown', { code: 'Home' });
 
             megaMenuInstance.onKeyDown(keyEvent);
@@ -715,7 +715,7 @@ describe('MegaMenu', () => {
         });
 
         it('should handle end key', () => {
-            spyOn(megaMenuInstance, 'onEndKey');
+            vi.spyOn(megaMenuInstance, 'onEndKey');
             const keyEvent = new KeyboardEvent('keydown', { code: 'End' });
 
             megaMenuInstance.onKeyDown(keyEvent);
@@ -724,7 +724,7 @@ describe('MegaMenu', () => {
         });
 
         it('should handle enter key', () => {
-            spyOn(megaMenuInstance, 'onEnterKey');
+            vi.spyOn(megaMenuInstance, 'onEnterKey');
             const keyEvent = new KeyboardEvent('keydown', { code: 'Enter' });
 
             megaMenuInstance.onKeyDown(keyEvent);
@@ -733,7 +733,7 @@ describe('MegaMenu', () => {
         });
 
         it('should handle space key', () => {
-            spyOn(megaMenuInstance, 'onSpaceKey');
+            vi.spyOn(megaMenuInstance, 'onSpaceKey');
             const keyEvent = new KeyboardEvent('keydown', { code: 'Space' });
 
             megaMenuInstance.onKeyDown(keyEvent);
@@ -742,7 +742,7 @@ describe('MegaMenu', () => {
         });
 
         it('should handle escape key', () => {
-            spyOn(megaMenuInstance, 'onEscapeKey');
+            vi.spyOn(megaMenuInstance, 'onEscapeKey');
             const keyEvent = new KeyboardEvent('keydown', { code: 'Escape' });
 
             megaMenuInstance.onKeyDown(keyEvent);
@@ -751,7 +751,7 @@ describe('MegaMenu', () => {
         });
 
         it('should handle tab key', () => {
-            spyOn(megaMenuInstance, 'onTabKey');
+            vi.spyOn(megaMenuInstance, 'onTabKey');
             const keyEvent = new KeyboardEvent('keydown', { code: 'Tab' });
 
             megaMenuInstance.onKeyDown(keyEvent);
@@ -760,7 +760,7 @@ describe('MegaMenu', () => {
         });
 
         it('should handle printable characters for search', () => {
-            spyOn(megaMenuInstance, 'searchItems');
+            vi.spyOn(megaMenuInstance, 'searchItems');
             const keyEvent = new KeyboardEvent('keydown', { key: 'f' });
 
             megaMenuInstance.onKeyDown(keyEvent);
@@ -780,18 +780,18 @@ describe('MegaMenu', () => {
         });
 
         it('should handle blur events', () => {
-            jasmine.clock().install();
+            vi.useFakeTimers();
             const blurEvent = new FocusEvent('blur');
             megaMenuInstance.focused.set(true);
 
             megaMenuInstance.onMenuBlur(blurEvent);
-            jasmine.clock().tick(10);
+            vi.advanceTimersByTime(10);
 
             expect(megaMenuInstance.focused()).toBe(false);
             expect(megaMenuInstance.focusedItemInfo().index).toBe(-1);
             expect(megaMenuInstance.searchValue).toBe('' as any);
             expect(megaMenuInstance.dirty).toBe(false);
-            jasmine.clock().uninstall();
+            vi.useRealTimers();
         });
 
         it('should get focusedItemId correctly', () => {
@@ -805,8 +805,8 @@ describe('MegaMenu', () => {
         it('should change focused item info', () => {
             const mockEvent = new KeyboardEvent('keydown');
 
-            spyOn(megaMenuInstance, 'changeFocusedItemInfo').and.callThrough();
-            spyOn(megaMenuInstance, 'findVisibleItem').and.returnValue({ key: 'test', parentKey: '', item: null } as any);
+            vi.spyOn(megaMenuInstance, 'changeFocusedItemInfo');
+            vi.spyOn(megaMenuInstance, 'findVisibleItem').mockReturnValue({ key: 'test', parentKey: '', item: null } as any);
 
             megaMenuInstance.changeFocusedItemInfo(mockEvent, 0);
 
@@ -1031,7 +1031,7 @@ describe('MegaMenu', () => {
         });
 
         it('should handle menu button click', () => {
-            spyOn(megaMenuInstance, 'toggle');
+            vi.spyOn(megaMenuInstance, 'toggle');
             megaMenuInstance.queryMatches.set(true);
             fixture.detectChanges();
 
@@ -1110,9 +1110,9 @@ describe('MegaMenu', () => {
         });
 
         it('should handle memory cleanup on destroy', () => {
-            spyOn(megaMenuInstance, 'unbindOutsideClickListener');
-            spyOn(megaMenuInstance, 'unbindResizeListener');
-            spyOn(megaMenuInstance, 'unbindMatchMediaListener');
+            vi.spyOn(megaMenuInstance, 'unbindOutsideClickListener');
+            vi.spyOn(megaMenuInstance, 'unbindResizeListener');
+            vi.spyOn(megaMenuInstance, 'unbindMatchMediaListener');
 
             megaMenuInstance.ngOnDestroy();
 
@@ -1134,16 +1134,16 @@ describe('MegaMenu', () => {
         });
 
         it('should handle search timeout correctly', async () => {
-            jasmine.clock().install();
+            vi.useFakeTimers();
             megaMenuInstance.searchValue = '';
 
             megaMenuInstance.searchItems(new KeyboardEvent('keydown', { key: 'f' }), 'f');
             expect(megaMenuInstance.searchValue).toBe('f');
 
-            jasmine.clock().tick(600); // Wait for search timeout
+            vi.advanceTimersByTime(600); // Wait for search timeout
 
             expect(megaMenuInstance.searchValue).toBe('' as any);
-            jasmine.clock().uninstall();
+            vi.useRealTimers();
         });
     });
 

@@ -181,7 +181,7 @@ describe('TreeTable', () => {
         });
 
         it('should reset scroll position', async () => {
-            spyOn(treetable, 'resetScrollTop');
+            vi.spyOn(treetable, 'resetScrollTop');
 
             treetable.resetScrollTop();
 
@@ -220,7 +220,7 @@ describe('TreeTable', () => {
         });
 
         it('should handle page change event', async () => {
-            spyOn(treetable.onPage, 'emit');
+            vi.spyOn(treetable.onPage, 'emit');
 
             const paginatorEvent = {
                 first: 1,
@@ -245,7 +245,7 @@ describe('TreeTable', () => {
             await fixture.whenStable();
             fixture.detectChanges();
 
-            spyOn(treetable.onLazyLoad, 'emit');
+            vi.spyOn(treetable.onLazyLoad, 'emit');
 
             treetable.onPageChange({ first: 2, rows: 1, page: 2, pageCount: 4 });
             await fixture.whenStable();
@@ -300,7 +300,7 @@ describe('TreeTable', () => {
         });
 
         it('should emit onSort event', async () => {
-            spyOn(treetable.onSort, 'emit');
+            vi.spyOn(treetable.onSort, 'emit');
 
             const sortEvent = {
                 field: 'name',
@@ -341,7 +341,7 @@ describe('TreeTable', () => {
             const node = basicTreeData[0];
             const mockTarget = {
                 nodeName: 'TD',
-                closest: jasmine.createSpy('closest').and.returnValue(null)
+                closest: vi.fn().mockReturnValue(null)
             };
             const mockEvent = {
                 originalEvent: {
@@ -351,7 +351,7 @@ describe('TreeTable', () => {
                 rowNode: { node }
             };
 
-            spyOn(treetable.selectionChange, 'emit');
+            vi.spyOn(treetable.selectionChange, 'emit');
             treetable.handleRowClick(mockEvent);
 
             expect(treetable.selectionChange.emit).toHaveBeenCalled();
@@ -368,7 +368,7 @@ describe('TreeTable', () => {
 
             const mockTarget1 = {
                 nodeName: 'TD',
-                closest: jasmine.createSpy('closest').and.returnValue(null)
+                closest: vi.fn().mockReturnValue(null)
             };
             const mockEvent1 = {
                 originalEvent: {
@@ -381,7 +381,7 @@ describe('TreeTable', () => {
 
             const mockTarget2 = {
                 nodeName: 'TD',
-                closest: jasmine.createSpy('closest').and.returnValue(null)
+                closest: vi.fn().mockReturnValue(null)
             };
             const mockEvent2 = {
                 originalEvent: {
@@ -392,7 +392,7 @@ describe('TreeTable', () => {
                 rowNode: { node: node2 }
             };
 
-            spyOn(treetable.selectionChange, 'emit');
+            vi.spyOn(treetable.selectionChange, 'emit');
             treetable.handleRowClick(mockEvent1);
             treetable.handleRowClick(mockEvent2);
 
@@ -412,7 +412,7 @@ describe('TreeTable', () => {
 
             const mockTarget = {
                 nodeName: 'TD',
-                closest: jasmine.createSpy('closest').and.returnValue(null)
+                closest: vi.fn().mockReturnValue(null)
             };
 
             tt.handleRowClick({
@@ -438,12 +438,12 @@ describe('TreeTable', () => {
         });
 
         it('should emit selection change event', async () => {
-            spyOn(treetable.selectionChange, 'emit');
+            vi.spyOn(treetable.selectionChange, 'emit');
 
             const node = basicTreeData[0];
             const mockTarget = {
                 nodeName: 'TD',
-                closest: jasmine.createSpy('closest').and.returnValue(null)
+                closest: vi.fn().mockReturnValue(null)
             };
             const mockEvent = {
                 originalEvent: {
@@ -459,8 +459,8 @@ describe('TreeTable', () => {
         });
 
         it('should handle context menu selection', async () => {
-            spyOn(treetable.contextMenuSelectionChange, 'emit');
-            spyOn(treetable.onContextMenuSelect, 'emit');
+            vi.spyOn(treetable.contextMenuSelectionChange, 'emit');
+            vi.spyOn(treetable.onContextMenuSelect, 'emit');
 
             // Simply test that the events can be emitted directly
             treetable.onContextMenuSelect.emit({
@@ -481,7 +481,7 @@ describe('TreeTable', () => {
         });
 
         it('should emit node expand event', async () => {
-            spyOn(treetable.onNodeExpand, 'emit');
+            vi.spyOn(treetable.onNodeExpand, 'emit');
 
             // Simulate node expansion by directly calling the emit
             treetable.onNodeExpand.emit({
@@ -490,13 +490,13 @@ describe('TreeTable', () => {
             });
 
             expect(treetable.onNodeExpand.emit).toHaveBeenCalledWith({
-                originalEvent: jasmine.any(MouseEvent),
+                originalEvent: expect.any(MouseEvent),
                 node: basicTreeData[0]
             });
         });
 
         it('should emit node collapse event', async () => {
-            spyOn(treetable.onNodeCollapse, 'emit');
+            vi.spyOn(treetable.onNodeCollapse, 'emit');
 
             // Simulate node collapse by directly calling the emit
             treetable.onNodeCollapse.emit({
@@ -505,7 +505,7 @@ describe('TreeTable', () => {
             });
 
             expect(treetable.onNodeCollapse.emit).toHaveBeenCalledWith({
-                originalEvent: jasmine.any(MouseEvent),
+                originalEvent: expect.any(MouseEvent),
                 node: basicTreeData[0]
             });
         });
@@ -560,7 +560,7 @@ describe('TreeTable', () => {
         });
 
         it('should emit filter event', async () => {
-            spyOn(treetable.onFilter, 'emit');
+            vi.spyOn(treetable.onFilter, 'emit');
 
             treetable.filterGlobal('File', 'contains');
 
@@ -582,7 +582,7 @@ describe('TreeTable', () => {
             await fixture.whenStable();
 
             expect(treetable.filters['type']).toEqual(
-                jasmine.objectContaining({
+                expect.objectContaining({
                     value: 'File',
                     matchMode: 'contains'
                 })
@@ -662,7 +662,7 @@ describe('TreeTable', () => {
         });
 
         it('should emit lazy load event on initialization', async () => {
-            spyOn(treetable.onLazyLoad, 'emit');
+            vi.spyOn(treetable.onLazyLoad, 'emit');
 
             treetable.ngOnInit();
             await fixture.whenStable();
@@ -678,7 +678,7 @@ describe('TreeTable', () => {
             newFixture.detectChanges();
 
             const newTreetable = newFixture.debugElement.query(By.directive(TreeTable)).componentInstance;
-            spyOn(newTreetable.onLazyLoad, 'emit');
+            vi.spyOn(newTreetable.onLazyLoad, 'emit');
 
             newTreetable.ngOnInit();
             await fixture.whenStable();
@@ -744,7 +744,7 @@ describe('TreeTable', () => {
 
             const mockTarget = {
                 nodeName: 'TD',
-                closest: jasmine.createSpy('closest').and.returnValue(null)
+                closest: vi.fn().mockReturnValue(null)
             };
             const mockEvent = {
                 originalEvent: {
@@ -3331,7 +3331,7 @@ describe('TreeTable PT', () => {
             expect(tfoot?.classList.contains('TFOOT_CLASS')).toBe(true);
         });
 
-        xit('should apply string class to header', async () => {
+        it.skip('should apply string class to header', async () => {
             fixture.componentRef.setInput('pt', { header: 'HEADER_CLASS' });
             // Create a mock TemplateRef with proper EmbeddedViewRef
             const mockViewRef = {
@@ -3358,7 +3358,7 @@ describe('TreeTable PT', () => {
             expect(header?.classList.contains('HEADER_CLASS')).toBe(true);
         });
 
-        xit('should apply string class to footer', async () => {
+        it.skip('should apply string class to footer', async () => {
             fixture.componentRef.setInput('pt', { footer: 'FOOTER_CLASS' });
             // Create a mock TemplateRef with proper EmbeddedViewRef
             const mockViewRef = {
@@ -3447,7 +3447,7 @@ describe('TreeTable PT', () => {
 
     // Case 3: Mixed object and string values
     describe('Case 3: Mixed object and string values', () => {
-        xit('should apply mixed PT values', async () => {
+        it.skip('should apply mixed PT values', async () => {
             fixture.componentRef.setInput('scrollable', true);
             fixture.componentRef.setInput('scrollHeight', '200px');
             fixture.componentRef.setInput('pt', {
@@ -3476,7 +3476,7 @@ describe('TreeTable PT', () => {
     // Case 4: Use variables from instance
     // TODO: feature works, test throws error, will be debugged
     // describe('Case 4: Use variables from instance', () => {
-    //     xit('should use instance properties in PT functions', async () => {
+    //     it.skip('should use instance properties in PT functions', async () => {
     //         fixture.componentRef.setInput('scrollable', true);
     //         fixture.componentRef.setInput('scrollHeight', '200px');
     //         fixture.componentRef.setInput('pt', {
@@ -3593,7 +3593,7 @@ describe('TreeTable PT', () => {
 
     // Case 7: Test with scrollable mode
     describe('Scrollable mode PT', () => {
-        xit('should apply PT to scrollable elements', async () => {
+        it.skip('should apply PT to scrollable elements', async () => {
             fixture.componentRef.setInput('scrollable', true);
             fixture.componentRef.setInput('scrollHeight', '400px');
             fixture.componentRef.setInput('pt', {
@@ -3615,7 +3615,7 @@ describe('TreeTable PT', () => {
             expect(scrollableBody?.classList.contains('SCROLLABLE_BODY_CLASS')).toBe(true);
         });
 
-        xit('should apply PT to scrollable header table', async () => {
+        it.skip('should apply PT to scrollable header table', async () => {
             fixture.componentRef.setInput('scrollable', true);
             fixture.componentRef.setInput('pt', {
                 scrollableHeaderTable: 'SCROLLABLE_HEADER_TABLE_CLASS',
@@ -3632,7 +3632,7 @@ describe('TreeTable PT', () => {
             expect(headerBox?.classList.contains('SCROLLABLE_HEADER_BOX_CLASS')).toBe(true);
         });
 
-        xit('should apply PT to scrollable footer elements', async () => {
+        it.skip('should apply PT to scrollable footer elements', async () => {
             fixture.componentRef.setInput('scrollable', true);
             // Create a mock TemplateRef with proper EmbeddedViewRef
             const mockViewRef = {
@@ -3709,7 +3709,7 @@ describe('TreeTable PT', () => {
 
     // Case 10: Test PT hooks
     describe('Case 10: PT Hooks', () => {
-        xit('should execute onAfterViewInit hook', async (done) => {
+        it.skip('should execute onAfterViewInit hook', async () => {
             let hookCalled = false;
 
             fixture.componentRef.setInput('pt', {
@@ -3717,7 +3717,6 @@ describe('TreeTable PT', () => {
                 hooks: {
                     onAfterContentInit: () => {
                         hookCalled = true;
-                        done();
                     }
                 }
             });
@@ -3769,7 +3768,7 @@ describe('TreeTable Global PT', () => {
         expect(wrapper?.classList.contains('GLOBAL_WRAPPER_CLASS')).toBe(true);
     });
 
-    xit('should merge local PT with global PT', async () => {
+    it.skip('should merge local PT with global PT', async () => {
         fixture.componentRef.setInput('pt', {
             host: 'LOCAL_HOST_CLASS',
             scrollableWrapper: 'LOCAL_WRAPPER_CLASS'

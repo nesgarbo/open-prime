@@ -295,7 +295,7 @@ describe('Image', () => {
         });
 
         it('should emit onShow event when preview is opened', () => {
-            spyOn(imageInstance.onShow, 'emit');
+            vi.spyOn(imageInstance.onShow, 'emit');
 
             // onShow is now emitted in onAnimationStart, not onAnimationEnd
             const mockElement = document.createElement('div');
@@ -307,7 +307,7 @@ describe('Image', () => {
         });
 
         it('should emit onHide event when preview is closed', () => {
-            spyOn(imageInstance.onHide, 'emit');
+            vi.spyOn(imageInstance.onHide, 'emit');
 
             imageInstance.previewVisible = false;
             imageInstance.wrapper = document.createElement('div');
@@ -332,7 +332,7 @@ describe('Image', () => {
 
         it('should handle toolbar click', () => {
             const mockEvent = new MouseEvent('click');
-            spyOn(mockEvent, 'stopPropagation');
+            vi.spyOn(mockEvent, 'stopPropagation');
 
             imageInstance.handleToolbarClick(mockEvent);
             expect(mockEvent.stopPropagation).toHaveBeenCalled();
@@ -416,7 +416,7 @@ describe('Image', () => {
 
         it('should handle image error', () => {
             const errorEvent = new Event('error');
-            spyOn(imageInstance.onImageError, 'emit');
+            vi.spyOn(imageInstance.onImageError, 'emit');
 
             imageInstance.imageError(errorEvent);
 
@@ -438,7 +438,7 @@ describe('Image', () => {
             imageInstance.wrapper = mockWrapper;
 
             // Mock the appendTo computed signal
-            spyOn(imageInstance, '$appendTo').and.returnValue('body');
+            vi.spyOn(imageInstance, '$appendTo').mockReturnValue('body');
 
             imageInstance.appendContainer();
 
@@ -458,7 +458,7 @@ describe('Image', () => {
 
         it('should close preview on document escape key', () => {
             imageInstance.previewVisible = true;
-            spyOn(imageInstance, 'closePreview');
+            vi.spyOn(imageInstance, 'closePreview');
 
             imageInstance.onKeydownHandler();
 
@@ -467,7 +467,7 @@ describe('Image', () => {
 
         it('should not close preview on escape if not visible', () => {
             imageInstance.previewVisible = false;
-            spyOn(imageInstance, 'closePreview');
+            vi.spyOn(imageInstance, 'closePreview');
 
             imageInstance.onKeydownHandler();
 

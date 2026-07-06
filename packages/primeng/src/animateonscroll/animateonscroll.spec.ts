@@ -222,7 +222,7 @@ describe('AnimateOnScroll', () => {
 
             const mockObserver = mockIntersectionObserverInstances[0];
             directive.animationState = 'enter';
-            spyOn(directiveEl.nativeElement.classList, 'add');
+            vi.spyOn(directiveEl.nativeElement.classList, 'add');
 
             mockObserver.triggerIntersection(directiveEl.nativeElement, true, { top: 100 });
 
@@ -281,7 +281,7 @@ describe('AnimateOnScroll', () => {
             const mockObserver = mockIntersectionObserverInstances[0];
             directive.isObserverActive = true;
             directive.animationState = 'leave';
-            spyOn(directiveEl.nativeElement.classList, 'add');
+            vi.spyOn(directiveEl.nativeElement.classList, 'add');
 
             mockObserver.triggerIntersection(directiveEl.nativeElement, false, { top: 100 });
 
@@ -372,7 +372,7 @@ describe('AnimateOnScroll', () => {
         it('should unbind observer after first intersection when once is true', async () => {
             await fixture.whenStable();
 
-            spyOn(directive, 'unbindIntersectionObserver').and.callThrough();
+            vi.spyOn(directive, 'unbindIntersectionObserver');
 
             const mockObserver = mockIntersectionObserverInstances[0];
             mockObserver.triggerIntersection(directiveEl.nativeElement, true, { top: 100 });
@@ -385,7 +385,7 @@ describe('AnimateOnScroll', () => {
             fixture.changeDetectorRef.markForCheck();
             await fixture.whenStable();
 
-            spyOn(directive, 'unbindIntersectionObserver');
+            vi.spyOn(directive, 'unbindIntersectionObserver');
 
             const mockObserver = mockIntersectionObserverInstances[0];
             mockObserver.triggerIntersection(directiveEl.nativeElement, true, { top: 100 });
@@ -625,8 +625,8 @@ describe('AnimateOnScroll', () => {
         });
 
         it('should cleanup observers on destroy', () => {
-            spyOn(directive, 'unbindIntersectionObserver').and.callThrough();
-            spyOn(directive, 'unbindAnimationEvents').and.callThrough();
+            vi.spyOn(directive, 'unbindIntersectionObserver');
+            vi.spyOn(directive, 'unbindAnimationEvents');
 
             fixture.destroy();
 
@@ -637,8 +637,8 @@ describe('AnimateOnScroll', () => {
         it('should unobserve elements when unbinding', async () => {
             await fixture.whenStable();
 
-            spyOn(directive.observer!, 'unobserve').and.callThrough();
-            spyOn(directive.resetObserver!, 'unobserve').and.callThrough();
+            vi.spyOn(directive.observer!, 'unobserve');
+            vi.spyOn(directive.resetObserver!, 'unobserve');
 
             directive.unbindIntersectionObserver();
 

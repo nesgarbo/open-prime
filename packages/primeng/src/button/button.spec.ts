@@ -440,7 +440,7 @@ describe('Button', () => {
 
     describe('Event Handling', () => {
         it('should emit onClick event', async () => {
-            const clickSpy = spyOn(component, 'onButtonClick');
+            const clickSpy = vi.spyOn(component, 'onButtonClick');
 
             buttonElement.click();
             await fixture.whenStable();
@@ -450,7 +450,7 @@ describe('Button', () => {
         });
 
         it('should emit onFocus event', async () => {
-            const focusSpy = spyOn(component, 'onButtonFocus');
+            const focusSpy = vi.spyOn(component, 'onButtonFocus');
 
             buttonElement.dispatchEvent(new FocusEvent('focus'));
             await fixture.whenStable();
@@ -460,7 +460,7 @@ describe('Button', () => {
         });
 
         it('should emit onBlur event', async () => {
-            const blurSpy = spyOn(component, 'onButtonBlur');
+            const blurSpy = vi.spyOn(component, 'onButtonBlur');
 
             buttonElement.dispatchEvent(new FocusEvent('blur'));
             await fixture.whenStable();
@@ -470,7 +470,7 @@ describe('Button', () => {
         });
 
         it('should not emit events when disabled', async () => {
-            const clickSpy = spyOn(component, 'onButtonClick');
+            const clickSpy = vi.spyOn(component, 'onButtonClick');
             component.disabled = true;
             fixture.changeDetectorRef.markForCheck();
             await fixture.whenStable();

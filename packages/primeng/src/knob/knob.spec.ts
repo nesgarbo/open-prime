@@ -200,7 +200,7 @@ describe('Knob', () => {
         });
 
         it('should handle click interaction', () => {
-            spyOn(knobInstance, 'updateValue');
+            vi.spyOn(knobInstance, 'updateValue');
             const svgElement = fixture.debugElement.query(By.css('svg'));
 
             const clickEvent = new MouseEvent('click', {
@@ -216,7 +216,7 @@ describe('Knob', () => {
         });
 
         it('should emit onChange event', async () => {
-            spyOn(knobInstance.onChange, 'emit');
+            vi.spyOn(knobInstance.onChange, 'emit');
 
             knobInstance.updateModelValue(80);
             fixture.changeDetectorRef.markForCheck();
@@ -245,14 +245,14 @@ describe('Knob', () => {
             const svgElement = fixture.debugElement.query(By.css('svg'));
 
             const upEvent = new KeyboardEvent('keydown', { code: 'ArrowUp' });
-            spyOn(upEvent, 'preventDefault');
+            vi.spyOn(upEvent, 'preventDefault');
             svgElement.nativeElement.dispatchEvent(upEvent);
 
             expect(upEvent.preventDefault).toHaveBeenCalled();
             expect(knobInstance.value()).toBe(51);
 
             const rightEvent = new KeyboardEvent('keydown', { code: 'ArrowRight' });
-            spyOn(rightEvent, 'preventDefault');
+            vi.spyOn(rightEvent, 'preventDefault');
             svgElement.nativeElement.dispatchEvent(rightEvent);
 
             expect(rightEvent.preventDefault).toHaveBeenCalled();
@@ -263,14 +263,14 @@ describe('Knob', () => {
             const svgElement = fixture.debugElement.query(By.css('svg'));
 
             const downEvent = new KeyboardEvent('keydown', { code: 'ArrowDown' });
-            spyOn(downEvent, 'preventDefault');
+            vi.spyOn(downEvent, 'preventDefault');
             svgElement.nativeElement.dispatchEvent(downEvent);
 
             expect(downEvent.preventDefault).toHaveBeenCalled();
             expect(knobInstance.value()).toBe(49);
 
             const leftEvent = new KeyboardEvent('keydown', { code: 'ArrowLeft' });
-            spyOn(leftEvent, 'preventDefault');
+            vi.spyOn(leftEvent, 'preventDefault');
             svgElement.nativeElement.dispatchEvent(leftEvent);
 
             expect(leftEvent.preventDefault).toHaveBeenCalled();
@@ -281,14 +281,14 @@ describe('Knob', () => {
             const svgElement = fixture.debugElement.query(By.css('svg'));
 
             const homeEvent = new KeyboardEvent('keydown', { code: 'Home' });
-            spyOn(homeEvent, 'preventDefault');
+            vi.spyOn(homeEvent, 'preventDefault');
             svgElement.nativeElement.dispatchEvent(homeEvent);
 
             expect(homeEvent.preventDefault).toHaveBeenCalled();
             expect(knobInstance.value()).toBe(0);
 
             const endEvent = new KeyboardEvent('keydown', { code: 'End' });
-            spyOn(endEvent, 'preventDefault');
+            vi.spyOn(endEvent, 'preventDefault');
             svgElement.nativeElement.dispatchEvent(endEvent);
 
             expect(endEvent.preventDefault).toHaveBeenCalled();
@@ -299,14 +299,14 @@ describe('Knob', () => {
             const svgElement = fixture.debugElement.query(By.css('svg'));
 
             const pageUpEvent = new KeyboardEvent('keydown', { code: 'PageUp' });
-            spyOn(pageUpEvent, 'preventDefault');
+            vi.spyOn(pageUpEvent, 'preventDefault');
             svgElement.nativeElement.dispatchEvent(pageUpEvent);
 
             expect(pageUpEvent.preventDefault).toHaveBeenCalled();
             expect(knobInstance.value()).toBe(60);
 
             const pageDownEvent = new KeyboardEvent('keydown', { code: 'PageDown' });
-            spyOn(pageDownEvent, 'preventDefault');
+            vi.spyOn(pageDownEvent, 'preventDefault');
             svgElement.nativeElement.dispatchEvent(pageDownEvent);
 
             expect(pageDownEvent.preventDefault).toHaveBeenCalled();
@@ -333,7 +333,7 @@ describe('Knob', () => {
             const svgElement = fixture.debugElement.query(By.css('svg'));
 
             const mouseDownEvent = new MouseEvent('mousedown');
-            spyOn(mouseDownEvent, 'preventDefault');
+            vi.spyOn(mouseDownEvent, 'preventDefault');
             svgElement.nativeElement.dispatchEvent(mouseDownEvent);
 
             expect(mouseDownEvent.preventDefault).toHaveBeenCalled();
@@ -348,7 +348,7 @@ describe('Knob', () => {
             svgElement.nativeElement.dispatchEvent(new MouseEvent('mousedown'));
 
             const mouseUpEvent = new MouseEvent('mouseup');
-            spyOn(mouseUpEvent, 'preventDefault');
+            vi.spyOn(mouseUpEvent, 'preventDefault');
             svgElement.nativeElement.dispatchEvent(mouseUpEvent);
 
             expect(mouseUpEvent.preventDefault).toHaveBeenCalled();
@@ -374,7 +374,7 @@ describe('Knob', () => {
             const svgElement = fixture.debugElement.query(By.css('svg'));
 
             const touchStartEvent = new TouchEvent('touchstart');
-            spyOn(touchStartEvent, 'preventDefault');
+            vi.spyOn(touchStartEvent, 'preventDefault');
             svgElement.nativeElement.dispatchEvent(touchStartEvent);
 
             expect(touchStartEvent.preventDefault).toHaveBeenCalled();
@@ -389,7 +389,7 @@ describe('Knob', () => {
             svgElement.nativeElement.dispatchEvent(new TouchEvent('touchstart'));
 
             const touchEndEvent = new TouchEvent('touchend');
-            spyOn(touchEndEvent, 'preventDefault');
+            vi.spyOn(touchEndEvent, 'preventDefault');
             svgElement.nativeElement.dispatchEvent(touchEndEvent);
 
             expect(touchEndEvent.preventDefault).toHaveBeenCalled();
@@ -492,7 +492,7 @@ describe('Knob', () => {
             expect(svgElement.nativeElement.getAttribute('tabindex')).toBe('-1');
 
             // Test that click is ignored in readonly mode
-            spyOn(knobInstance, 'updateValue');
+            vi.spyOn(knobInstance, 'updateValue');
             const clickEvent = new MouseEvent('click');
             Object.defineProperty(clickEvent, 'offsetX', { value: 50 });
             Object.defineProperty(clickEvent, 'offsetY', { value: 50 });
@@ -671,9 +671,9 @@ describe('Knob', () => {
 
         it('should prevent interaction when disabled', () => {
             // Mock disabled state
-            spyOn(knobInstance, '$disabled').and.returnValue(true);
+            vi.spyOn(knobInstance, '$disabled').mockReturnValue(true);
 
-            spyOn(knobInstance, 'updateValue');
+            vi.spyOn(knobInstance, 'updateValue');
             const svgElement = fixture.debugElement.query(By.css('svg'));
 
             const clickEvent = new MouseEvent('click');

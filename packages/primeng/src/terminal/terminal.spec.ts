@@ -276,8 +276,8 @@ describe('Terminal', () => {
 
     describe('Command Handling Tests', () => {
         it('should handle Enter key press', () => {
-            spyOn(terminalInstance, 'handleCommand').and.callThrough();
-            spyOn(terminalService, 'sendCommand');
+            vi.spyOn(terminalInstance, 'handleCommand');
+            vi.spyOn(terminalService, 'sendCommand');
 
             const inputElement = fixture.debugElement.query(By.css('input'));
             terminalInstance.command = 'test command';
@@ -289,7 +289,7 @@ describe('Terminal', () => {
         });
 
         it('should add command to commands array on Enter', () => {
-            spyOn(terminalService, 'sendCommand');
+            vi.spyOn(terminalService, 'sendCommand');
 
             terminalInstance.command = 'ls -la';
             const enterEvent = new KeyboardEvent('keydown', { keyCode: 13 });
@@ -300,7 +300,7 @@ describe('Terminal', () => {
         });
 
         it('should send command to terminal service', () => {
-            spyOn(terminalService, 'sendCommand');
+            vi.spyOn(terminalService, 'sendCommand');
 
             terminalInstance.command = 'pwd';
             const enterEvent = new KeyboardEvent('keydown', { keyCode: 13 });
@@ -310,7 +310,7 @@ describe('Terminal', () => {
         });
 
         it('should clear command input after Enter', () => {
-            spyOn(terminalService, 'sendCommand');
+            vi.spyOn(terminalService, 'sendCommand');
 
             terminalInstance.command = 'clear';
             const enterEvent = new KeyboardEvent('keydown', { keyCode: 13 });
@@ -320,7 +320,7 @@ describe('Terminal', () => {
         });
 
         it('should not process command on other key press', () => {
-            spyOn(terminalService, 'sendCommand');
+            vi.spyOn(terminalService, 'sendCommand');
             const initialCommandsLength = terminalInstance.commands.length;
 
             terminalInstance.command = 'test';
@@ -333,7 +333,7 @@ describe('Terminal', () => {
         });
 
         it('should handle empty command', () => {
-            spyOn(terminalService, 'sendCommand');
+            vi.spyOn(terminalService, 'sendCommand');
 
             terminalInstance.command = '';
             const enterEvent = new KeyboardEvent('keydown', { keyCode: 13 });
@@ -345,7 +345,7 @@ describe('Terminal', () => {
         });
 
         it('should handle multiple commands', () => {
-            spyOn(terminalService, 'sendCommand');
+            vi.spyOn(terminalService, 'sendCommand');
 
             // First command
             terminalInstance.command = 'command1';
@@ -428,7 +428,7 @@ describe('Terminal', () => {
 
         it('should focus input element', () => {
             const inputElement = terminalInstance.inputRef().nativeElement;
-            spyOn(inputElement, 'focus');
+            vi.spyOn(inputElement, 'focus');
 
             terminalInstance.focus(inputElement);
 
@@ -436,7 +436,7 @@ describe('Terminal', () => {
         });
 
         it('should focus on host click', () => {
-            spyOn(terminalInstance, 'focus');
+            vi.spyOn(terminalInstance, 'focus');
 
             terminalElement.nativeElement.click();
 
@@ -445,7 +445,7 @@ describe('Terminal', () => {
 
         it('should handle focus when input ref is null', () => {
             const mockElement = document.createElement('input');
-            spyOn(mockElement, 'focus');
+            vi.spyOn(mockElement, 'focus');
 
             terminalInstance.focus(mockElement);
 
@@ -455,7 +455,7 @@ describe('Terminal', () => {
 
     describe('Lifecycle Methods', () => {
         it('should call ngAfterViewInit', () => {
-            spyOn(terminalInstance, 'ngAfterViewInit').and.callThrough();
+            vi.spyOn(terminalInstance, 'ngAfterViewInit');
 
             terminalInstance.ngAfterViewInit();
 
@@ -600,7 +600,7 @@ describe('Terminal', () => {
             terminalInstance.command = longCommand;
             const enterEvent = new KeyboardEvent('keydown', { keyCode: 13 });
 
-            spyOn(terminalService, 'sendCommand');
+            vi.spyOn(terminalService, 'sendCommand');
             terminalInstance.handleCommand(enterEvent);
 
             expect(terminalInstance.commands[0].text).toBe(longCommand);
@@ -612,7 +612,7 @@ describe('Terminal', () => {
             terminalInstance.command = specialCommand;
             const enterEvent = new KeyboardEvent('keydown', { keyCode: 13 });
 
-            spyOn(terminalService, 'sendCommand');
+            vi.spyOn(terminalService, 'sendCommand');
             terminalInstance.handleCommand(enterEvent);
 
             expect(terminalInstance.commands[0].text).toBe(specialCommand);
@@ -620,7 +620,7 @@ describe('Terminal', () => {
         });
 
         it('should handle rapid command execution', () => {
-            spyOn(terminalService, 'sendCommand');
+            vi.spyOn(terminalService, 'sendCommand');
 
             for (let i = 0; i < 10; i++) {
                 terminalInstance.command = `command${i}`;
@@ -731,7 +731,7 @@ describe('Terminal', () => {
         });
 
         it('should handle complete workflow', async () => {
-            spyOn(terminalService, 'sendCommand').and.callThrough();
+            vi.spyOn(terminalService, 'sendCommand');
 
             // Set up terminal
             component.welcomeMessage = 'Test Terminal';
@@ -768,7 +768,7 @@ describe('Terminal', () => {
         });
 
         it('should call handleCommand programmatically', () => {
-            spyOn(terminalService, 'sendCommand');
+            vi.spyOn(terminalService, 'sendCommand');
 
             terminalInstance.command = 'programmatic command';
             const mockEvent = new KeyboardEvent('keydown', { keyCode: 13 });
@@ -780,7 +780,7 @@ describe('Terminal', () => {
 
         it('should call focus method programmatically', () => {
             const mockElement = document.createElement('input');
-            spyOn(mockElement, 'focus');
+            vi.spyOn(mockElement, 'focus');
 
             terminalInstance.focus(mockElement);
 

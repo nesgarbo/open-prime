@@ -153,7 +153,7 @@ describe('Message', () => {
 
         it('should close message programmatically', () => {
             const mockEvent = new MouseEvent('click');
-            spyOn(messageInstance.onClose, 'emit');
+            vi.spyOn(messageInstance.onClose, 'emit');
 
             messageInstance.close(mockEvent);
 
@@ -398,7 +398,7 @@ describe('Message', () => {
             const messageEl = fixture.debugElement.query(By.css('p-message'));
             const messageInstance = messageEl.componentInstance as Message;
 
-            spyOn(messageInstance, 'close');
+            vi.spyOn(messageInstance, 'close');
 
             await fixture.whenStable();
             fixture.changeDetectorRef.markForCheck();
@@ -562,7 +562,7 @@ describe('Message', () => {
 
             const messageEl = fixture.debugElement.query(By.css('p-message'));
             const messageInstance = messageEl.componentInstance as Message;
-            spyOn(messageInstance.onClose, 'emit');
+            vi.spyOn(messageInstance.onClose, 'emit');
 
             const closeButton = fixture.debugElement.query(By.css('button'));
 

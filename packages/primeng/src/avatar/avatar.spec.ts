@@ -345,7 +345,7 @@ describe('Avatar', () => {
         });
 
         it('should emit onImageError event', () => {
-            spyOn(component, 'onImageError');
+            vi.spyOn(component, 'onImageError');
             const imageElement = fixture.debugElement.query(By.css('img'));
             const errorEvent = new Event('error');
 
@@ -781,7 +781,7 @@ describe('Avatar', () => {
 
         it('should handle image error correctly', () => {
             const avatarComponent = fixture.debugElement.query(By.directive(Avatar)).componentInstance;
-            spyOn(avatarComponent.onImageError, 'emit');
+            vi.spyOn(avatarComponent.onImageError, 'emit');
 
             const mockEvent = new Event('error');
             avatarComponent.imageError(mockEvent);

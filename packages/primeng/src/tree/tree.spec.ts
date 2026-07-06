@@ -2403,7 +2403,7 @@ describe('Tree', () => {
 
             // Mock context menu
             mockContextMenu = {
-                show: jasmine.createSpy('show')
+                show: vi.fn()
             };
 
             component.nodes = [
@@ -2637,7 +2637,7 @@ describe('Tree', () => {
         });
 
         it('should emit onNodeContextMenuSelect event on right click', async () => {
-            spyOn(tree.onNodeContextMenuSelect, 'emit');
+            vi.spyOn(tree.onNodeContextMenuSelect, 'emit');
 
             const nodeContent = fixture.debugElement.query(By.css('.p-tree-node-content'));
             const rightClickEvent = new MouseEvent('contextmenu', {
@@ -2650,9 +2650,9 @@ describe('Tree', () => {
             await fixture.whenStable();
 
             expect(tree.onNodeContextMenuSelect.emit).toHaveBeenCalledWith(
-                jasmine.objectContaining({
-                    originalEvent: jasmine.any(MouseEvent),
-                    node: jasmine.objectContaining({ label: 'Documents' })
+                expect.objectContaining({
+                    originalEvent: expect.any(MouseEvent),
+                    node: expect.objectContaining({ label: 'Documents' })
                 })
             );
         });

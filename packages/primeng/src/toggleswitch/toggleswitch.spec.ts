@@ -87,9 +87,9 @@ describe('ToggleSwitch', () => {
             await fixture.whenStable();
 
             const mockEvent = new Event('click');
-            spyOn(component.onChange, 'emit');
-            spyOn(component, 'onModelChange');
-            spyOn(component, 'writeModelValue').and.callThrough();
+            vi.spyOn(component.onChange, 'emit');
+            vi.spyOn(component, 'onModelChange');
+            vi.spyOn(component, 'writeModelValue');
 
             // Initially unchecked, should become checked
             component.writeModelValue(false);
@@ -108,7 +108,7 @@ describe('ToggleSwitch', () => {
             await fixture.whenStable();
 
             const mockEvent = new Event('click');
-            spyOn(component.onChange, 'emit');
+            vi.spyOn(component.onChange, 'emit');
 
             // Initially checked, should become unchecked
             component.writeModelValue(true);
@@ -122,9 +122,9 @@ describe('ToggleSwitch', () => {
 
         it('should not handle onClick when disabled', () => {
             const mockEvent = new Event('click');
-            spyOn(component, '$disabled').and.returnValue(true);
-            spyOn(component.onChange, 'emit');
-            spyOn(component, 'writeModelValue');
+            vi.spyOn(component, '$disabled').mockReturnValue(true);
+            vi.spyOn(component.onChange, 'emit');
+            vi.spyOn(component, 'writeModelValue');
 
             component.onClick(mockEvent);
 
@@ -136,8 +136,8 @@ describe('ToggleSwitch', () => {
             const mockEvent = new Event('click');
             fixture.componentRef.setInput('readonly', true);
             fixture.detectChanges();
-            spyOn(component.onChange, 'emit');
-            spyOn(component, 'writeModelValue');
+            vi.spyOn(component.onChange, 'emit');
+            vi.spyOn(component, 'writeModelValue');
 
             component.onClick(mockEvent);
 
@@ -152,7 +152,7 @@ describe('ToggleSwitch', () => {
 
         it('should handle blur events', () => {
             component.focused.set(true);
-            spyOn(component, 'onModelTouched');
+            vi.spyOn(component, 'onModelTouched');
 
             component.onBlur();
 
@@ -162,7 +162,7 @@ describe('ToggleSwitch', () => {
 
         it('should handle host click events', () => {
             const mockEvent = new MouseEvent('click');
-            spyOn(component, 'onClick');
+            vi.spyOn(component, 'onClick');
 
             component.onHostClick(mockEvent);
 
@@ -301,7 +301,7 @@ describe('ToggleSwitch', () => {
         });
 
         it('should emit onChange event when clicked', async () => {
-            spyOn(testComponent, 'onToggleChange');
+            vi.spyOn(testComponent, 'onToggleChange');
 
             // Since DOM interaction and event emission may not work in test environment,
             // we'll trigger the component's onChange method directly
@@ -309,7 +309,7 @@ describe('ToggleSwitch', () => {
             await new Promise((resolve) => setTimeout(resolve, 100));
             await testFixture.whenStable();
 
-            expect(testComponent.onToggleChange).toHaveBeenCalledWith({ originalEvent: jasmine.any(Event), checked: true });
+            expect(testComponent.onToggleChange).toHaveBeenCalledWith({ originalEvent: expect.any(Event), checked: true });
         });
 
         it('should emit onChange event with correct event data', async () => {
@@ -331,7 +331,7 @@ describe('ToggleSwitch', () => {
 
         it('should handle keyboard events on input', async () => {
             const input = testFixture.debugElement.query(By.css('input'));
-            spyOn(testComponent, 'onToggleChange');
+            vi.spyOn(testComponent, 'onToggleChange');
 
             if (input) {
                 input.nativeElement.dispatchEvent(new KeyboardEvent('keydown', { key: ' ' }));
@@ -347,7 +347,7 @@ describe('ToggleSwitch', () => {
             const toggleSwitch = testFixture.debugElement.query(By.css('p-toggleswitch')).componentInstance;
 
             if (toggleSwitch && toggleSwitch.inputEl()) {
-                spyOn(toggleSwitch.inputEl().nativeElement, 'focus');
+                vi.spyOn(toggleSwitch.inputEl().nativeElement, 'focus');
 
                 const mockEvent = new Event('click');
                 toggleSwitch.onClick(mockEvent);
@@ -549,7 +549,7 @@ describe('ToggleSwitch', () => {
         });
 
         it('should handle writeControlValue correctly', () => {
-            const mockSetModelValue = jasmine.createSpy('setModelValue');
+            const mockSetModelValue = vi.fn();
 
             component.writeControlValue('test-value', mockSetModelValue);
 
@@ -575,7 +575,7 @@ describe('ToggleSwitch', () => {
             fixture.detectChanges();
 
             const mockEvent = new Event('click');
-            spyOn(component, 'writeModelValue');
+            vi.spyOn(component, 'writeModelValue');
 
             component.onClick(mockEvent);
 
@@ -596,7 +596,7 @@ describe('ToggleSwitch', () => {
         });
 
         it('should handle disabled attribute', () => {
-            spyOn(component, '$disabled').and.returnValue(true);
+            vi.spyOn(component, '$disabled').mockReturnValue(true);
             fixture.detectChanges();
 
             const input = fixture.debugElement.query(By.css('input'));

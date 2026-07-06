@@ -388,7 +388,7 @@ describe('Dialog', () => {
 
             expect(dialogInstance.visible()).toBe(true);
 
-            spyOn(component, 'onVisibleChangeEvent');
+            vi.spyOn(component, 'onVisibleChangeEvent');
             dialogInstance.close(new MouseEvent('click'));
             await new Promise((resolve) => setTimeout(resolve, 0));
             fixture.changeDetectorRef.markForCheck();
@@ -487,7 +487,7 @@ describe('Dialog', () => {
         });
 
         it('should emit onMaximize event when maximize button is clicked', async () => {
-            spyOn(component, 'onMaximizeEvent');
+            vi.spyOn(component, 'onMaximizeEvent');
             component.maximizable = true;
             component.visible = true;
             fixture.changeDetectorRef.markForCheck();
@@ -503,7 +503,7 @@ describe('Dialog', () => {
         });
 
         it('should emit onResizeInit event when resizing starts', async () => {
-            spyOn(component, 'onResizeInitEvent');
+            vi.spyOn(component, 'onResizeInitEvent');
 
             component.visible = true;
             fixture.changeDetectorRef.markForCheck();
@@ -517,7 +517,7 @@ describe('Dialog', () => {
         });
 
         it('should emit onDragEnd event when dragging ends', async () => {
-            spyOn(component, 'onDragEndEvent');
+            vi.spyOn(component, 'onDragEndEvent');
 
             component.visible = true;
             fixture.changeDetectorRef.markForCheck();
@@ -804,7 +804,7 @@ describe('Dialog', () => {
                 code: 'Escape'
             });
 
-            spyOn(dialogInstance, 'close');
+            vi.spyOn(dialogInstance, 'close');
             document.dispatchEvent(escapeEvent);
             await new Promise((resolve) => setTimeout(resolve, 0));
 
@@ -1261,7 +1261,7 @@ describe('Dialog', () => {
             await new Promise((resolve) => setTimeout(resolve, 0));
 
             const mouseEvent = new MouseEvent('mousedown', { clientX: 100, clientY: 100 });
-            spyOn(dialogInstance, 'initDrag');
+            vi.spyOn(dialogInstance, 'initDrag');
 
             const titleBar = fixture.debugElement.query(By.css('[class*="header"]'));
             if (titleBar) {
@@ -1288,7 +1288,7 @@ describe('Dialog', () => {
 
         it('should emit onResizeInit event', () => {
             const mouseEvent = new MouseEvent('mousedown');
-            spyOn(component, 'onResizeInitEvent');
+            vi.spyOn(component, 'onResizeInitEvent');
 
             dialogInstance.onResizeInit.emit(mouseEvent);
 
@@ -1297,7 +1297,7 @@ describe('Dialog', () => {
 
         it('should emit onDragEnd event', () => {
             const dragEvent = new DragEvent('dragend');
-            spyOn(component, 'onDragEndEvent');
+            vi.spyOn(component, 'onDragEndEvent');
 
             dialogInstance.onDragEnd.emit(dragEvent);
 

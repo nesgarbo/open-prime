@@ -514,7 +514,7 @@ describe('Menubar', () => {
         it('should handle item click', () => {
             const firstItem = fixture.debugElement.query(By.css('li[data-pc-section="item"] div[data-pc-section="itemcontent"]'));
 
-            spyOn(menubarInstance, 'onItemClick');
+            vi.spyOn(menubarInstance, 'onItemClick');
 
             firstItem.nativeElement.click();
 
@@ -536,7 +536,7 @@ describe('Menubar', () => {
         it('should handle mouse enter on item', () => {
             const firstItemContent = fixture.debugElement.query(By.css('li[data-pc-section="item"] div[data-pc-section="itemcontent"]'));
 
-            spyOn(menubarInstance, 'onItemMouseEnter');
+            vi.spyOn(menubarInstance, 'onItemMouseEnter');
 
             // Trigger mouseenter on the content div which has the actual handler
             firstItemContent.triggerEventHandler('mouseenter', new MouseEvent('mouseenter'));
@@ -630,9 +630,9 @@ describe('Menubar', () => {
 
         it('should handle arrow right key', () => {
             const keyEvent = new KeyboardEvent('keydown', { code: 'ArrowRight' });
-            spyOn(keyEvent, 'preventDefault');
+            vi.spyOn(keyEvent, 'preventDefault');
 
-            spyOn(menubarInstance, 'changeFocusedItemIndex');
+            vi.spyOn(menubarInstance, 'changeFocusedItemIndex');
 
             menubarInstance.onKeyDown(keyEvent);
 
@@ -641,9 +641,9 @@ describe('Menubar', () => {
 
         it('should handle arrow left key', () => {
             const keyEvent = new KeyboardEvent('keydown', { code: 'ArrowLeft' });
-            spyOn(keyEvent, 'preventDefault');
+            vi.spyOn(keyEvent, 'preventDefault');
 
-            spyOn(menubarInstance, 'changeFocusedItemIndex');
+            vi.spyOn(menubarInstance, 'changeFocusedItemIndex');
 
             menubarInstance.onKeyDown(keyEvent);
 
@@ -653,7 +653,7 @@ describe('Menubar', () => {
         it('should handle arrow down key', () => {
             const keyEvent = new KeyboardEvent('keydown', { code: 'ArrowDown' });
 
-            spyOn(menubarInstance, 'onArrowDownKey');
+            vi.spyOn(menubarInstance, 'onArrowDownKey');
 
             menubarInstance.onKeyDown(keyEvent);
 
@@ -663,7 +663,7 @@ describe('Menubar', () => {
         it('should handle arrow up key', () => {
             const keyEvent = new KeyboardEvent('keydown', { code: 'ArrowUp' });
 
-            spyOn(menubarInstance, 'onArrowUpKey');
+            vi.spyOn(menubarInstance, 'onArrowUpKey');
 
             menubarInstance.onKeyDown(keyEvent);
 
@@ -672,9 +672,9 @@ describe('Menubar', () => {
 
         it('should handle home key', () => {
             const keyEvent = new KeyboardEvent('keydown', { code: 'Home' });
-            spyOn(keyEvent, 'preventDefault');
+            vi.spyOn(keyEvent, 'preventDefault');
 
-            spyOn(menubarInstance, 'changeFocusedItemIndex');
+            vi.spyOn(menubarInstance, 'changeFocusedItemIndex');
 
             menubarInstance.onKeyDown(keyEvent);
 
@@ -684,9 +684,9 @@ describe('Menubar', () => {
 
         it('should handle end key', () => {
             const keyEvent = new KeyboardEvent('keydown', { code: 'End' });
-            spyOn(keyEvent, 'preventDefault');
+            vi.spyOn(keyEvent, 'preventDefault');
 
-            spyOn(menubarInstance, 'changeFocusedItemIndex');
+            vi.spyOn(menubarInstance, 'changeFocusedItemIndex');
 
             menubarInstance.onKeyDown(keyEvent);
 
@@ -696,7 +696,7 @@ describe('Menubar', () => {
 
         it('should handle enter key', () => {
             const keyEvent = new KeyboardEvent('keydown', { code: 'Enter' });
-            spyOn(keyEvent, 'preventDefault');
+            vi.spyOn(keyEvent, 'preventDefault');
 
             menubarInstance.onKeyDown(keyEvent);
 
@@ -705,7 +705,7 @@ describe('Menubar', () => {
 
         it('should handle space key', () => {
             const keyEvent = new KeyboardEvent('keydown', { code: 'Space' });
-            spyOn(menubarInstance, 'onEnterKey');
+            vi.spyOn(menubarInstance, 'onEnterKey');
 
             menubarInstance.onKeyDown(keyEvent);
 
@@ -714,8 +714,8 @@ describe('Menubar', () => {
 
         it('should handle escape key', () => {
             const keyEvent = new KeyboardEvent('keydown', { code: 'Escape' });
-            spyOn(menubarInstance, 'hide');
-            spyOn(keyEvent, 'preventDefault');
+            vi.spyOn(menubarInstance, 'hide');
+            vi.spyOn(keyEvent, 'preventDefault');
 
             menubarInstance.onKeyDown(keyEvent);
 
@@ -725,7 +725,7 @@ describe('Menubar', () => {
 
         it('should handle tab key', () => {
             const keyEvent = new KeyboardEvent('keydown', { code: 'Tab' });
-            spyOn(menubarInstance, 'hide');
+            vi.spyOn(menubarInstance, 'hide');
 
             menubarInstance.onKeyDown(keyEvent);
 
@@ -749,7 +749,7 @@ describe('Menubar', () => {
 
         it('should handle printable character search', () => {
             const keyEvent = new KeyboardEvent('keydown', { key: 'f' });
-            spyOn(menubarInstance, 'searchItems');
+            vi.spyOn(menubarInstance, 'searchItems');
 
             menubarInstance.onKeyDown(keyEvent);
 
@@ -793,8 +793,8 @@ describe('Menubar', () => {
         it('should handle focus and blur events', () => {
             const rootMenu = fixture.debugElement.query(By.css('ul[pMenubarSub]'));
 
-            spyOn(menubarInstance, 'onMenuFocus');
-            spyOn(menubarInstance, 'onMenuBlur');
+            vi.spyOn(menubarInstance, 'onMenuFocus');
+            vi.spyOn(menubarInstance, 'onMenuBlur');
 
             rootMenu.triggerEventHandler('focus', new FocusEvent('focus'));
             expect(menubarInstance.onMenuFocus).toHaveBeenCalled();
@@ -859,7 +859,7 @@ describe('Menubar', () => {
         });
 
         it('should bind match media listener on init', () => {
-            spyOn(menubarInstance, 'bindMatchMediaListener');
+            vi.spyOn(menubarInstance, 'bindMatchMediaListener');
 
             menubarInstance.ngOnInit();
 
@@ -867,7 +867,7 @@ describe('Menubar', () => {
         });
 
         it('should unbind match media listener on destroy', () => {
-            spyOn(menubarInstance, 'unbindMatchMediaListener');
+            vi.spyOn(menubarInstance, 'unbindMatchMediaListener');
 
             menubarInstance.ngOnDestroy();
 
@@ -898,7 +898,7 @@ describe('Menubar', () => {
         it('should handle mouse leave with autoHide', () => {
             const rootMenu = fixture.debugElement.query(By.css('ul[pMenubarSub]'));
 
-            spyOn(menubarInstance, 'onMouseLeave');
+            vi.spyOn(menubarInstance, 'onMouseLeave');
 
             rootMenu.triggerEventHandler('mouseleave', new MouseEvent('mouseleave'));
 
@@ -1004,8 +1004,8 @@ describe('Menubar', () => {
         });
 
         it('should call show method programmatically', () => {
-            spyOn(menubarInstance, 'findFirstFocusedItemIndex').and.returnValue(0);
-            spyOn(menubarInstance, 'findVisibleItem').and.returnValue({ item: { label: 'Test' } } as ProcessedMenuItem);
+            vi.spyOn(menubarInstance, 'findFirstFocusedItemIndex').mockReturnValue(0);
+            vi.spyOn(menubarInstance, 'findVisibleItem').mockReturnValue({ item: { label: 'Test' } } as ProcessedMenuItem);
 
             menubarInstance.show();
 
@@ -1024,7 +1024,7 @@ describe('Menubar', () => {
 
         it('should call toggle method programmatically', () => {
             const mockEvent = new MouseEvent('click');
-            spyOn(mockEvent, 'preventDefault');
+            vi.spyOn(mockEvent, 'preventDefault');
 
             expect(menubarInstance.mobileActive).toBeFalsy();
 
@@ -1080,7 +1080,7 @@ describe('Menubar', () => {
             const menubarSub = menubar.rootmenu()!;
             const processedItem = createProcessedItem({ label: 'Test Item', disabled: false }, '0', 0);
 
-            spyOn(menubarSub, 'ptm').and.callThrough();
+            vi.spyOn(menubarSub, 'ptm');
 
             menubarSub.getPTOptions(processedItem, 0, 'item');
 
@@ -1088,9 +1088,9 @@ describe('Menubar', () => {
                 context: {
                     item: processedItem.item,
                     index: 0,
-                    active: jasmine.any(Boolean),
-                    focused: jasmine.any(Boolean),
-                    disabled: jasmine.any(Boolean),
+                    active: expect.any(Boolean),
+                    focused: expect.any(Boolean),
+                    disabled: expect.any(Boolean),
                     level: menubarSub.level()
                 }
             });
@@ -1121,14 +1121,14 @@ describe('Menubar', () => {
             const menubarSub = menubar.rootmenu()!;
             const processedItem = createProcessedItem({ label: 'Test Item' }, '0', 0);
 
-            spyOn(menubarSub, 'isItemActive').and.returnValue(true);
-            spyOn(menubarSub, 'ptm').and.callThrough();
+            vi.spyOn(menubarSub, 'isItemActive').mockReturnValue(true);
+            vi.spyOn(menubarSub, 'ptm');
 
             menubarSub.getPTOptions(processedItem, 0, 'item');
 
             expect(menubarSub.isItemActive).toHaveBeenCalledWith(processedItem);
             expect(menubarSub.ptm).toHaveBeenCalledWith('item', {
-                context: jasmine.objectContaining({
+                context: expect.objectContaining({
                     active: true
                 })
             });
@@ -1144,14 +1144,14 @@ describe('Menubar', () => {
             const menubarSub = menubar.rootmenu()!;
             const processedItem = createProcessedItem({ label: 'Test Item', id: 'test-item-0' }, '0', 0);
 
-            spyOn(menubarSub, 'isItemFocused').and.returnValue(true);
-            spyOn(menubarSub, 'ptm').and.callThrough();
+            vi.spyOn(menubarSub, 'isItemFocused').mockReturnValue(true);
+            vi.spyOn(menubarSub, 'ptm');
 
             menubarSub.getPTOptions(processedItem, 0, 'item');
 
             expect(menubarSub.isItemFocused).toHaveBeenCalledWith(processedItem);
             expect(menubarSub.ptm).toHaveBeenCalledWith('item', {
-                context: jasmine.objectContaining({
+                context: expect.objectContaining({
                     focused: true
                 })
             });
@@ -1167,14 +1167,14 @@ describe('Menubar', () => {
             const menubarSub = menubar.rootmenu()!;
             const processedItem = createProcessedItem({ label: 'Disabled Item', disabled: true }, '0', 0);
 
-            spyOn(menubarSub, 'isItemDisabled').and.returnValue(true);
-            spyOn(menubarSub, 'ptm').and.callThrough();
+            vi.spyOn(menubarSub, 'isItemDisabled').mockReturnValue(true);
+            vi.spyOn(menubarSub, 'ptm');
 
             menubarSub.getPTOptions(processedItem, 0, 'item');
 
             expect(menubarSub.isItemDisabled).toHaveBeenCalledWith(processedItem);
             expect(menubarSub.ptm).toHaveBeenCalledWith('item', {
-                context: jasmine.objectContaining({
+                context: expect.objectContaining({
                     disabled: true
                 })
             });
@@ -1190,11 +1190,11 @@ describe('Menubar', () => {
             const menubarSub = menubar.rootmenu()!;
             const processedItem = createProcessedItem({ label: 'Test Item' }, '0', 0);
 
-            spyOn(menubarSub, 'ptm').and.callThrough();
+            vi.spyOn(menubarSub, 'ptm');
 
             menubarSub.getPTOptions(processedItem, 0, 'itemLink');
 
-            expect(menubarSub.ptm).toHaveBeenCalledWith('itemLink', jasmine.any(Object));
+            expect(menubarSub.ptm).toHaveBeenCalledWith('itemLink', expect.any(Object));
         });
 
         it('should include level in context', () => {
@@ -1207,12 +1207,12 @@ describe('Menubar', () => {
             const menubarSub = menubar.rootmenu()!;
             const processedItem = createProcessedItem({ label: 'Test Item' }, '0', 0);
 
-            spyOn(menubarSub, 'ptm').and.callThrough();
+            vi.spyOn(menubarSub, 'ptm');
 
             menubarSub.getPTOptions(processedItem, 0, 'item');
 
             expect(menubarSub.ptm).toHaveBeenCalledWith('item', {
-                context: jasmine.objectContaining({
+                context: expect.objectContaining({
                     level: menubarSub.level()
                 })
             });
@@ -1228,12 +1228,12 @@ describe('Menubar', () => {
             const menubarSub = menubar.rootmenu()!;
             const processedItem = createProcessedItem({ label: 'Item 2' }, '1', 1);
 
-            spyOn(menubarSub, 'ptm').and.callThrough();
+            vi.spyOn(menubarSub, 'ptm');
 
             menubarSub.getPTOptions(processedItem, 1, 'item');
 
             expect(menubarSub.ptm).toHaveBeenCalledWith('item', {
-                context: jasmine.objectContaining({
+                context: expect.objectContaining({
                     index: 1
                 })
             });

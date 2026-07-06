@@ -125,12 +125,13 @@ class TestKeyboardNavigationComponent {
 }
 
 describe('Popover', () => {
-    let overlayService: jasmine.SpyObj<OverlayService>;
+    let overlayService: any;
 
     beforeEach(async () => {
-        const overlayServiceSpy = jasmine.createSpyObj('OverlayService', ['add'], {
-            clickObservable: { subscribe: jasmine.createSpy('subscribe').and.returnValue({ unsubscribe: jasmine.createSpy() }) }
-        });
+        const overlayServiceSpy = {
+            add: vi.fn(),
+            clickObservable: { subscribe: vi.fn().mockReturnValue({ unsubscribe: vi.fn() }) }
+        };
 
         await TestBed.configureTestingModule({
             imports: [CommonModule, Popover],
@@ -138,7 +139,7 @@ describe('Popover', () => {
             providers: [provideZonelessChangeDetection(), { provide: OverlayService, useValue: overlayServiceSpy }]
         }).compileComponents();
 
-        overlayService = TestBed.inject(OverlayService) as jasmine.SpyObj<OverlayService>;
+        overlayService = TestBed.inject(OverlayService) as any;
     });
 
     describe('Component Initialization', () => {
@@ -266,7 +267,7 @@ describe('Popover', () => {
             await new Promise((resolve) => setTimeout(resolve, 100));
             await fixture.whenStable();
 
-            spyOn(popoverInstance, 'hasTargetChanged').and.returnValue(true);
+            vi.spyOn(popoverInstance, 'hasTargetChanged').mockReturnValue(true);
             popoverInstance.toggle(mockEvent, target2);
 
             expect(popoverInstance.destroyCallback).toBeTruthy();
@@ -286,7 +287,7 @@ describe('Popover', () => {
         });
 
         it('should emit onShow event', async () => {
-            spyOn(component, 'onShow');
+            vi.spyOn(component, 'onShow');
             const mockEvent = new MouseEvent('click');
             const target = component.targetButton.nativeElement;
 
@@ -302,7 +303,7 @@ describe('Popover', () => {
         });
 
         it('should emit onHide event', async () => {
-            spyOn(component, 'onHide');
+            vi.spyOn(component, 'onHide');
             const mockEvent = new MouseEvent('click');
             const target = component.targetButton.nativeElement;
 
@@ -365,7 +366,7 @@ describe('Popover', () => {
 
                 // Test close callback - simulate with proper event
                 const mockCloseEvent = new MouseEvent('click');
-                spyOn(mockCloseEvent, 'preventDefault');
+                vi.spyOn(mockCloseEvent, 'preventDefault');
                 popoverInstance.onCloseClick(mockCloseEvent);
                 expect(popoverInstance.overlayVisible()).toBe(false);
                 expect(mockCloseEvent.preventDefault).toHaveBeenCalled();
@@ -462,7 +463,7 @@ describe('Popover', () => {
             container.appendChild(focusableInput);
             popoverInstance.container = container;
 
-            spyOn(focusableInput, 'focus');
+            vi.spyOn(focusableInput, 'focus');
             popoverInstance.focus();
             await new Promise((resolve) => setTimeout(resolve, 10));
             await fixture.whenStable();
@@ -616,7 +617,7 @@ describe('Popover', () => {
         });
 
         it('should handle destroy callback on void animation state', async () => {
-            const mockCallback = jasmine.createSpy('destroyCallback');
+            const mockCallback = vi.fn();
             popoverInstance.destroyCallback = mockCallback;
 
             // Test without animation event since it's commented out
@@ -658,9 +659,9 @@ describe('Popover', () => {
         });
 
         it('should unbind listeners on container destroy', () => {
-            spyOn(popoverInstance, 'unbindDocumentClickListener');
-            spyOn(popoverInstance, 'unbindDocumentResizeListener');
-            spyOn(popoverInstance, 'unbindScrollListener');
+            vi.spyOn(popoverInstance, 'unbindDocumentClickListener');
+            vi.spyOn(popoverInstance, 'unbindDocumentResizeListener');
+            vi.spyOn(popoverInstance, 'unbindScrollListener');
 
             popoverInstance.onContainerDestroy();
 
@@ -739,17 +740,17 @@ describe('Popover', () => {
         });
 
         it('should cleanup resources on destroy', () => {
-            spyOn(popoverInstance, 'restoreAppend');
-            spyOn(popoverInstance, 'onContainerDestroy');
+            vi.spyOn(popoverInstance, 'restoreAppend');
+            vi.spyOn(popoverInstance, 'onContainerDestroy');
 
             const mockScrollHandler = {
-                destroy: jasmine.createSpy('destroy'),
-                unbindScrollListener: jasmine.createSpy('unbindScrollListener')
+                destroy: vi.fn(),
+                unbindScrollListener: vi.fn()
             };
             popoverInstance.scrollHandler = mockScrollHandler as any;
 
             const mockSubscription = {
-                unsubscribe: jasmine.createSpy('unsubscribe')
+                unsubscribe: vi.fn()
             };
             popoverInstance.overlaySubscription = mockSubscription as any;
 

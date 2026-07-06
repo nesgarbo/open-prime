@@ -669,7 +669,7 @@ describe('Menu', () => {
         });
 
         it('should handle arrow down key', () => {
-            spyOn(menuInstance, 'onArrowDownKey');
+            vi.spyOn(menuInstance, 'onArrowDownKey');
             const keyEvent = new KeyboardEvent('keydown', { code: 'ArrowDown' });
 
             menuInstance.onListKeyDown(keyEvent);
@@ -678,7 +678,7 @@ describe('Menu', () => {
         });
 
         it('should handle arrow up key', () => {
-            spyOn(menuInstance, 'onArrowUpKey');
+            vi.spyOn(menuInstance, 'onArrowUpKey');
             const keyEvent = new KeyboardEvent('keydown', { code: 'ArrowUp' });
 
             menuInstance.onListKeyDown(keyEvent);
@@ -687,7 +687,7 @@ describe('Menu', () => {
         });
 
         it('should handle home key', () => {
-            spyOn(menuInstance, 'onHomeKey');
+            vi.spyOn(menuInstance, 'onHomeKey');
             const keyEvent = new KeyboardEvent('keydown', { code: 'Home' });
 
             menuInstance.onListKeyDown(keyEvent);
@@ -696,7 +696,7 @@ describe('Menu', () => {
         });
 
         it('should handle end key', () => {
-            spyOn(menuInstance, 'onEndKey');
+            vi.spyOn(menuInstance, 'onEndKey');
             const keyEvent = new KeyboardEvent('keydown', { code: 'End' });
 
             menuInstance.onListKeyDown(keyEvent);
@@ -705,7 +705,7 @@ describe('Menu', () => {
         });
 
         it('should handle enter key', () => {
-            spyOn(menuInstance, 'onEnterKey');
+            vi.spyOn(menuInstance, 'onEnterKey');
             const keyEvent = new KeyboardEvent('keydown', { code: 'Enter' });
 
             menuInstance.onListKeyDown(keyEvent);
@@ -714,7 +714,7 @@ describe('Menu', () => {
         });
 
         it('should handle space key', () => {
-            spyOn(menuInstance, 'onSpaceKey');
+            vi.spyOn(menuInstance, 'onSpaceKey');
             const keyEvent = new KeyboardEvent('keydown', { code: 'Space' });
 
             menuInstance.onListKeyDown(keyEvent);
@@ -727,7 +727,7 @@ describe('Menu', () => {
             fixture.changeDetectorRef.markForCheck();
             await fixture.whenStable();
 
-            spyOn(menuInstance, 'hide');
+            vi.spyOn(menuInstance, 'hide');
             const keyEvent = new KeyboardEvent('keydown', { code: 'Escape' });
 
             menuInstance.onListKeyDown(keyEvent);
@@ -738,7 +738,7 @@ describe('Menu', () => {
 
     describe('Focus Management Tests', () => {
         it('should emit onFocus when list gains focus', () => {
-            spyOn(menuInstance.onFocus, 'emit');
+            vi.spyOn(menuInstance.onFocus, 'emit');
             const focusEvent = new FocusEvent('focus');
 
             menuInstance.onListFocus(focusEvent);
@@ -748,7 +748,7 @@ describe('Menu', () => {
         });
 
         it('should emit onBlur when list loses focus', () => {
-            spyOn(menuInstance.onBlur, 'emit');
+            vi.spyOn(menuInstance.onBlur, 'emit');
             const blurEvent = new FocusEvent('blur');
             menuInstance.focused.set(true);
 
@@ -762,8 +762,8 @@ describe('Menu', () => {
         it('should handle focus and blur events from template', () => {
             const listElement = fixture.debugElement.query(By.css('ul[role="menu"]'));
 
-            spyOn(component, 'onFocus');
-            spyOn(component, 'onBlur');
+            vi.spyOn(component, 'onFocus');
+            vi.spyOn(component, 'onBlur');
 
             listElement.triggerEventHandler('focus', new FocusEvent('focus'));
             expect(component.onFocus).toHaveBeenCalled();
@@ -786,7 +786,7 @@ describe('Menu', () => {
 
             // Mock the DOM query results
             const mockElement = { getAttribute: () => 'test_id' };
-            spyOn(menuInstance, 'changeFocusedOptionIndex').and.callThrough();
+            vi.spyOn(menuInstance, 'changeFocusedOptionIndex');
 
             // Test the method exists and can be called
             expect(typeof menuInstance.changeFocusedOptionIndex).toBe('function');
@@ -953,8 +953,8 @@ describe('Menu', () => {
             fixture.changeDetectorRef.markForCheck();
             await fixture.whenStable();
 
-            spyOn(menuInstance.onShow, 'emit');
-            spyOn(menuInstance.onHide, 'emit');
+            vi.spyOn(menuInstance.onShow, 'emit');
+            vi.spyOn(menuInstance.onHide, 'emit');
 
             // Show menu
             const mockEvent = new MouseEvent('click');
@@ -998,7 +998,7 @@ describe('Menu', () => {
             fixture.changeDetectorRef.markForCheck();
             await fixture.whenStable();
 
-            spyOn(overlayService, 'add');
+            vi.spyOn(overlayService, 'add');
             const mockEvent = new Event('click');
 
             menuInstance.onOverlayClick(mockEvent);
@@ -1012,7 +1012,7 @@ describe('Menu', () => {
             fixture.changeDetectorRef.markForCheck();
             await fixture.whenStable();
 
-            spyOn(menuInstance, 'bindDocumentClickListener');
+            vi.spyOn(menuInstance, 'bindDocumentClickListener');
 
             menuInstance.ngOnInit();
 
@@ -1202,7 +1202,7 @@ describe('Menu', () => {
             expect(popupMenuInstance.visible()).toBe(true);
 
             // Simulate overlay click
-            spyOn(popupMenuInstance, 'hide');
+            vi.spyOn(popupMenuInstance, 'hide');
 
             // Find overlay and trigger click
             const overlay = popupFixture.debugElement.query(By.css('[data-pc-section="root"]'));
@@ -1271,7 +1271,7 @@ describe('Menu', () => {
         });
 
         it('should handle memory cleanup on destroy', () => {
-            spyOn(menuInstance, 'unbindDocumentClickListener');
+            vi.spyOn(menuInstance, 'unbindDocumentClickListener');
 
             menuInstance.ngOnDestroy();
 
@@ -1306,7 +1306,7 @@ describe('Menu', () => {
             await fixture.whenStable();
 
             const originalEvent = new Event('click');
-            spyOn(originalEvent, 'preventDefault');
+            vi.spyOn(originalEvent, 'preventDefault');
 
             const mockEvent = {
                 originalEvent: originalEvent,
@@ -1886,7 +1886,7 @@ describe('Menu', () => {
             fixture.componentRef.setInput('model', [testItem]);
             fixture.detectChanges();
 
-            spyOn(menu, 'ptm').and.callThrough();
+            vi.spyOn(menu, 'ptm');
 
             menu.getPTOptions('item', testItem, testIndex, testId);
 
@@ -1894,8 +1894,8 @@ describe('Menu', () => {
                 context: {
                     item: testItem,
                     index: testIndex,
-                    focused: jasmine.any(Boolean),
-                    disabled: jasmine.any(Boolean)
+                    focused: expect.any(Boolean),
+                    disabled: expect.any(Boolean)
                 }
             });
         });
@@ -1924,14 +1924,14 @@ describe('Menu', () => {
             fixture.componentRef.setInput('id', 'menu');
             fixture.detectChanges();
 
-            spyOn(menu, 'isItemFocused').and.returnValue(true);
-            spyOn(menu, 'ptm').and.callThrough();
+            vi.spyOn(menu, 'isItemFocused').mockReturnValue(true);
+            vi.spyOn(menu, 'ptm');
 
             menu.getPTOptions('item', testItem, 0, testId);
 
             expect(menu.isItemFocused).toHaveBeenCalledWith(testId);
             expect(menu.ptm).toHaveBeenCalledWith('item', {
-                context: jasmine.objectContaining({
+                context: expect.objectContaining({
                     focused: true
                 })
             });
@@ -1946,14 +1946,14 @@ describe('Menu', () => {
             fixture.componentRef.setInput('model', [disabledItem]);
             fixture.detectChanges();
 
-            spyOn(menu, 'disabled').and.returnValue(true);
-            spyOn(menu, 'ptm').and.callThrough();
+            vi.spyOn(menu, 'disabled').mockReturnValue(true);
+            vi.spyOn(menu, 'ptm');
 
             menu.getPTOptions('item', disabledItem, 0, testId);
 
             expect(menu.disabled).toHaveBeenCalledWith(true);
             expect(menu.ptm).toHaveBeenCalledWith('item', {
-                context: jasmine.objectContaining({
+                context: expect.objectContaining({
                     disabled: true
                 })
             });
@@ -1969,14 +1969,14 @@ describe('Menu', () => {
             fixture.componentRef.setInput('model', [testItem]);
             fixture.detectChanges();
 
-            spyOn(menu, 'disabled').and.returnValue(true);
-            spyOn(menu, 'ptm').and.callThrough();
+            vi.spyOn(menu, 'disabled').mockReturnValue(true);
+            vi.spyOn(menu, 'ptm');
 
             menu.getPTOptions('item', testItem, 0, testId);
 
             expect(menu.disabled).toHaveBeenCalledWith(disabledFn);
             expect(menu.ptm).toHaveBeenCalledWith('item', {
-                context: jasmine.objectContaining({
+                context: expect.objectContaining({
                     disabled: true
                 })
             });
@@ -1991,16 +1991,16 @@ describe('Menu', () => {
             fixture.componentRef.setInput('model', [testItem]);
             fixture.detectChanges();
 
-            spyOn(menu, 'ptm').and.callThrough();
+            vi.spyOn(menu, 'ptm');
 
             menu.getPTOptions('item', testItem, 0, testId);
-            expect(menu.ptm).toHaveBeenCalledWith('item', jasmine.any(Object));
+            expect(menu.ptm).toHaveBeenCalledWith('item', expect.any(Object));
 
             menu.getPTOptions('itemLink', testItem, 0, testId);
-            expect(menu.ptm).toHaveBeenCalledWith('itemLink', jasmine.any(Object));
+            expect(menu.ptm).toHaveBeenCalledWith('itemLink', expect.any(Object));
 
             menu.getPTOptions('itemContent', testItem, 0, testId);
-            expect(menu.ptm).toHaveBeenCalledWith('itemContent', jasmine.any(Object));
+            expect(menu.ptm).toHaveBeenCalledWith('itemContent', expect.any(Object));
         });
 
         it('should pass correct index for multiple items', () => {
@@ -2011,29 +2011,29 @@ describe('Menu', () => {
             fixture.componentRef.setInput('model', items);
             fixture.detectChanges();
 
-            spyOn(menu, 'ptm').and.callThrough();
+            vi.spyOn(menu, 'ptm');
 
             menu.getPTOptions('item', items[0], 0, 'menu_0');
             expect(menu.ptm).toHaveBeenCalledWith(
                 'item',
-                jasmine.objectContaining({
-                    context: jasmine.objectContaining({ index: 0 })
+                expect.objectContaining({
+                    context: expect.objectContaining({ index: 0 })
                 })
             );
 
             menu.getPTOptions('item', items[1], 1, 'menu_1');
             expect(menu.ptm).toHaveBeenCalledWith(
                 'item',
-                jasmine.objectContaining({
-                    context: jasmine.objectContaining({ index: 1 })
+                expect.objectContaining({
+                    context: expect.objectContaining({ index: 1 })
                 })
             );
 
             menu.getPTOptions('item', items[2], 2, 'menu_2');
             expect(menu.ptm).toHaveBeenCalledWith(
                 'item',
-                jasmine.objectContaining({
-                    context: jasmine.objectContaining({ index: 2 })
+                expect.objectContaining({
+                    context: expect.objectContaining({ index: 2 })
                 })
             );
         });
@@ -2049,24 +2049,24 @@ describe('Menu', () => {
             fixture.detectChanges();
 
             menu.focusedOptionIndex.set(id1);
-            spyOn(menu, 'ptm').and.callThrough();
+            vi.spyOn(menu, 'ptm');
 
             menu.getPTOptions('item', testItem, 0, id1);
             expect(menu.ptm).toHaveBeenCalledWith(
                 'item',
-                jasmine.objectContaining({
-                    context: jasmine.objectContaining({ focused: true })
+                expect.objectContaining({
+                    context: expect.objectContaining({ focused: true })
                 })
             );
 
-            (menu.ptm as jasmine.Spy).calls.reset();
+            (menu.ptm as any).mockClear();
             menu.focusedOptionIndex.set(id2);
 
             menu.getPTOptions('item', testItem, 0, id1);
             expect(menu.ptm).toHaveBeenCalledWith(
                 'item',
-                jasmine.objectContaining({
-                    context: jasmine.objectContaining({ focused: false })
+                expect.objectContaining({
+                    context: expect.objectContaining({ focused: false })
                 })
             );
         });

@@ -282,7 +282,7 @@ describe('Panel', () => {
             const toggleButton = testFixture.debugElement.query(By.css('p-button'));
             const enterEvent = new KeyboardEvent('keydown', { code: 'Enter' });
 
-            spyOn(panelInstance, 'toggle');
+            vi.spyOn(panelInstance, 'toggle');
             toggleButton.nativeElement.dispatchEvent(enterEvent);
 
             expect(panelInstance.toggle).toHaveBeenCalled();
@@ -296,7 +296,7 @@ describe('Panel', () => {
             const toggleButton = testFixture.debugElement.query(By.css('p-button'));
             const spaceEvent = new KeyboardEvent('keydown', { code: 'Space' });
 
-            spyOn(panelInstance, 'toggle');
+            vi.spyOn(panelInstance, 'toggle');
             toggleButton.nativeElement.dispatchEvent(spaceEvent);
 
             expect(panelInstance.toggle).toHaveBeenCalled();
@@ -309,7 +309,7 @@ describe('Panel', () => {
             const toggleButton = testFixture.debugElement.query(By.css('p-button'));
             const escEvent = new KeyboardEvent('keydown', { code: 'Escape' });
 
-            spyOn(panelInstance, 'toggle');
+            vi.spyOn(panelInstance, 'toggle');
             toggleButton.nativeElement.dispatchEvent(escEvent);
 
             expect(panelInstance.toggle).not.toHaveBeenCalled();
@@ -443,7 +443,7 @@ describe('Panel', () => {
 
             const panelComp = fixture.debugElement.query(By.directive(Panel)).componentInstance;
 
-            spyOn(panelComp, 'updateTabIndex');
+            vi.spyOn(panelComp, 'updateTabIndex');
 
             // Collapse panel
             panelComp.collapse();
@@ -540,7 +540,7 @@ describe('Panel', () => {
             testFixture.detectChanges();
 
             const event = new MouseEvent('click');
-            spyOn(event, 'preventDefault');
+            vi.spyOn(event, 'preventDefault');
 
             panelInstance.toggle(event);
             expect(event.preventDefault).toHaveBeenCalled();
@@ -595,13 +595,13 @@ describe('Panel', () => {
         });
 
         it('should call updateTabIndex when expanding', () => {
-            spyOn(panelInstance, 'updateTabIndex');
+            vi.spyOn(panelInstance, 'updateTabIndex');
             panelInstance.expand();
             expect(panelInstance.updateTabIndex).toHaveBeenCalled();
         });
 
         it('should call updateTabIndex when collapsing', () => {
-            spyOn(panelInstance, 'updateTabIndex');
+            vi.spyOn(panelInstance, 'updateTabIndex');
             panelInstance.collapse();
             expect(panelInstance.updateTabIndex).toHaveBeenCalled();
         });
@@ -612,7 +612,7 @@ describe('Panel', () => {
             testFixture.changeDetectorRef.markForCheck();
             await testFixture.whenStable();
 
-            spyOn(panelInstance, 'toggle');
+            vi.spyOn(panelInstance, 'toggle');
             panelInstance.onHeaderClick(new MouseEvent('click'));
 
             expect(panelInstance.toggle).not.toHaveBeenCalled();
@@ -624,7 +624,7 @@ describe('Panel', () => {
             testFixture.changeDetectorRef.markForCheck();
             await testFixture.whenStable();
 
-            spyOn(panelInstance, 'toggle');
+            vi.spyOn(panelInstance, 'toggle');
             panelInstance.onHeaderClick(new MouseEvent('click'));
 
             expect(panelInstance.toggle).toHaveBeenCalled();
@@ -635,7 +635,7 @@ describe('Panel', () => {
             testComponent.toggler = 'icon';
             testFixture.detectChanges();
 
-            spyOn(panelInstance, 'toggle');
+            vi.spyOn(panelInstance, 'toggle');
             panelInstance.onIconClick(new MouseEvent('click'));
 
             expect(panelInstance.toggle).toHaveBeenCalled();
@@ -643,8 +643,8 @@ describe('Panel', () => {
 
         it('should handle onKeyDown with Enter key', () => {
             const event = new KeyboardEvent('keydown', { code: 'Enter' });
-            spyOn(event, 'preventDefault');
-            spyOn(panelInstance, 'toggle');
+            vi.spyOn(event, 'preventDefault');
+            vi.spyOn(panelInstance, 'toggle');
 
             panelInstance.onKeyDown(event);
 
@@ -654,8 +654,8 @@ describe('Panel', () => {
 
         it('should handle onKeyDown with Space key', () => {
             const event = new KeyboardEvent('keydown', { code: 'Space' });
-            spyOn(event, 'preventDefault');
-            spyOn(panelInstance, 'toggle');
+            vi.spyOn(event, 'preventDefault');
+            vi.spyOn(panelInstance, 'toggle');
 
             panelInstance.onKeyDown(event);
 
@@ -665,7 +665,7 @@ describe('Panel', () => {
 
         it('should not handle onKeyDown with other keys', () => {
             const event = new KeyboardEvent('keydown', { code: 'Tab' });
-            spyOn(panelInstance, 'toggle');
+            vi.spyOn(panelInstance, 'toggle');
 
             panelInstance.onKeyDown(event);
 
@@ -1107,7 +1107,7 @@ describe('Panel', () => {
         });
 
         describe('Case 2: Object Values with Attributes and Styles', () => {
-            xit('should apply PT object with class, style and data attributes to root', () => {
+            it.skip('should apply PT object with class, style and data attributes to root', () => {
                 // Skipped: PT style and attribute binding to host causes infinite loop with current implementation
                 const fixture = TestBed.createComponent(Panel);
                 const panel = fixture.componentInstance;

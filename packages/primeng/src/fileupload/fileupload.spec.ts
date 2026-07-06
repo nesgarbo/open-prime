@@ -79,7 +79,7 @@ describe('FileUpload', () => {
 
             const advancedInput = component.advancedFileInput();
             if (advancedInput?.nativeElement) {
-                spyOn(advancedInput.nativeElement, 'click');
+                vi.spyOn(advancedInput.nativeElement, 'click');
                 component.choose();
                 expect(advancedInput.nativeElement.click).toHaveBeenCalled();
             } else {
@@ -90,7 +90,7 @@ describe('FileUpload', () => {
 
         it('should clear files programmatically', () => {
             component.files = [new File(['test'], 'test.txt', { type: 'text/plain' })];
-            spyOn(component.onClear, 'emit');
+            vi.spyOn(component.onClear, 'emit');
 
             component.clear();
 
@@ -101,7 +101,7 @@ describe('FileUpload', () => {
         it('should remove file by index', () => {
             const testFile = new File(['test'], 'test.txt', { type: 'text/plain' });
             component.files = [testFile];
-            spyOn(component.onRemove, 'emit');
+            vi.spyOn(component.onRemove, 'emit');
 
             const event = new Event('click');
             component.remove(event, 0);
@@ -116,7 +116,7 @@ describe('FileUpload', () => {
         it('should upload files when upload method called', async () => {
             const testFile = new File(['test'], 'test.txt', { type: 'text/plain' });
             component.files = [testFile];
-            spyOn(component, 'uploader');
+            vi.spyOn(component, 'uploader');
 
             component.upload();
 
@@ -130,7 +130,7 @@ describe('FileUpload', () => {
 
             const basicInput = component.basicFileInput();
             if (basicInput?.nativeElement) {
-                spyOn(basicInput.nativeElement, 'click');
+                vi.spyOn(basicInput.nativeElement, 'click');
                 component.onBasicUploaderClick();
                 expect(basicInput.nativeElement.click).toHaveBeenCalled();
             } else {
@@ -209,7 +209,7 @@ describe('FileUpload', () => {
 
     describe('File Selection Events', () => {
         it('should emit onSelect event when files are selected', async () => {
-            spyOn(component.onSelect, 'emit');
+            vi.spyOn(component.onSelect, 'emit');
             fixture.componentRef.setInput('multiple', true);
 
             const testFile = new File(['test'], 'test.txt', { type: 'text/plain' });
@@ -257,7 +257,7 @@ describe('FileUpload', () => {
             fixture.componentRef.setInput('auto', true);
             fixture.componentRef.setInput('name', 'test');
             fixture.componentRef.setInput('url', 'https://test.com/upload');
-            spyOn(component, 'upload');
+            vi.spyOn(component, 'upload');
 
             const testFile = new File(['test'], 'test.txt', { type: 'text/plain' });
             const event = {
@@ -283,8 +283,8 @@ describe('FileUpload', () => {
         it('should handle drag enter event', () => {
             fixture.componentRef.setInput('disabled', false);
             const dragEvent = new DragEvent('dragenter');
-            spyOn(dragEvent, 'stopPropagation');
-            spyOn(dragEvent, 'preventDefault');
+            vi.spyOn(dragEvent, 'stopPropagation');
+            vi.spyOn(dragEvent, 'preventDefault');
 
             component.onDragEnter(dragEvent);
 
@@ -295,8 +295,8 @@ describe('FileUpload', () => {
         it('should handle drag over event', () => {
             fixture.componentRef.setInput('disabled', false);
             const dragEvent = new DragEvent('dragover');
-            spyOn(dragEvent, 'stopPropagation');
-            spyOn(dragEvent, 'preventDefault');
+            vi.spyOn(dragEvent, 'stopPropagation');
+            vi.spyOn(dragEvent, 'preventDefault');
 
             component.onDragOver(dragEvent);
 
@@ -320,13 +320,13 @@ describe('FileUpload', () => {
         it('should handle drop event', async () => {
             fixture.componentRef.setInput('disabled', false);
             fixture.componentRef.setInput('multiple', true);
-            spyOn(component, 'onFileSelect');
+            vi.spyOn(component, 'onFileSelect');
 
             const testFile = new File(['test'], 'test.txt', { type: 'text/plain' });
             const dropEvent = {
                 dataTransfer: { files: [testFile] },
-                stopPropagation: jasmine.createSpy('stopPropagation'),
-                preventDefault: jasmine.createSpy('preventDefault')
+                stopPropagation: vi.fn(),
+                preventDefault: vi.fn()
             } as unknown as DragEvent;
 
             component.onDrop(dropEvent);
@@ -340,7 +340,7 @@ describe('FileUpload', () => {
         it('should not handle drag events when disabled', () => {
             fixture.componentRef.setInput('disabled', true);
             const dragEvent = new DragEvent('dragenter');
-            spyOn(dragEvent, 'stopPropagation');
+            vi.spyOn(dragEvent, 'stopPropagation');
 
             component.onDragEnter(dragEvent);
 
@@ -366,9 +366,9 @@ describe('FileUpload', () => {
             const testFile = new File(['test content'], 'test.txt', { type: 'text/plain' });
             component.files = [testFile];
 
-            spyOn(component.onBeforeUpload, 'emit');
-            spyOn(component.onSend, 'emit');
-            spyOn(component.onUpload, 'emit');
+            vi.spyOn(component.onBeforeUpload, 'emit');
+            vi.spyOn(component.onSend, 'emit');
+            vi.spyOn(component.onUpload, 'emit');
 
             component.uploader();
             await fixture.whenStable();
@@ -399,7 +399,7 @@ describe('FileUpload', () => {
             const testFile = new File(['test'], 'test.txt', { type: 'text/plain' });
             component.files = [testFile];
 
-            spyOn(component.onError, 'emit');
+            vi.spyOn(component.onError, 'emit');
 
             component.uploader();
             await fixture.whenStable();
@@ -416,7 +416,7 @@ describe('FileUpload', () => {
             const testFile = new File(['test'], 'test.txt', { type: 'text/plain' });
             component.files = [testFile];
 
-            spyOn(component.uploadHandler, 'emit');
+            vi.spyOn(component.uploadHandler, 'emit');
 
             component.uploader();
             await fixture.whenStable();
@@ -488,10 +488,10 @@ describe('FileUpload', () => {
         });
 
         it('should handle keyboard navigation in basic mode', () => {
-            spyOn(component, 'onBasicUploaderClick');
+            vi.spyOn(component, 'onBasicUploaderClick');
 
             const spaceEvent = new KeyboardEvent('keydown', { code: 'Space' });
-            spyOn(spaceEvent, 'preventDefault');
+            vi.spyOn(spaceEvent, 'preventDefault');
 
             component.onBasicKeydown(spaceEvent);
 
@@ -500,10 +500,10 @@ describe('FileUpload', () => {
         });
 
         it('should handle Enter key in basic mode', () => {
-            spyOn(component, 'onBasicUploaderClick');
+            vi.spyOn(component, 'onBasicUploaderClick');
 
             const enterEvent = new KeyboardEvent('keydown', { code: 'Enter' });
-            spyOn(enterEvent, 'preventDefault');
+            vi.spyOn(enterEvent, 'preventDefault');
 
             component.onBasicKeydown(enterEvent);
 
@@ -717,8 +717,8 @@ describe('FileUpload', () => {
 
     describe('Memory Management', () => {
         it('should clean up resources on destroy', () => {
-            const mockSubscription = jasmine.createSpyObj('Subscription', ['unsubscribe']);
-            const mockListener = jasmine.createSpy('dragOverListener');
+            const mockSubscription = { unsubscribe: vi.fn() };
+            const mockListener = vi.fn();
 
             component.translationSubscription = mockSubscription;
             component.dragOverListener = mockListener;
@@ -730,7 +730,7 @@ describe('FileUpload', () => {
         });
 
         it('should revoke object URLs on image load', () => {
-            spyOn(window.URL, 'revokeObjectURL');
+            vi.spyOn(window.URL, 'revokeObjectURL');
             const mockImg = { src: 'blob:test-url' };
 
             component.onImageLoad(mockImg as unknown as HTMLImageElement);
@@ -1356,7 +1356,7 @@ describe('FileUpload Template Tests', () => {
         it('should execute chooseCallback from template context', () => {
             expect(fileUploadComponent).toBeTruthy();
 
-            const chooseSpy = spyOn(fileUploadComponent, 'choose');
+            const chooseSpy = vi.spyOn(fileUploadComponent, 'choose');
             fileUploadComponent.cd.detectChanges();
 
             const chooseBtn = testFixture.debugElement.query(By.css('.choose-btn'));
@@ -1368,7 +1368,7 @@ describe('FileUpload Template Tests', () => {
         it('should execute clearCallback from template context', () => {
             expect(fileUploadComponent).toBeTruthy();
 
-            const clearSpy = spyOn(fileUploadComponent, 'clear');
+            const clearSpy = vi.spyOn(fileUploadComponent, 'clear');
             fileUploadComponent.cd.detectChanges();
 
             const clearBtn = testFixture.debugElement.query(By.css('.clear-btn'));
@@ -1380,7 +1380,7 @@ describe('FileUpload Template Tests', () => {
         it('should execute uploadCallback from template context', () => {
             expect(fileUploadComponent).toBeTruthy();
 
-            const uploadSpy = spyOn(fileUploadComponent, 'upload');
+            const uploadSpy = vi.spyOn(fileUploadComponent, 'upload');
             fileUploadComponent.cd.detectChanges();
 
             const uploadBtn = testFixture.debugElement.query(By.css('.upload-btn'));
@@ -1477,8 +1477,8 @@ describe('FileUpload CSS Classes and Styling', () => {
     it('should show drag highlight class on drag over', () => {
         fixture.componentRef.setInput('disabled', false);
         const dragEvent = new DragEvent('dragover');
-        spyOn(dragEvent, 'stopPropagation');
-        spyOn(dragEvent, 'preventDefault');
+        vi.spyOn(dragEvent, 'stopPropagation');
+        vi.spyOn(dragEvent, 'preventDefault');
 
         component.onDragOver(dragEvent);
 
@@ -1519,7 +1519,7 @@ describe('FileUpload Accessibility', () => {
         fixture.componentRef.setInput('mode', 'basic');
         fixture.detectChanges();
 
-        spyOn(component, 'onBasicUploaderClick');
+        vi.spyOn(component, 'onBasicUploaderClick');
 
         const spaceEvent = new KeyboardEvent('keydown', { code: 'Space' });
         component.onBasicKeydown(spaceEvent);
@@ -1581,7 +1581,7 @@ describe('FileUpload Performance and Edge Cases', () => {
 
     it('should handle browser compatibility issues', () => {
         // Mock the isIE11 method to return true
-        spyOn(component, 'isIE11').and.returnValue(true);
+        vi.spyOn(component, 'isIE11').mockReturnValue(true);
 
         const result = component.isIE11();
         expect(result).toBe(true);

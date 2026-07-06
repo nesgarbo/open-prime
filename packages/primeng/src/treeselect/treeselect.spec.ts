@@ -1463,7 +1463,7 @@ describe('TreeSelect', () => {
         });
 
         it('PT: should support event handlers in PT options', async () => {
-            const clickSpy = jasmine.createSpy('clickHandler');
+            const clickSpy = vi.fn();
 
             await TestBed.configureTestingModule({
                 imports: [TreeSelectModule, FormsModule],

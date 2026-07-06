@@ -229,7 +229,7 @@ describe('RadioButton', () => {
         });
 
         it('should programmatically focus', () => {
-            spyOn(radioInstance.inputViewChild().nativeElement, 'focus');
+            vi.spyOn(radioInstance.inputViewChild().nativeElement, 'focus');
 
             radioInstance.focus();
 
@@ -257,7 +257,7 @@ describe('RadioButton', () => {
         });
 
         it('should handle change event', () => {
-            spyOn(radioInstance, 'select');
+            vi.spyOn(radioInstance, 'select');
             const inputElement = fixture.debugElement.query(By.css('input'));
 
             const changeEvent = new Event('change');
@@ -668,7 +668,7 @@ describe('RadioButton', () => {
         });
 
         it('should prevent interaction when disabled', () => {
-            spyOn(radioInstance, 'select');
+            vi.spyOn(radioInstance, 'select');
             component.isDisabled = true;
             fixture.detectChanges();
 

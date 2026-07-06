@@ -202,13 +202,12 @@ describe('InputGroupAddon PassThrough Tests', () => {
     });
 
     describe('PT Case 5: Event binding', () => {
-        it('should handle onclick event through PT', (done) => {
+        it('should handle onclick event through PT', () => {
             let clicked = false;
             fixture.componentRef.setInput('pt', {
                 root: {
                     onclick: () => {
                         clicked = true;
-                        done();
                     }
                 }
             });

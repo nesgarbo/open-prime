@@ -82,8 +82,8 @@ class TestBindStylesComponent {
     template: `<div [pBind]="attrs"></div>`
 })
 class TestBindListenersComponent {
-    clickHandler = jasmine.createSpy('click');
-    hoverHandler = jasmine.createSpy('hover');
+    clickHandler = vi.fn();
+    hoverHandler = vi.fn();
 
     attrs = {
         onclick: this.clickHandler,
@@ -97,7 +97,7 @@ class TestBindListenersComponent {
     template: `<div [pBind]="attrs" class="existing-class" style="margin: 10px;"></div>`
 })
 class TestBindMixedComponent {
-    clickHandler = jasmine.createSpy('click');
+    clickHandler = vi.fn();
 
     attrs = {
         id: 'mixed-id',
@@ -285,8 +285,8 @@ describe('Bind', () => {
         //     const fixture = TestBed.createComponent(TestBindDynamicComponent);
         //     const component = fixture.componentInstance;
 
-        //     const firstHandler = jasmine.createSpy('first');
-        //     const secondHandler = jasmine.createSpy('second');
+        //     const firstHandler = vi.fn();
+        //     const secondHandler = vi.fn();
 
         //     component.attrs = { onclick: firstHandler };
         //     fixture.detectChanges();

@@ -436,7 +436,7 @@ describe('Tabs', () => {
 
         it('should handle right arrow key navigation', () => {
             const rightArrowEvent = new KeyboardEvent('keydown', { code: 'ArrowRight' });
-            spyOn(rightArrowEvent, 'preventDefault');
+            vi.spyOn(rightArrowEvent, 'preventDefault');
 
             tabs[0].nativeElement.dispatchEvent(rightArrowEvent);
             fixture.detectChanges();
@@ -446,7 +446,7 @@ describe('Tabs', () => {
 
         it('should handle left arrow key navigation', () => {
             const leftArrowEvent = new KeyboardEvent('keydown', { code: 'ArrowLeft' });
-            spyOn(leftArrowEvent, 'preventDefault');
+            vi.spyOn(leftArrowEvent, 'preventDefault');
 
             tabs[1].nativeElement.focus();
             tabs[1].nativeElement.dispatchEvent(leftArrowEvent);
@@ -457,7 +457,7 @@ describe('Tabs', () => {
 
         it('should handle Home key navigation', () => {
             const homeEvent = new KeyboardEvent('keydown', { code: 'Home' });
-            spyOn(homeEvent, 'preventDefault');
+            vi.spyOn(homeEvent, 'preventDefault');
 
             tabs[2].nativeElement.focus();
             tabs[2].nativeElement.dispatchEvent(homeEvent);
@@ -468,7 +468,7 @@ describe('Tabs', () => {
 
         it('should handle End key navigation', () => {
             const endEvent = new KeyboardEvent('keydown', { code: 'End' });
-            spyOn(endEvent, 'preventDefault');
+            vi.spyOn(endEvent, 'preventDefault');
 
             tabs[0].nativeElement.dispatchEvent(endEvent);
             fixture.detectChanges();
@@ -478,7 +478,7 @@ describe('Tabs', () => {
 
         it('should handle Enter key activation', () => {
             const enterEvent = new KeyboardEvent('keydown', { code: 'Enter' });
-            spyOn(enterEvent, 'preventDefault');
+            vi.spyOn(enterEvent, 'preventDefault');
 
             tabs[1].nativeElement.focus();
             tabs[1].nativeElement.dispatchEvent(enterEvent);
@@ -490,7 +490,7 @@ describe('Tabs', () => {
 
         it('should handle Space key activation', () => {
             const spaceEvent = new KeyboardEvent('keydown', { code: 'Space' });
-            spyOn(spaceEvent, 'preventDefault');
+            vi.spyOn(spaceEvent, 'preventDefault');
 
             tabs[1].nativeElement.focus();
             tabs[1].nativeElement.dispatchEvent(spaceEvent);
@@ -592,7 +592,7 @@ describe('Tabs', () => {
 
         it('should handle previous button click', () => {
             const tabListComponent = scrollableFixture.debugElement.query(By.directive(TabList)).componentInstance;
-            spyOn(tabListComponent, 'onPrevButtonClick');
+            vi.spyOn(tabListComponent, 'onPrevButtonClick');
 
             const prevButton = scrollableFixture.debugElement.query(By.css('.p-tablist-prev-button'));
             if (prevButton) {
@@ -606,7 +606,7 @@ describe('Tabs', () => {
 
         it('should handle next button click', () => {
             const tabListComponent = scrollableFixture.debugElement.query(By.directive(TabList)).componentInstance;
-            spyOn(tabListComponent, 'onNextButtonClick');
+            vi.spyOn(tabListComponent, 'onNextButtonClick');
 
             const nextButton = scrollableFixture.debugElement.query(By.css('.p-tablist-next-button'));
             if (nextButton) {

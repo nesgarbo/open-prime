@@ -307,7 +307,7 @@ describe('TieredMenu', () => {
         });
 
         it('should handle menu item click', async () => {
-            const clickSpy = spyOn(tieredMenu, 'onItemClick').and.callThrough();
+            const clickSpy = vi.spyOn(tieredMenu, 'onItemClick');
             const menuItem = fixture.debugElement.query(By.css('li[role="menuitem"] .p-tieredmenu-item-content'));
 
             menuItem.triggerEventHandler('click', { preventDefault: () => {} });
@@ -331,7 +331,7 @@ describe('TieredMenu', () => {
         });
 
         it('should handle mouse enter on menu item', async () => {
-            const mouseEnterSpy = spyOn(tieredMenu, 'onItemMouseEnter').and.callThrough();
+            const mouseEnterSpy = vi.spyOn(tieredMenu, 'onItemMouseEnter');
             const menuItem = fixture.debugElement.query(By.css('li[role="menuitem"] .p-tieredmenu-item-content'));
 
             menuItem.triggerEventHandler('mouseenter', { target: menuItem.nativeElement });
@@ -548,7 +548,7 @@ describe('TieredMenu', () => {
         });
 
         it('should handle arrow down key', async () => {
-            const keydownSpy = spyOn(tieredMenu, 'onArrowDownKey').and.callThrough();
+            const keydownSpy = vi.spyOn(tieredMenu, 'onArrowDownKey');
             const menuList = fixture.debugElement.query(By.css('ul[role="menu"]'));
 
             menuList.triggerEventHandler('keydown', { code: 'ArrowDown', preventDefault: () => {} });
@@ -559,7 +559,7 @@ describe('TieredMenu', () => {
         });
 
         it('should handle arrow up key', async () => {
-            const keydownSpy = spyOn(tieredMenu, 'onArrowUpKey').and.callThrough();
+            const keydownSpy = vi.spyOn(tieredMenu, 'onArrowUpKey');
             const menuList = fixture.debugElement.query(By.css('ul[role="menu"]'));
 
             menuList.triggerEventHandler('keydown', { code: 'ArrowUp', preventDefault: () => {} });
@@ -570,7 +570,7 @@ describe('TieredMenu', () => {
         });
 
         it('should handle arrow right key', async () => {
-            const keydownSpy = spyOn(tieredMenu, 'onArrowRightKey').and.callThrough();
+            const keydownSpy = vi.spyOn(tieredMenu, 'onArrowRightKey');
             const menuList = fixture.debugElement.query(By.css('ul[role="menu"]'));
 
             menuList.triggerEventHandler('keydown', { code: 'ArrowRight', preventDefault: () => {} });
@@ -581,7 +581,7 @@ describe('TieredMenu', () => {
         });
 
         it('should handle arrow left key', async () => {
-            const keydownSpy = spyOn(tieredMenu, 'onArrowLeftKey').and.callThrough();
+            const keydownSpy = vi.spyOn(tieredMenu, 'onArrowLeftKey');
             const menuList = fixture.debugElement.query(By.css('ul[role="menu"]'));
 
             menuList.triggerEventHandler('keydown', { code: 'ArrowLeft', preventDefault: () => {} });
@@ -592,7 +592,7 @@ describe('TieredMenu', () => {
         });
 
         it('should handle enter key', async () => {
-            const keydownSpy = spyOn(tieredMenu, 'onEnterKey').and.callThrough();
+            const keydownSpy = vi.spyOn(tieredMenu, 'onEnterKey');
             const menuList = fixture.debugElement.query(By.css('ul[role="menu"]'));
 
             menuList.triggerEventHandler('keydown', { code: 'Enter', preventDefault: () => {} });
@@ -603,7 +603,7 @@ describe('TieredMenu', () => {
         });
 
         it('should handle space key', async () => {
-            const keydownSpy = spyOn(tieredMenu, 'onSpaceKey').and.callThrough();
+            const keydownSpy = vi.spyOn(tieredMenu, 'onSpaceKey');
             const menuList = fixture.debugElement.query(By.css('ul[role="menu"]'));
 
             menuList.triggerEventHandler('keydown', { code: 'Space', preventDefault: () => {} });
@@ -614,7 +614,7 @@ describe('TieredMenu', () => {
         });
 
         it('should handle escape key', async () => {
-            const keydownSpy = spyOn(tieredMenu, 'onEscapeKey').and.callThrough();
+            const keydownSpy = vi.spyOn(tieredMenu, 'onEscapeKey');
             const menuList = fixture.debugElement.query(By.css('ul[role="menu"]'));
 
             menuList.triggerEventHandler('keydown', { code: 'Escape', preventDefault: () => {} });
@@ -625,7 +625,7 @@ describe('TieredMenu', () => {
         });
 
         it('should handle tab key', async () => {
-            const keydownSpy = spyOn(tieredMenu, 'onTabKey').and.callThrough();
+            const keydownSpy = vi.spyOn(tieredMenu, 'onTabKey');
             const menuList = fixture.debugElement.query(By.css('ul[role="menu"]'));
 
             menuList.triggerEventHandler('keydown', { code: 'Tab', preventDefault: () => {} });
@@ -636,7 +636,7 @@ describe('TieredMenu', () => {
         });
 
         it('should handle home key', async () => {
-            const keydownSpy = spyOn(tieredMenu, 'onHomeKey').and.callThrough();
+            const keydownSpy = vi.spyOn(tieredMenu, 'onHomeKey');
             const menuList = fixture.debugElement.query(By.css('ul[role="menu"]'));
 
             menuList.triggerEventHandler('keydown', { code: 'Home', preventDefault: () => {} });
@@ -647,7 +647,7 @@ describe('TieredMenu', () => {
         });
 
         it('should handle end key', async () => {
-            const keydownSpy = spyOn(tieredMenu, 'onEndKey').and.callThrough();
+            const keydownSpy = vi.spyOn(tieredMenu, 'onEndKey');
             const menuList = fixture.debugElement.query(By.css('ul[role="menu"]'));
 
             menuList.triggerEventHandler('keydown', { code: 'End', preventDefault: () => {} });
@@ -658,14 +658,14 @@ describe('TieredMenu', () => {
         });
 
         it('should search items with character keys', async () => {
-            const searchSpy = spyOn(tieredMenu, 'searchItems').and.callThrough();
+            const searchSpy = vi.spyOn(tieredMenu, 'searchItems');
             const menuList = fixture.debugElement.query(By.css('ul[role="menu"]'));
 
             menuList.triggerEventHandler('keydown', { code: 'KeyF', key: 'f', metaKey: false, ctrlKey: false, preventDefault: () => {} });
             await new Promise((resolve) => setTimeout(resolve, 100));
             await fixture.whenStable();
 
-            expect(searchSpy).toHaveBeenCalledWith(jasmine.any(Object), 'f');
+            expect(searchSpy).toHaveBeenCalledWith(expect.any(Object), 'f');
         });
     });
 
@@ -750,7 +750,7 @@ describe('TieredMenu', () => {
         });
 
         it('should navigate on router link click', async () => {
-            const navigateSpy = spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
+            const navigateSpy = vi.spyOn(router, 'navigate').mockReturnValue(Promise.resolve(true));
 
             // Wait for menu to render
             await new Promise((resolve) => setTimeout(resolve, 100));
@@ -788,7 +788,7 @@ describe('TieredMenu', () => {
         });
 
         it('should handle focus management', async () => {
-            const focusSpy = spyOn(tieredMenu, 'onMenuFocus').and.callThrough();
+            const focusSpy = vi.spyOn(tieredMenu, 'onMenuFocus');
             const menu = fixture.debugElement.query(By.css('ul[role="menu"]'));
 
             menu.triggerEventHandler('focus', {});
@@ -800,7 +800,7 @@ describe('TieredMenu', () => {
         });
 
         it('should handle blur management', async () => {
-            const blurSpy = spyOn(tieredMenu, 'onMenuBlur').and.callThrough();
+            const blurSpy = vi.spyOn(tieredMenu, 'onMenuBlur');
             const menu = fixture.debugElement.query(By.css('ul[role="menu"]'));
 
             menu.triggerEventHandler('focus', {});
@@ -839,7 +839,7 @@ describe('TieredMenu', () => {
         });
 
         it('should bind media query listener', () => {
-            const bindSpy = spyOn(breakpointTieredMenu, 'bindMatchMediaListener').and.callThrough();
+            const bindSpy = vi.spyOn(breakpointTieredMenu, 'bindMatchMediaListener');
             breakpointTieredMenu.ngOnInit();
             expect(bindSpy).toHaveBeenCalled();
         });
@@ -858,7 +858,7 @@ describe('TieredMenu', () => {
         });
 
         it('should emit onShow event', async () => {
-            const showSpy = spyOn(popupTieredMenu.onShow, 'emit');
+            const showSpy = vi.spyOn(popupTieredMenu.onShow, 'emit');
             const mockEvent = { currentTarget: popupFixture.componentInstance.toggleButton.nativeElement };
 
             popupTieredMenu.show(mockEvent);
@@ -873,7 +873,7 @@ describe('TieredMenu', () => {
         });
 
         it('should emit onHide event', async () => {
-            const hideSpy = spyOn(popupTieredMenu.onHide, 'emit');
+            const hideSpy = vi.spyOn(popupTieredMenu.onHide, 'emit');
             const mockEvent = { currentTarget: document.createElement('button') };
 
             popupTieredMenu.show(mockEvent);
@@ -1008,7 +1008,7 @@ describe('TieredMenu', () => {
 
     describe('Cleanup', () => {
         it('should cleanup on destroy', () => {
-            const unbindSpy = spyOn(tieredMenu, 'unbindMatchMediaListener');
+            const unbindSpy = vi.spyOn(tieredMenu, 'unbindMatchMediaListener');
             tieredMenu.ngOnDestroy();
             expect(unbindSpy).toHaveBeenCalled();
         });

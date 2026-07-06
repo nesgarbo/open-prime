@@ -184,7 +184,7 @@ describe('ImageCompare', () => {
 
         it('should handle slider input event', () => {
             const imageCompareInstance = testFixture.debugElement.query(By.directive(ImageCompare)).componentInstance;
-            spyOn(imageCompareInstance, 'onSlide').and.callThrough();
+            vi.spyOn(imageCompareInstance, 'onSlide');
 
             slider.nativeElement.value = '75';
             slider.nativeElement.dispatchEvent(new Event('input'));
@@ -243,7 +243,7 @@ describe('ImageCompare', () => {
         });
 
         it('should setup mutation observer for direction changes', () => {
-            spyOn(imageCompareInstance, 'updateDirection');
+            vi.spyOn(imageCompareInstance, 'updateDirection');
 
             // Just test that the method exists and can be called
             expect(imageCompareInstance.observeDirectionChanges).toBeDefined();
@@ -322,8 +322,8 @@ describe('ImageCompare', () => {
         });
 
         it('should initialize direction detection on ngOnInit', () => {
-            spyOn(imageCompareInstance, 'updateDirection');
-            spyOn(imageCompareInstance, 'observeDirectionChanges');
+            vi.spyOn(imageCompareInstance, 'updateDirection');
+            vi.spyOn(imageCompareInstance, 'observeDirectionChanges');
 
             imageCompareInstance.ngOnInit();
 
@@ -333,7 +333,7 @@ describe('ImageCompare', () => {
 
         it('should cleanup mutation observer on ngOnDestroy', () => {
             const mockMutationObserver = {
-                disconnect: jasmine.createSpy('disconnect')
+                disconnect: vi.fn()
             };
             imageCompareInstance.mutationObserver = mockMutationObserver as any;
 
@@ -343,7 +343,7 @@ describe('ImageCompare', () => {
         });
 
         it('should call super.ngOnDestroy', () => {
-            spyOn(Object.getPrototypeOf(Object.getPrototypeOf(imageCompareInstance)), 'ngOnDestroy');
+            vi.spyOn(Object.getPrototypeOf(Object.getPrototypeOf(imageCompareInstance)), 'ngOnDestroy');
 
             imageCompareInstance.ngOnDestroy();
 
@@ -363,20 +363,20 @@ describe('ImageCompare', () => {
 
         it('should updateDirection method work correctly', () => {
             // Test LTR
-            spyOn(imageCompareInstance.el.nativeElement, 'closest').and.returnValue(null);
+            vi.spyOn(imageCompareInstance.el.nativeElement, 'closest').mockReturnValue(null);
             imageCompareInstance.updateDirection();
             expect(imageCompareInstance.isRTL).toBe(false);
 
             // Test RTL
-            (imageCompareInstance.el.nativeElement.closest as jasmine.Spy).and.returnValue({ dir: 'rtl' });
+            (imageCompareInstance.el.nativeElement.closest as any).mockReturnValue({ dir: 'rtl' });
             imageCompareInstance.updateDirection();
             expect(imageCompareInstance.isRTL).toBe(true);
         });
 
         it('should observeDirectionChanges method setup mutation observer correctly', () => {
-            const mockMutationObserver = jasmine.createSpy('MutationObserver').and.returnValue({
-                observe: jasmine.createSpy('observe'),
-                disconnect: jasmine.createSpy('disconnect')
+            const mockMutationObserver = vi.fn().mockReturnValue({
+                observe: vi.fn(),
+                disconnect: vi.fn()
             });
             (window as any).MutationObserver = mockMutationObserver;
 

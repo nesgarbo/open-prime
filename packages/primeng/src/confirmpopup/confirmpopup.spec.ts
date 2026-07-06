@@ -470,7 +470,7 @@ describe('ConfirmPopup', () => {
             await focusFixture.whenStable();
 
             const confirmPopupInstance = focusFixture.debugElement.query(By.directive(ConfirmPopup)).componentInstance;
-            const handleFocusSpy = spyOn(confirmPopupInstance, 'handleFocus').and.callThrough();
+            const handleFocusSpy = vi.spyOn(confirmPopupInstance, 'handleFocus');
 
             const triggerBtn = focusFixture.debugElement.query(By.css('.trigger-btn'));
             triggerBtn.nativeElement.click();
@@ -496,7 +496,7 @@ describe('ConfirmPopup', () => {
             await focusFixture.whenStable();
 
             const confirmPopupInstance = focusFixture.debugElement.query(By.directive(ConfirmPopup)).componentInstance;
-            const handleFocusSpy = spyOn(confirmPopupInstance, 'handleFocus').and.callThrough();
+            const handleFocusSpy = vi.spyOn(confirmPopupInstance, 'handleFocus');
 
             const triggerBtn = focusFixture.debugElement.query(By.css('.trigger-btn'));
             triggerBtn.nativeElement.click();
@@ -742,7 +742,7 @@ describe('ConfirmPopup', () => {
             await positionFixture.whenStable();
 
             const confirmPopupInstance = positionFixture.debugElement.query(By.directive(ConfirmPopup)).componentInstance;
-            const alignSpy = spyOn(confirmPopupInstance, 'alignOverlay').and.callThrough();
+            const alignSpy = vi.spyOn(confirmPopupInstance, 'alignOverlay');
 
             const triggerBtn = positionFixture.debugElement.query(By.css('.trigger-btn'));
             triggerBtn.nativeElement.click();
@@ -759,8 +759,8 @@ describe('ConfirmPopup', () => {
         });
 
         it('should handle window resize', async () => {
-            const hideSpy = spyOn(confirmPopupInstance, 'hide').and.callThrough();
-            const onWindowResizeSpy = spyOn(confirmPopupInstance, 'onWindowResize').and.callThrough();
+            const hideSpy = vi.spyOn(confirmPopupInstance, 'hide');
+            const onWindowResizeSpy = vi.spyOn(confirmPopupInstance, 'onWindowResize');
 
             const triggerBtn = fixture.debugElement.query(By.css('.trigger-btn'));
             triggerBtn.nativeElement.click();
@@ -861,7 +861,7 @@ describe('ConfirmPopup', () => {
 
             const acceptButton = fixture.debugElement.query(By.css('p-button[label="Yes"]'));
             if (acceptButton) {
-                spyOn(confirmPopupInstance, 'onAccept');
+                vi.spyOn(confirmPopupInstance, 'onAccept');
 
                 const enterEvent = new KeyboardEvent('keydown', { key: 'Enter' });
                 acceptButton.nativeElement.dispatchEvent(enterEvent);
@@ -1019,7 +1019,7 @@ describe('ConfirmPopup', () => {
 
             // Test the onEscapeKeydown method directly
             const escapeEvent = new KeyboardEvent('keydown', { key: 'Escape' });
-            spyOn(confirmPopupInstance, 'onReject');
+            vi.spyOn(confirmPopupInstance, 'onReject');
 
             confirmPopupInstance.onEscapeKeydown(escapeEvent);
 
@@ -1042,7 +1042,7 @@ describe('ConfirmPopup', () => {
 
             // Test the onEscapeKeydown method directly
             const escapeEvent = new KeyboardEvent('keydown', { key: 'Escape' });
-            spyOn(confirmPopupInstance, 'onReject');
+            vi.spyOn(confirmPopupInstance, 'onReject');
 
             confirmPopupInstance.onEscapeKeydown(escapeEvent);
 
@@ -1064,7 +1064,7 @@ describe('ConfirmPopup', () => {
 
             // Test the onEscapeKeydown method directly
             const escapeEvent = new KeyboardEvent('keydown', { key: 'Escape' });
-            spyOn(confirmPopupInstance, 'onReject');
+            vi.spyOn(confirmPopupInstance, 'onReject');
 
             confirmPopupInstance.onEscapeKeydown(escapeEvent);
 
@@ -1075,7 +1075,7 @@ describe('ConfirmPopup', () => {
         it('should not handle Escape key when confirmation is null', () => {
             confirmPopupInstance.confirmation.set(null);
             const escapeEvent = new KeyboardEvent('keydown', { key: 'Escape' });
-            spyOn(confirmPopupInstance, 'onReject');
+            vi.spyOn(confirmPopupInstance, 'onReject');
 
             confirmPopupInstance.onEscapeKeydown(escapeEvent);
 
@@ -1159,7 +1159,7 @@ describe('ConfirmPopup', () => {
                 cancelable: true
             });
 
-            spyOn(confirmPopupInstance, 'onReject');
+            vi.spyOn(confirmPopupInstance, 'onReject');
 
             // Dispatch event on document
             document.dispatchEvent(escapeKeyEvent);
@@ -1253,7 +1253,7 @@ describe('ConfirmPopup', () => {
         });
 
         it('should clean up on destroy', () => {
-            const unsubscribeSpy = spyOn(confirmPopupInstance.subscription, 'unsubscribe');
+            const unsubscribeSpy = vi.spyOn(confirmPopupInstance.subscription, 'unsubscribe');
 
             fixture.destroy();
 
@@ -1299,7 +1299,7 @@ describe('ConfirmPopup', () => {
 
         it('should unsubscribe on destroy', () => {
             const subscription = confirmPopupInstance.subscription;
-            spyOn(subscription, 'unsubscribe');
+            vi.spyOn(subscription, 'unsubscribe');
 
             confirmPopupInstance.ngOnDestroy();
 

@@ -1003,7 +1003,7 @@ describe('Select', () => {
         });
 
         // Skipped: This test requires TestGroupedSelectComponent fixture
-        xit('should display disabled grouped option label when set as initial value', async () => {
+        it.skip('should display disabled grouped option label when set as initial value', async () => {
             // This test needs a different fixture with group bindings
         });
     });
@@ -1048,7 +1048,7 @@ describe('Select', () => {
         });
 
         it('should focus programmatically', () => {
-            spyOn(selectInstance, 'applyFocus');
+            vi.spyOn(selectInstance, 'applyFocus');
             selectInstance.focus();
 
             expect(selectInstance.applyFocus).toHaveBeenCalled();
@@ -1071,8 +1071,8 @@ describe('Select', () => {
 
             const clickEvent = {
                 target: mockTarget,
-                preventDefault: jasmine.createSpy('preventDefault'),
-                stopPropagation: jasmine.createSpy('stopPropagation')
+                preventDefault: vi.fn(),
+                stopPropagation: vi.fn()
             } as any;
 
             selectInstance.onContainerClick(clickEvent);
@@ -1378,8 +1378,8 @@ describe('Select', () => {
 
             const clickEvent = {
                 target: mockTarget,
-                preventDefault: jasmine.createSpy('preventDefault'),
-                stopPropagation: jasmine.createSpy('stopPropagation')
+                preventDefault: vi.fn(),
+                stopPropagation: vi.fn()
             } as any;
 
             selectInstance.onContainerClick(clickEvent);
@@ -1436,7 +1436,7 @@ describe('Select', () => {
 
     describe('CSS Classes and Styling', () => {
         // Skipped: styleClass input was removed from Select component
-        xit('should apply custom style class', () => {
+        it.skip('should apply custom style class', () => {
             // styleClass is no longer an input
         });
 
@@ -3089,7 +3089,7 @@ describe('Select Advanced Accessibility', () => {
             // Ensure overlay is open before testing close
 
             const escapeEvent = new KeyboardEvent('keydown', { code: 'Escape' });
-            spyOn(escapeEvent, 'preventDefault');
+            vi.spyOn(escapeEvent, 'preventDefault');
             selectInstance.onKeyDown(escapeEvent);
             await new Promise((resolve) => setTimeout(resolve, 100));
             await fixture.whenStable();
