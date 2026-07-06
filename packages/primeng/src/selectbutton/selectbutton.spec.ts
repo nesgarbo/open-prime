@@ -14,8 +14,18 @@ describe('SelectButton', () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            imports: [SelectButton, SelectButtonModule, FormsModule, ReactiveFormsModule, CommonModule, SharedModule, TestSelectButtonTemplateComponent, TestSelectButtonRefTemplateComponent],
-            declarations: [TestFormSelectButtonComponent, TestItemTemplateSelectButtonComponent],
+            imports: [
+                SelectButton,
+                SelectButtonModule,
+                FormsModule,
+                ReactiveFormsModule,
+                CommonModule,
+                SharedModule,
+                TestSelectButtonTemplateComponent,
+                TestSelectButtonRefTemplateComponent,
+                TestFormSelectButtonComponent,
+                TestItemTemplateSelectButtonComponent
+            ],
             providers: [provideZonelessChangeDetection()]
         }).compileComponents();
 
@@ -427,7 +437,8 @@ describe('SelectButton', () => {
 
 // Test Components
 @Component({
-    standalone: false,
+    standalone: true,
+    imports: [SelectButton, ReactiveFormsModule],
     template: `
         <form [formGroup]="form">
             <p-selectbutton [options]="options" formControlName="selectedValue"> </p-selectbutton>
@@ -447,7 +458,8 @@ class TestFormSelectButtonComponent {
 }
 
 @Component({
-    standalone: false,
+    standalone: true,
+    imports: [SelectButton, SharedModule],
     template: `
         <p-selectbutton [options]="options">
             <ng-template #item let-option let-index="index">
