@@ -1,4 +1,4 @@
-import { Component, DebugElement, provideZonelessChangeDetection, ViewChild } from '@angular/core';
+import { Component, DebugElement, provideZonelessChangeDetection, signal, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
@@ -8,20 +8,21 @@ import { providePrimeNG } from 'primeng/config';
 import { Menu } from './menu';
 
 @Component({
-    standalone: false,
+    standalone: true,
+    imports: [Menu],
     template: `
         <p-menu
-            [id]="id"
-            [model]="model"
-            [popup]="popup"
-            [style]="style"
-            [styleClass]="styleClass"
-            [autoZIndex]="autoZIndex"
-            [baseZIndex]="baseZIndex"
-            [ariaLabel]="ariaLabel"
-            [ariaLabelledBy]="ariaLabelledBy"
-            [tabindex]="tabindex"
-            [appendTo]="appendTo"
+            [id]="id()"
+            [model]="model()"
+            [popup]="popup()"
+            [style]="style()"
+            [styleClass]="styleClass()"
+            [autoZIndex]="autoZIndex()"
+            [baseZIndex]="baseZIndex()"
+            [ariaLabel]="ariaLabel()"
+            [ariaLabelledBy]="ariaLabelledBy()"
+            [tabindex]="tabindex()"
+            [appendTo]="appendTo()"
             (onShow)="onShow($event)"
             (onHide)="onHide($event)"
             (onBlur)="onBlur($event)"
@@ -31,17 +32,17 @@ import { Menu } from './menu';
     `
 })
 class TestBasicMenuComponent {
-    id: string | undefined;
-    model: MenuItem[] | undefined = [{ label: 'File', icon: 'pi pi-file', command: () => {} }, { label: 'Edit', icon: 'pi pi-pencil' }, { separator: true }, { label: 'Settings', icon: 'pi pi-cog', disabled: true }];
-    popup: boolean | undefined;
-    style: { [klass: string]: any } | null | undefined;
-    styleClass: string | undefined;
-    autoZIndex: boolean = true;
-    baseZIndex: number = 0;
-    ariaLabel: string | undefined;
-    ariaLabelledBy: string | undefined;
-    tabindex: number = 0;
-    appendTo: any = undefined as any;
+    id = signal<string | undefined>(undefined);
+    model = signal<MenuItem[] | undefined>([{ label: 'File', icon: 'pi pi-file', command: () => {} }, { label: 'Edit', icon: 'pi pi-pencil' }, { separator: true }, { label: 'Settings', icon: 'pi pi-cog', disabled: true }]);
+    popup = signal<boolean | undefined>(undefined);
+    style = signal<{ [klass: string]: any } | null | undefined>(undefined);
+    styleClass = signal<string | undefined>(undefined);
+    autoZIndex = signal<boolean>(true);
+    baseZIndex = signal<number>(0);
+    ariaLabel = signal<string | undefined>(undefined);
+    ariaLabelledBy = signal<string | undefined>(undefined);
+    tabindex = signal<number>(0);
+    appendTo = signal<any>(undefined);
 
     showEvent: any;
     hideEvent: any;
@@ -66,7 +67,8 @@ class TestBasicMenuComponent {
 }
 
 @Component({
-    standalone: false,
+    standalone: true,
+    imports: [Menu],
     template: `
         <p-menu #menu [model]="popupItems" [popup]="true"></p-menu>
         <button #toggleButton (click)="menu.toggle($event)" class="toggle-button">Show Menu</button>
@@ -102,7 +104,8 @@ class TestPopupMenuComponent {
 }
 
 @Component({
-    standalone: false,
+    standalone: true,
+    imports: [Menu],
     selector: 'test-router-menu',
     template: ` <p-menu [model]="routerModel"></p-menu> `
 })
@@ -120,7 +123,8 @@ class TestRouterMenuComponent {
 }
 
 @Component({
-    standalone: false,
+    standalone: true,
+    imports: [Menu],
     selector: 'test-submenu-menu',
     template: ` <p-menu [model]="submenuModel"></p-menu> `
 })
@@ -144,13 +148,16 @@ class TestSubmenuMenuComponent {
 }
 
 @Component({
-    standalone: false,
+    standalone: true,
+    imports: [Menu],
     selector: 'test-item-template-menu',
     template: `
         <p-menu [model]="model">
             <ng-template #item let-item>
                 <div class="custom-menu-item">
-                    <i [class]="item.icon" *ngIf="item.icon"></i>
+                    @if (item.icon) {
+                        <i [class]="item.icon"></i>
+                    }
                     <span class="custom-label">{{ item.label }}</span>
                 </div>
             </ng-template>
@@ -165,7 +172,8 @@ class TestItemTemplateMenuComponent {
 }
 
 @Component({
-    standalone: false,
+    standalone: true,
+    imports: [Menu],
     selector: 'test-ptemplate-menu',
     template: `
         <p-menu [model]="model">
@@ -186,7 +194,8 @@ class TestTemplateMenuComponent {
 }
 
 @Component({
-    standalone: false,
+    standalone: true,
+    imports: [Menu],
     selector: 'test-disabled-items-menu',
     template: ` <p-menu [model]="disabledModel"></p-menu> `
 })
@@ -195,7 +204,8 @@ class TestDisabledItemsMenuComponent {
 }
 
 @Component({
-    standalone: false,
+    standalone: true,
+    imports: [Menu],
     selector: 'test-styled-menu',
     template: ` <p-menu [model]="model" [styleClass]="customStyleClass" [style]="customStyle"></p-menu> `
 })
@@ -206,35 +216,38 @@ class TestStyledMenuComponent {
 }
 
 @Component({
-    standalone: false,
+    standalone: true,
+    imports: [Menu],
     selector: 'test-minimal-menu',
     template: `<p-menu></p-menu>`
 })
 class TestMinimalMenuComponent {}
 
 @Component({
-    standalone: false,
+    standalone: true,
+    imports: [Menu],
     selector: 'test-dynamic-menu',
-    template: ` <p-menu [model]="dynamicModel"></p-menu> `
+    template: ` <p-menu [model]="dynamicModel()"></p-menu> `
 })
 class TestDynamicMenuComponent {
-    dynamicModel: MenuItem[] = [];
+    dynamicModel = signal<MenuItem[]>([]);
 
     addItem(item: MenuItem) {
-        this.dynamicModel.push(item);
+        this.dynamicModel.update((model) => [...model, item]);
     }
 
     clearItems() {
-        this.dynamicModel = [];
+        this.dynamicModel.set([]);
     }
 
     removeItem(index: number) {
-        this.dynamicModel.splice(index, 1);
+        this.dynamicModel.update((model) => model.filter((_, i) => i !== index));
     }
 }
 
 @Component({
-    standalone: false,
+    standalone: true,
+    imports: [Menu],
     selector: 'test-command-menu',
     template: ` <p-menu [model]="commandModel"></p-menu> `
 })
@@ -267,7 +280,7 @@ describe('Menu', () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            declarations: [
+            imports: [
                 TestBasicMenuComponent,
                 TestPopupMenuComponent,
                 TestRouterMenuComponent,
@@ -278,9 +291,7 @@ describe('Menu', () => {
                 TestStyledMenuComponent,
                 TestMinimalMenuComponent,
                 TestDynamicMenuComponent,
-                TestCommandMenuComponent
-            ],
-            imports: [
+                TestCommandMenuComponent,
                 Menu,
                 TestTargetComponent,
 
@@ -311,7 +322,7 @@ describe('Menu', () => {
         it('should have required dependencies injected', () => {
             expect(menuInstance.overlayService).toBeTruthy();
             expect(menuInstance._componentStyle).toBeTruthy();
-            expect(menuInstance.constructor.name).toBe('Menu');
+            expect(menuInstance.constructor.name).toBe('_Menu');
         });
 
         it('should have default values', () => {
@@ -331,11 +342,11 @@ describe('Menu', () => {
 
         it('should accept custom values', async () => {
             const testModel: MenuItem[] = [{ label: 'Test Item' }];
-            component.model = testModel;
-            component.popup = true;
-            component.styleClass = 'custom-menu';
-            component.ariaLabel = 'Custom Menu';
-            component.tabindex = 1;
+            component.model.set(testModel);
+            component.popup.set(true);
+            component.styleClass.set('custom-menu');
+            component.ariaLabel.set('Custom Menu');
+            component.tabindex.set(1);
             fixture.changeDetectorRef.markForCheck();
             await fixture.whenStable();
 
@@ -375,7 +386,7 @@ describe('Menu', () => {
     describe('Input Properties', () => {
         it('should update model input', async () => {
             const newModel = [{ label: 'New Item' }];
-            component.model = newModel;
+            component.model.set(newModel);
             fixture.changeDetectorRef.markForCheck();
             await fixture.whenStable();
 
@@ -383,7 +394,7 @@ describe('Menu', () => {
         });
 
         it('should update popup input', async () => {
-            component.popup = true;
+            component.popup.set(true);
             fixture.changeDetectorRef.markForCheck();
             await fixture.whenStable();
 
@@ -391,8 +402,8 @@ describe('Menu', () => {
         });
 
         it('should update style inputs', async () => {
-            component.style = { width: '200px' };
-            component.styleClass = 'test-class';
+            component.style.set({ width: '200px' });
+            component.styleClass.set('test-class');
             fixture.changeDetectorRef.markForCheck();
             await fixture.whenStable();
 
@@ -401,8 +412,8 @@ describe('Menu', () => {
         });
 
         it('should update z-index inputs', async () => {
-            component.autoZIndex = false;
-            component.baseZIndex = 1000;
+            component.autoZIndex.set(false);
+            component.baseZIndex.set(1000);
             fixture.changeDetectorRef.markForCheck();
             await fixture.whenStable();
 
@@ -411,8 +422,8 @@ describe('Menu', () => {
         });
 
         it('should update aria inputs', async () => {
-            component.ariaLabel = 'Test Menu';
-            component.ariaLabelledBy = 'menu-label';
+            component.ariaLabel.set('Test Menu');
+            component.ariaLabelledBy.set('menu-label');
             fixture.changeDetectorRef.markForCheck();
             await fixture.whenStable();
 
@@ -421,14 +432,14 @@ describe('Menu', () => {
         });
 
         it('should update tabindex input', async () => {
-            component.tabindex = 2;
+            component.tabindex.set(2);
             fixture.changeDetectorRef.markForCheck();
             await fixture.whenStable();
             expect(menuInstance.tabindex()).toBe(2);
         });
 
         it('should update id input', async () => {
-            component.id = 'custom-menu-id';
+            component.id.set('custom-menu-id');
             fixture.changeDetectorRef.markForCheck();
             await fixture.whenStable();
             expect(menuInstance.id()).toBe('custom-menu-id');
@@ -723,7 +734,7 @@ describe('Menu', () => {
         });
 
         it('should handle escape key for popup menu', async () => {
-            component.popup = true;
+            component.popup.set(true);
             fixture.changeDetectorRef.markForCheck();
             await fixture.whenStable();
 
@@ -896,7 +907,7 @@ describe('Menu', () => {
         });
 
         it('should set aria-label when provided', async () => {
-            component.ariaLabel = 'Main Navigation Menu';
+            component.ariaLabel.set('Main Navigation Menu');
             fixture.changeDetectorRef.markForCheck();
             await fixture.whenStable();
 
@@ -905,7 +916,7 @@ describe('Menu', () => {
         });
 
         it('should set aria-labelledby when provided', async () => {
-            component.ariaLabelledBy = 'menu-heading';
+            component.ariaLabelledBy.set('menu-heading');
             fixture.changeDetectorRef.markForCheck();
             await fixture.whenStable();
 
@@ -949,7 +960,7 @@ describe('Menu', () => {
 
     describe('Popup Menu Tests', () => {
         it('should show and hide popup menu', async () => {
-            component.popup = true;
+            component.popup.set(true);
             fixture.changeDetectorRef.markForCheck();
             await fixture.whenStable();
 
@@ -974,7 +985,7 @@ describe('Menu', () => {
         });
 
         it('should toggle popup menu visibility', async () => {
-            component.popup = true;
+            component.popup.set(true);
             fixture.changeDetectorRef.markForCheck();
             await fixture.whenStable();
 
@@ -994,7 +1005,7 @@ describe('Menu', () => {
         });
 
         it('should handle overlay click', async () => {
-            component.popup = true;
+            component.popup.set(true);
             fixture.changeDetectorRef.markForCheck();
             await fixture.whenStable();
 
@@ -1008,7 +1019,7 @@ describe('Menu', () => {
         });
 
         it('should bind document click listener for popup', async () => {
-            component.popup = true;
+            component.popup.set(true);
             fixture.changeDetectorRef.markForCheck();
             await fixture.whenStable();
 
@@ -1279,7 +1290,7 @@ describe('Menu', () => {
         });
 
         it('should handle rapid show/hide calls', async () => {
-            component.popup = true;
+            component.popup.set(true);
             fixture.changeDetectorRef.markForCheck();
             await fixture.whenStable();
 
@@ -1301,7 +1312,7 @@ describe('Menu', () => {
         });
 
         it('should handle disabled items click prevention', async () => {
-            component.model = [{ label: 'Disabled Item', disabled: true }];
+            component.model.set([{ label: 'Disabled Item', disabled: true }]);
             fixture.changeDetectorRef.markForCheck();
             await fixture.whenStable();
 
