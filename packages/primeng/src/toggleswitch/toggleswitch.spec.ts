@@ -15,8 +15,22 @@ describe('ToggleSwitch', () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            imports: [ToggleSwitch, ToggleSwitchModule, FormsModule, ReactiveFormsModule, CommonModule, AutoFocus, TestToggleSwitchTemplateComponent, TestToggleSwitchRefTemplateComponent],
-            declarations: [TestBasicToggleSwitchComponent, TestFormToggleSwitchComponent, TestTemplateToggleSwitchComponent, TestHandleTemplateToggleSwitchComponent, TestRequiredToggleSwitchComponent, TestNamedToggleSwitchComponent],
+            imports: [
+                ToggleSwitch,
+                ToggleSwitchModule,
+                FormsModule,
+                ReactiveFormsModule,
+                CommonModule,
+                AutoFocus,
+                TestToggleSwitchTemplateComponent,
+                TestToggleSwitchRefTemplateComponent,
+                TestBasicToggleSwitchComponent,
+                TestFormToggleSwitchComponent,
+                TestTemplateToggleSwitchComponent,
+                TestHandleTemplateToggleSwitchComponent,
+                TestRequiredToggleSwitchComponent,
+                TestNamedToggleSwitchComponent
+            ],
             providers: [provideZonelessChangeDetection()]
         }).compileComponents();
 
@@ -624,7 +638,8 @@ describe('ToggleSwitch', () => {
 
 // Test Components
 @Component({
-    standalone: false,
+    standalone: true,
+    imports: [ToggleSwitch, FormsModule, AutoFocus],
     template: `
         <p-toggleswitch [(ngModel)]="checked" [readonly]="readonly" [disabled]="disabled" [autofocus]="autofocus" [ariaLabel]="ariaLabel" [ariaLabelledBy]="ariaLabelledBy" [tabindex]="tabindex" (onChange)="onToggleChange($event)"> </p-toggleswitch>
     `
@@ -642,7 +657,8 @@ class TestBasicToggleSwitchComponent {
 }
 
 @Component({
-    standalone: false,
+    standalone: true,
+    imports: [ToggleSwitch, ReactiveFormsModule],
     template: `
         <form [formGroup]="form">
             <p-toggleswitch formControlName="toggleValue"></p-toggleswitch>
@@ -656,7 +672,8 @@ class TestFormToggleSwitchComponent {
 }
 
 @Component({
-    standalone: false,
+    standalone: true,
+    imports: [ToggleSwitch, FormsModule],
     template: `
         <p-toggleswitch [(ngModel)]="checked">
             <ng-template #handle let-checked="checked">
@@ -670,7 +687,8 @@ class TestTemplateToggleSwitchComponent {
 }
 
 @Component({
-    standalone: false,
+    standalone: true,
+    imports: [ToggleSwitch, FormsModule],
     template: `
         <p-toggleswitch [(ngModel)]="checked">
             <ng-template #handle let-checked="checked">
@@ -684,7 +702,8 @@ class TestHandleTemplateToggleSwitchComponent {
 }
 
 @Component({
-    standalone: false,
+    standalone: true,
+    imports: [ToggleSwitch, FormsModule],
     template: ` <p-toggleswitch [required]="required"></p-toggleswitch> `
 })
 class TestRequiredToggleSwitchComponent {
@@ -692,7 +711,8 @@ class TestRequiredToggleSwitchComponent {
 }
 
 @Component({
-    standalone: false,
+    standalone: true,
+    imports: [ToggleSwitch, FormsModule],
     template: ` <p-toggleswitch [name]="name"></p-toggleswitch> `
 })
 class TestNamedToggleSwitchComponent {
