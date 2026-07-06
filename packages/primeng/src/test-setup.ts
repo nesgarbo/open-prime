@@ -14,3 +14,14 @@ if (typeof window !== 'undefined' && typeof window.matchMedia !== 'function') {
             dispatchEvent: () => false
         }) as MediaQueryList;
 }
+
+// jsdom does not implement ResizeObserver, which several components (TabList,
+// Scroller, etc.) instantiate while rendering; provide a no-op polyfill so those
+// specs run under jsdom without throwing in ngAfterViewInit.
+if (typeof globalThis !== 'undefined' && typeof (globalThis as any).ResizeObserver !== 'function') {
+    (globalThis as any).ResizeObserver = class {
+        observe(): void {}
+        unobserve(): void {}
+        disconnect(): void {}
+    };
+}
