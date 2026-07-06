@@ -18,7 +18,8 @@ import { Listbox } from 'primeng/listbox';
 import { PickList } from './picklist';
 
 @Component({
-    standalone: false,
+    standalone: true,
+    imports: [PickList],
     template: `
         <p-picklist
             [source]="source"
@@ -137,8 +138,7 @@ describe('PickList', () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            declarations: [TestPickListComponent],
-            imports: [PickList],
+            imports: [PickList, TestPickListComponent],
             providers: [provideZonelessChangeDetection()]
         }).compileComponents();
 
