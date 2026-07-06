@@ -67,6 +67,7 @@
         "glob": "^13.0.6",
         "globals": "^17.7.0",
         "husky": "^9.1.7",
+        "jsdom": "29.1.1",
         "lint-staged": "^17.0.8",
         "ng-packagr": "catalog:angular22",
         "pnpm": "^11.10.0",
@@ -74,7 +75,8 @@
         "quill": "2.0.3",
         "tsup": "^8.5.1",
         "typescript": "catalog:angular22",
-        "typescript-eslint": "^8.62.1"
+        "typescript-eslint": "^8.62.1",
+        "vitest": "4.1.9"
     },
     "publishConfig": {
         "access": "public"
