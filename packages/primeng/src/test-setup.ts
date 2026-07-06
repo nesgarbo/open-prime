@@ -25,3 +25,10 @@ if (typeof globalThis !== 'undefined' && typeof (globalThis as any).ResizeObserv
         disconnect(): void {}
     };
 }
+
+// jsdom does not implement the scrollTo API on elements, which Scroller calls to
+// programmatically scroll its viewport; provide a no-op polyfill so those specs run
+// (and can spy on it) under jsdom instead of throwing "scrollTo is not a function".
+if (typeof Element !== 'undefined' && typeof Element.prototype.scrollTo !== 'function') {
+    Element.prototype.scrollTo = function (): void {};
+}
