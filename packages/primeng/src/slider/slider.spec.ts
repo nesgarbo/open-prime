@@ -1,6 +1,6 @@
 import { Component, provideZonelessChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
 import { SharedModule } from 'primeng/api';
@@ -10,7 +10,8 @@ import { Slider, SliderModule } from './slider';
 
 // Test Components
 @Component({
-    standalone: false,
+    standalone: true,
+    imports: [SliderModule, FormsModule, ReactiveFormsModule],
     template: `
         <p-slider
             [(ngModel)]="value"
@@ -50,7 +51,8 @@ class TestBasicSliderComponent {
 }
 
 @Component({
-    standalone: false,
+    standalone: true,
+    imports: [SliderModule, FormsModule, ReactiveFormsModule],
     template: `
         <form [formGroup]="form">
             <p-slider formControlName="sliderValue"></p-slider>
@@ -64,7 +66,8 @@ class TestFormSliderComponent {
 }
 
 @Component({
-    standalone: false,
+    standalone: true,
+    imports: [SliderModule, FormsModule, ReactiveFormsModule],
     template: `
         <form [formGroup]="form">
             <p-slider [range]="true" formControlName="rangeValue"> </p-slider>
@@ -959,8 +962,8 @@ describe('Slider', () => {
                 }
             } as any;
 
-            spyOnProperty(window, 'scrollX', 'get').mockReturnValue(5);
-            spyOnProperty(window, 'scrollY', 'get').mockReturnValue(10);
+            vi.spyOn(window, 'scrollX', 'get').mockReturnValue(5);
+            vi.spyOn(window, 'scrollY', 'get').mockReturnValue(10);
 
             component.updateDomData();
 
@@ -1055,8 +1058,8 @@ describe('Slider', () => {
                 preventDefault: vi.fn()
             } as unknown as Event;
 
-            vi.spyOn(component, 'updateDomData');
-            vi.spyOn(component, 'bindDragListeners');
+            vi.spyOn(component, 'updateDomData').mockImplementation(() => {});
+            vi.spyOn(component, 'bindDragListeners').mockImplementation(() => {});
 
             component.onMouseDown(mockEvent);
 
