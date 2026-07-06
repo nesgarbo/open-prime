@@ -52,3 +52,5 @@ api-generator/themedoc.json
 # primeng packages
 packages/primeng/src/package.json
 .eslintcache
+packages/primeng/out-tsc/
+.vitest-attachments/

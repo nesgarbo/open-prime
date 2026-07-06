@@ -1,11 +1,16 @@
 {
-    "extends": "./tsconfig.json",
+    "extends": "../../tsconfig.json",
     "compilerOptions": {
+        "strictNullChecks": true,
         "types": [
             "vitest/globals",
             "node"
         ],
         "outDir": "./out-tsc/spec"
+    },
+    "angularCompilerOptions": {
+        "strictTemplates": false,
+        "fullTemplateTypeCheck": false
     },
     "exclude": [
         "node_modules"
@@ -13,9 +18,5 @@
     "include": [
         "src/**/*.spec.ts",
         "src/**/*.d.ts"
-    ],
-    "angularCompilerOptions": {
-        "strictTemplates": false,
-        "fullTemplateTypeCheck": false
-    }
+    ]
 }
