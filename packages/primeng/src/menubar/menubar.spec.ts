@@ -1,4 +1,4 @@
-import { Component, DebugElement, provideZonelessChangeDetection } from '@angular/core';
+import { Component, DebugElement, provideZonelessChangeDetection, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -11,19 +11,20 @@ function createProcessedItem(item: MenuItem, key: string, index: number, level: 
 }
 
 @Component({
-    standalone: false,
+    standalone: true,
+    imports: [Menubar],
     template: `
         <p-menubar
-            [model]="model"
-            [autoZIndex]="autoZIndex"
-            [baseZIndex]="baseZIndex"
-            [autoDisplay]="autoDisplay"
-            [autoHide]="autoHide"
-            [autoHideDelay]="autoHideDelay"
-            [breakpoint]="breakpoint"
-            [id]="id"
-            [ariaLabel]="ariaLabel"
-            [ariaLabelledBy]="ariaLabelledBy"
+            [model]="model()"
+            [autoZIndex]="autoZIndex()"
+            [baseZIndex]="baseZIndex()"
+            [autoDisplay]="autoDisplay()"
+            [autoHide]="autoHide()"
+            [autoHideDelay]="autoHideDelay()"
+            [breakpoint]="breakpoint()"
+            [id]="id()"
+            [ariaLabel]="ariaLabel()"
+            [ariaLabelledBy]="ariaLabelledBy()"
             (onFocus)="onFocus($event)"
             (onBlur)="onBlur($event)"
         >
@@ -31,16 +32,16 @@ function createProcessedItem(item: MenuItem, key: string, index: number, level: 
     `
 })
 class TestBasicMenubarComponent {
-    model: MenuItem[] | undefined = [{ label: 'File', icon: 'pi pi-file' }, { label: 'Edit', icon: 'pi pi-pencil' }, { separator: true }, { label: 'Settings', icon: 'pi pi-cog' }];
-    autoZIndex: boolean = true;
-    baseZIndex: number = 0;
-    autoDisplay: boolean | undefined = true;
-    autoHide: boolean | undefined;
-    autoHideDelay: number = 100;
-    breakpoint: string = '960px';
-    id: string | undefined;
-    ariaLabel: string | undefined;
-    ariaLabelledBy: string | undefined;
+    model = signal<MenuItem[] | undefined>([{ label: 'File', icon: 'pi pi-file' }, { label: 'Edit', icon: 'pi pi-pencil' }, { separator: true }, { label: 'Settings', icon: 'pi pi-cog' }]);
+    autoZIndex = signal<boolean>(true);
+    baseZIndex = signal<number>(0);
+    autoDisplay = signal<boolean | undefined>(true);
+    autoHide = signal<boolean | undefined>(undefined);
+    autoHideDelay = signal<number>(100);
+    breakpoint = signal<string>('960px');
+    id = signal<string | undefined>(undefined);
+    ariaLabel = signal<string | undefined>(undefined);
+    ariaLabelledBy = signal<string | undefined>(undefined);
 
     focusEvent: any;
     blurEvent: any;
@@ -55,7 +56,8 @@ class TestBasicMenubarComponent {
 }
 
 @Component({
-    standalone: false,
+    standalone: true,
+    imports: [Menubar],
     selector: 'test-nested-menubar',
     template: ` <p-menubar [model]="nestedModel"> </p-menubar> `
 })
@@ -78,7 +80,8 @@ class TestNestedMenubarComponent {
 }
 
 @Component({
-    standalone: false,
+    standalone: true,
+    imports: [Menubar],
     selector: 'test-router-menubar',
     template: ` <p-menubar [model]="routerModel"> </p-menubar> `
 })
@@ -96,7 +99,8 @@ class TestRouterMenubarComponent {
 }
 
 @Component({
-    standalone: false,
+    standalone: true,
+    imports: [Menubar],
     template: `
         <p-menubar [model]="model">
             <ng-template #start>
@@ -113,12 +117,15 @@ class TestTemplateMenubarComponent {
 }
 
 @Component({
-    standalone: false,
+    standalone: true,
+    imports: [Menubar],
     template: `
         <p-menubar [model]="model">
             <ng-template #item let-item>
                 <div class="custom-item">
-                    <i [class]="item.icon" *ngIf="item.icon"></i>
+                    @if (item.icon) {
+                        <i [class]="item.icon"></i>
+                    }
                     <span class="custom-label">{{ item.label }}</span>
                 </div>
             </ng-template>
@@ -133,7 +140,8 @@ class TestItemTemplateMenubarComponent {
 }
 
 @Component({
-    standalone: false,
+    standalone: true,
+    imports: [Menubar],
     template: `
         <p-menubar [model]="model">
             <ng-template #item let-item>
@@ -147,7 +155,8 @@ class TestTemplateMenubarItemComponent {
 }
 
 @Component({
-    standalone: false,
+    standalone: true,
+    imports: [Menubar],
     template: `
         <p-menubar [model]="model">
             <ng-template #submenuicon>
@@ -166,7 +175,8 @@ class TestSubmenuIconTemplateComponent {
 }
 
 @Component({
-    standalone: false,
+    standalone: true,
+    imports: [Menubar],
     template: `
         <p-menubar [model]="model">
             <ng-template #menuicon>
@@ -180,7 +190,8 @@ class TestMenuIconTemplateComponent {
 }
 
 @Component({
-    standalone: false,
+    standalone: true,
+    imports: [Menubar],
     selector: 'test-disabled-items',
     template: ` <p-menubar [model]="disabledModel"> </p-menubar> `
 })
@@ -189,7 +200,8 @@ class TestDisabledItemsComponent {
 }
 
 @Component({
-    standalone: false,
+    standalone: true,
+    imports: [Menubar],
     selector: 'test-styled-menubar',
     template: ` <p-menubar [class]="customStyleClass"> </p-menubar> `
 })
@@ -198,35 +210,38 @@ class TestStyledMenubarComponent {
 }
 
 @Component({
-    standalone: false,
+    standalone: true,
+    imports: [Menubar],
     selector: 'test-minimal-menubar',
     template: `<p-menubar></p-menubar>`
 })
 class TestMinimalMenubarComponent {}
 
 @Component({
-    standalone: false,
+    standalone: true,
+    imports: [Menubar],
     selector: 'test-dynamic-menubar',
-    template: ` <p-menubar [model]="dynamicModel"> </p-menubar> `
+    template: ` <p-menubar [model]="dynamicModel()"> </p-menubar> `
 })
 class TestDynamicMenubarComponent {
-    dynamicModel: MenuItem[] = [];
+    dynamicModel = signal<MenuItem[]>([]);
 
     addItem(item: MenuItem) {
-        this.dynamicModel.push(item);
+        this.dynamicModel.update((model) => [...model, item]);
     }
 
     clearItems() {
-        this.dynamicModel = [];
+        this.dynamicModel.set([]);
     }
 
     removeItem(index: number) {
-        this.dynamicModel.splice(index, 1);
+        this.dynamicModel.update((model) => model.filter((_, i) => i !== index));
     }
 }
 
 @Component({
-    standalone: false,
+    standalone: true,
+    imports: [Menubar],
     selector: 'test-command-menubar',
     template: ` <p-menubar [model]="commandModel"> </p-menubar> `
 })
@@ -245,7 +260,8 @@ class TestCommandMenubarComponent {
 }
 
 @Component({
-    standalone: false,
+    standalone: true,
+    imports: [Menubar],
     selector: 'test-item-template-command-menubar',
     template: `
         <p-menubar [model]="model">
@@ -269,7 +285,8 @@ class TestItemTemplateCommandMenubarComponent {
 }
 
 @Component({
-    standalone: false,
+    standalone: true,
+    imports: [Menubar],
     selector: 'test-autohide-menubar',
     template: ` <p-menubar [model]="model" [autoHide]="autoHide" [autoHideDelay]="autoHideDelay"> </p-menubar> `
 })
@@ -293,7 +310,7 @@ describe('Menubar', () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            declarations: [
+            imports: [
                 TestBasicMenubarComponent,
                 TestNestedMenubarComponent,
                 TestRouterMenubarComponent,
@@ -308,9 +325,7 @@ describe('Menubar', () => {
                 TestDynamicMenubarComponent,
                 TestCommandMenubarComponent,
                 TestItemTemplateCommandMenubarComponent,
-                TestAutoHideMenubarComponent
-            ],
-            imports: [
+                TestAutoHideMenubarComponent,
                 Menubar,
                 TestTargetComponent,
 
@@ -359,13 +374,13 @@ describe('Menubar', () => {
 
         it('should accept custom values', async () => {
             const testModel: MenuItem[] = [{ label: 'Test Item' }];
-            component.model = testModel;
-            component.autoZIndex = false;
-            component.baseZIndex = 1000;
-            component.autoDisplay = false;
-            component.autoHide = true;
-            component.breakpoint = '768px';
-            component.ariaLabel = 'Custom Menu Bar';
+            component.model.set(testModel);
+            component.autoZIndex.set(false);
+            component.baseZIndex.set(1000);
+            component.autoDisplay.set(false);
+            component.autoHide.set(true);
+            component.breakpoint.set('768px');
+            component.ariaLabel.set('Custom Menu Bar');
             fixture.changeDetectorRef.markForCheck();
             await fixture.whenStable();
 
@@ -401,7 +416,7 @@ describe('Menubar', () => {
     describe('Input Properties', () => {
         it('should update model input', async () => {
             const newModel = [{ label: 'New Item' }];
-            component.model = newModel;
+            component.model.set(newModel);
             fixture.changeDetectorRef.markForCheck();
             await fixture.whenStable();
 
@@ -410,50 +425,50 @@ describe('Menubar', () => {
         });
 
         it('should update autoZIndex with booleanAttribute transform', async () => {
-            component.autoZIndex = false;
+            component.autoZIndex.set(false);
             fixture.changeDetectorRef.markForCheck();
             await fixture.whenStable();
             expect(menubarInstance.autoZIndex()).toBe(false);
         });
 
         it('should update baseZIndex with numberAttribute transform', async () => {
-            component.baseZIndex = 500;
+            component.baseZIndex.set(500);
             fixture.changeDetectorRef.markForCheck();
             await fixture.whenStable();
             expect(menubarInstance.baseZIndex()).toBe(500);
         });
 
         it('should update autoDisplay with booleanAttribute transform', async () => {
-            component.autoDisplay = false;
+            component.autoDisplay.set(false);
             fixture.changeDetectorRef.markForCheck();
             await fixture.whenStable();
             expect(menubarInstance.autoDisplay()).toBe(false);
         });
 
         it('should update autoHide with booleanAttribute transform', async () => {
-            component.autoHide = true;
+            component.autoHide.set(true);
             fixture.changeDetectorRef.markForCheck();
             await fixture.whenStable();
             expect(menubarInstance.autoHide()).toBe(true);
         });
 
         it('should update autoHideDelay with numberAttribute transform', async () => {
-            component.autoHideDelay = 300;
+            component.autoHideDelay.set(300);
             fixture.changeDetectorRef.markForCheck();
             await fixture.whenStable();
             expect(menubarInstance.autoHideDelay()).toBe(300);
         });
 
         it('should update breakpoint input', async () => {
-            component.breakpoint = '768px';
+            component.breakpoint.set('768px');
             fixture.changeDetectorRef.markForCheck();
             await fixture.whenStable();
             expect(menubarInstance.breakpoint()).toBe('768px');
         });
 
         it('should update ariaLabel and ariaLabelledBy inputs', async () => {
-            component.ariaLabel = 'Test Menubar';
-            component.ariaLabelledBy = 'menubar-label';
+            component.ariaLabel.set('Test Menubar');
+            component.ariaLabelledBy.set('menubar-label');
             fixture.changeDetectorRef.markForCheck();
             await fixture.whenStable();
 
@@ -820,8 +835,8 @@ describe('Menubar', () => {
         });
 
         it('should update ariaLabel and ariaLabelledBy', async () => {
-            component.ariaLabel = 'Main Navigation';
-            component.ariaLabelledBy = 'nav-heading';
+            component.ariaLabel.set('Main Navigation');
+            component.ariaLabelledBy.set('nav-heading');
             fixture.changeDetectorRef.markForCheck();
             await fixture.whenStable();
 
@@ -875,7 +890,7 @@ describe('Menubar', () => {
         });
 
         it('should handle breakpoint changes', async () => {
-            component.breakpoint = '768px';
+            component.breakpoint.set('768px');
             fixture.changeDetectorRef.markForCheck();
             await fixture.whenStable();
 
@@ -908,7 +923,7 @@ describe('Menubar', () => {
 
     describe('Edge Cases', () => {
         it('should handle null/undefined model', async () => {
-            component.model = undefined as any;
+            component.model.set(undefined as any);
             fixture.changeDetectorRef.markForCheck();
             await fixture.whenStable();
 
@@ -917,7 +932,7 @@ describe('Menubar', () => {
         });
 
         it('should handle empty model array', async () => {
-            component.model = [];
+            component.model.set([]);
             fixture.changeDetectorRef.markForCheck();
             await fixture.whenStable();
 
@@ -926,7 +941,7 @@ describe('Menubar', () => {
         });
 
         it('should handle items without labels', async () => {
-            component.model = [{ icon: 'pi pi-file' }];
+            component.model.set([{ icon: 'pi pi-file' }]);
             fixture.changeDetectorRef.markForCheck();
             await fixture.whenStable();
 
