@@ -5,7 +5,8 @@ import { By } from '@angular/platform-browser';
 import { Splitter } from './splitter';
 
 @Component({
-    standalone: false,
+    standalone: true,
+    imports: [Splitter],
     template: `
         <p-splitter
             [panelSizes]="panelSizes"
@@ -17,7 +18,7 @@ import { Splitter } from './splitter';
             [step]="step"
             [panelStyleClass]="panelStyleClass"
             [panelStyle]="panelStyle"
-            [styleClass]="styleClass"
+            [class]="styleClass"
             (onResizeStart)="onResizeStart($event)"
             (onResizeEnd)="onResizeEnd($event)"
         >
@@ -55,7 +56,8 @@ class TestSplitterComponent {
 }
 
 @Component({
-    standalone: false,
+    standalone: true,
+    imports: [Splitter],
     template: `
         <p-splitter>
             <ng-template #panel>
@@ -73,7 +75,8 @@ class TestSplitterComponent {
 class TestThreePanelComponent {}
 
 @Component({
-    standalone: false,
+    standalone: true,
+    imports: [Splitter],
     template: `
         <p-splitter [panelSizes]="[20, 80]">
             <ng-template #panel>
@@ -95,7 +98,8 @@ class TestThreePanelComponent {}
 class TestNestedSplitterComponent {}
 
 @Component({
-    standalone: false,
+    standalone: true,
+    imports: [Splitter],
     template: `
         <p-splitter [pt]="pt">
             <ng-template #panel>
@@ -119,8 +123,7 @@ describe('Splitter', () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [Splitter],
-            declarations: [TestSplitterComponent, TestThreePanelComponent, TestNestedSplitterComponent, TestPTSplitterComponent],
+            imports: [Splitter, TestSplitterComponent, TestThreePanelComponent, TestNestedSplitterComponent, TestPTSplitterComponent],
             providers: [provideZonelessChangeDetection()]
         });
 
