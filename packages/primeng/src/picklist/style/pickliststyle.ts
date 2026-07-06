@@ -3,7 +3,7 @@ import { style } from '@primeuix/styles/picklist';
 import { BaseStyle } from 'primeng/base';
 
 const classes = {
-    root: () => ['p-picklist p-component'],
+    root: ({ instance }) => ['p-picklist p-component', { 'p-picklist-virtualscroll': instance.virtualScroll() }],
     sourceControls: 'p-picklist-controls p-picklist-source-controls',
     sourceListContainer: 'p-picklist-list-container p-picklist-source-list-container',
     transferControls: 'p-picklist-controls p-picklist-transfer-controls',
@@ -11,11 +11,21 @@ const classes = {
     targetControls: 'p-picklist-controls p-picklist-target-controls'
 };
 
+// When virtual scrolling is enabled the inner Listbox mounts a p-scroller whose
+// height is driven by its own viewport. The theme forces `.p-picklist .p-listbox`
+// to height: 100%, which stretches the list past the scroller and leaves a blank
+// gap below the options; let the list size to its scroller instead.
+const virtualScrollStyle = `
+.p-picklist-virtualscroll .p-listbox {
+    height: auto;
+}
+`;
+
 @Injectable()
 export class PickListStyle extends BaseStyle {
     name = 'picklist';
 
-    style = style;
+    style = style + virtualScrollStyle;
 
     classes = classes;
 }
