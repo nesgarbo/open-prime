@@ -244,9 +244,24 @@ importers:
       '@docsearch/js':
         specifier: ^3.3.4
         version: 3.9.0(@algolia/client-search@4.27.0)(@types/react@18.3.31)(search-insights@2.17.3)
+      '@primeicons/angular':
+        specifier: 'catalog:'
+        version: 8.0.0-alpha.7(@angular/core@22.0.4(@angular/compiler@22.0.4)(rxjs@7.8.2))
+      '@primeuix/motion':
+        specifier: 'catalog:'
+        version: 0.0.10
+      '@primeuix/styled':
+        specifier: 'catalog:'
+        version: 0.7.4
+      '@primeuix/styles':
+        specifier: 'catalog:'
+        version: 3.0.0-rc.1
       '@primeuix/themes':
         specifier: 'catalog:'
         version: 3.0.0-alpha.13
+      '@primeuix/utils':
+        specifier: 'catalog:'
+        version: 0.7.2
       '@stackblitz/sdk':
         specifier: 1.9.0
         version: 1.9.0
@@ -266,8 +281,8 @@ importers:
         specifier: ^18.3.12
         version: 18.3.31
       chart.js:
-        specifier: 4.4.2
-        version: 4.4.2
+        specifier: 4.5.1
+        version: 4.5.1
       codelyzer:
         specifier: ^0.0.28
         version: 0.0.28(tslint@3.15.1(typescript@6.0.3))
@@ -3857,10 +3872,6 @@ packages:
 
   chardet@2.2.0:
     resolution: {integrity: sha512-rddelWYNPRrXq6PtNEN2S3f6t9ILzvqaN5pVgi4kqt9jHQaXIial9PznB5iSPVlQSLNaaH22ItWz3EJtQ10+OA==}
-
-  chart.js@4.4.2:
-    resolution: {integrity: sha512-6GD7iKwFpP5kbSD4MeRRRlTnQvxfQREy36uEtm1hzHzcOqwWx0YEHuspuoNlslu+nciLIB7fjjsHkUv/FzFcOg==}
-    engines: {pnpm: '>=8'}
 
   chart.js@4.5.1:
     resolution: {integrity: sha512-GIjfiT9dbmHRiYi6Nl2yFCq7kkwdkp1W/lp2J99rX0yo9tgJGn3lKQATztIjb5tVtevcBtIdICNWqlq5+E8/Pw==}
@@ -11375,10 +11386,6 @@ snapshots:
   character-entities-legacy@3.0.0: {}
 
   chardet@2.2.0: {}
-
-  chart.js@4.4.2:
-    dependencies:
-      '@kurkle/color': 0.3.4
 
   chart.js@4.5.1:
     dependencies:
