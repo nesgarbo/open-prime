@@ -24,6 +24,27 @@ const migrationGuides = {
         breaking: ['PrimeNG v21 requires Angular 19+', 'Standalone components are now the default', 'Updated module structure'],
         deprecations: ['NgModule-based imports deprecated in favor of standalone'],
         whatsnew: ['Full Angular 19 compatibility', 'Standalone components by default', 'Improved performance with zoneless support', 'New animation system']
+    },
+    v21_to_v22: {
+        version: 'v22',
+        from: 'v21',
+        breaking: [
+            'PrimeNG v22 requires Angular 22+',
+            'Component and directive inputs are now signal inputs (`input()`), which return a read-only `InputSignal`. Setting an input imperatively from outside the component (e.g. `iconRef.spin = true` or `iconRef.spin.set(true)`) no longer works — bind the value through the template (`[spin]="..."`) instead. This affects any code that injected a component/directive (such as `BaseIcon`) and wrote to its `@Input` property directly. Reading is affected too: e.g. `PrimeTemplate.type`/`PrimeTemplate.name` are now signals, so `template.type === "header"` silently never matches — call `template.type()` (or `template.getType()`) instead.',
+            'The `pattern` input now accepts a string, a RegExp or an array of patterns and is normalized to `readonly RegExp[]` to match the Angular signal-forms FormValueControl contract',
+            'Components that declared their own `readonly` input with a `false` default (Knob, Rating, InputOtp, Editor) now inherit it from `BaseEditableHolder`, whose default is `undefined` — strict comparisons like `readonly() === false` must be updated (truthiness checks are unaffected)'
+        ],
+        deprecations: [
+            'Lowercase `minlength`/`maxlength` inputs deprecated in favor of `minLength`/`maxLength`',
+            'Decorator-based `@Input`/`@Output`/`@ViewChild` and `*ngIf`/`*ngFor` replaced by `input()`/`output()`/`viewChild()` and `@if`/`@for` in modernized components'
+        ],
+        whatsnew: [
+            'Full Angular 22 compatibility',
+            'Native Angular Signal Forms support: form components integrate with the `[formField]` directive while remaining fully compatible with template-driven (`ngModel`) and reactive (`formControl`) forms through the same ControlValueAccessor',
+            'Form components automatically bind `readonly`, `touched`, `errors`, `required`, `invalid`, `minLength`, `maxLength` and `pattern` from the signal-forms field state',
+            'DatePicker honors the signal-forms `min`/`max` constraints as its selectable date range',
+            'Continued migration to modern signal-based APIs and built-in control flow'
+        ]
     }
 };
 
@@ -56,6 +77,7 @@ function formatMigrationContent(guide: (typeof migrationGuides)[keyof typeof mig
     }
 
     content += `For detailed migration guide, visit: https://primeng.org/installation`;
+
     return content;
 }
 
@@ -67,17 +89,17 @@ runPrimeMcpServer({
     frameworkName: 'PrimeNG',
     slotKey: 'templates',
     codeLanguage: 'typescript',
-    compatibility: 'Angular 17+',
+    compatibility: 'Angular 22+',
     loadComponentsData: async () => ComponentJson as ComponentsData,
     customTools: [
         // Angular-specific: get_migration_guide
         {
             name: 'get_migration_guide',
-            description: 'Get migration guide for upgrading PrimeNG versions (v19, v20, v21)',
+            description: 'Get migration guide for upgrading PrimeNG versions (v19, v20, v21, v22)',
             parameters: {
                 version: {
                     type: 'string',
-                    description: "Target version: 'v19', 'v20', or 'v21'. If not specified, returns a summary of all migrations."
+                    description: "Target version: 'v19', 'v20', 'v21', or 'v22'. If not specified, returns a summary of all migrations."
                 },
                 section: {
                     type: 'string',
@@ -90,12 +112,13 @@ runPrimeMcpServer({
 
                 if (!version) {
                     // Return summary of all migrations
-                    const summary = Object.entries(migrationGuides).map(([key, guide]) => ({
+                    const summary = Object.values(migrationGuides).map((guide) => ({
                         migration: `${guide.from} → ${guide.version}`,
                         breaking_count: guide.breaking.length,
                         deprecations_count: guide.deprecations.length,
                         new_features_count: guide.whatsnew.length
                     }));
+
                     return {
                         content: [
                             {
@@ -114,7 +137,7 @@ runPrimeMcpServer({
                         content: [
                             {
                                 type: 'text' as const,
-                                text: `Migration guide for ${version} not found. Available: v19, v20, v21`
+                                text: `Migration guide for ${version} not found. Available: v19, v20, v21, v22`
                             }
                         ]
                     };
@@ -140,16 +163,14 @@ runPrimeMcpServer({
                     description: "Optional section: 'breaking', 'deprecations', 'whatsnew'"
                 }
             },
-            handler: async (_data: ComponentsData, args: Record<string, unknown>) => {
-                return {
-                    content: [
-                        {
-                            type: 'text' as const,
-                            text: formatMigrationContent(migrationGuides.v18_to_v19, args.section as string | undefined)
-                        }
-                    ]
-                };
-            }
+            handler: async (_data: ComponentsData, args: Record<string, unknown>) => ({
+                content: [
+                    {
+                        type: 'text' as const,
+                        text: formatMigrationContent(migrationGuides.v18_to_v19, args.section as string | undefined)
+                    }
+                ]
+            })
         },
         // Angular-specific: migrate_v19_to_v20
         {
@@ -161,16 +182,14 @@ runPrimeMcpServer({
                     description: "Optional section: 'breaking', 'deprecations', 'whatsnew'"
                 }
             },
-            handler: async (_data: ComponentsData, args: Record<string, unknown>) => {
-                return {
-                    content: [
-                        {
-                            type: 'text' as const,
-                            text: formatMigrationContent(migrationGuides.v19_to_v20, args.section as string | undefined)
-                        }
-                    ]
-                };
-            }
+            handler: async (_data: ComponentsData, args: Record<string, unknown>) => ({
+                content: [
+                    {
+                        type: 'text' as const,
+                        text: formatMigrationContent(migrationGuides.v19_to_v20, args.section as string | undefined)
+                    }
+                ]
+            })
         },
         // Angular-specific: migrate_v20_to_v21
         {
@@ -182,16 +201,33 @@ runPrimeMcpServer({
                     description: "Optional section: 'breaking', 'deprecations', 'whatsnew'"
                 }
             },
-            handler: async (_data: ComponentsData, args: Record<string, unknown>) => {
-                return {
-                    content: [
-                        {
-                            type: 'text' as const,
-                            text: formatMigrationContent(migrationGuides.v20_to_v21, args.section as string | undefined)
-                        }
-                    ]
-                };
-            }
+            handler: async (_data: ComponentsData, args: Record<string, unknown>) => ({
+                content: [
+                    {
+                        type: 'text' as const,
+                        text: formatMigrationContent(migrationGuides.v20_to_v21, args.section as string | undefined)
+                    }
+                ]
+            })
+        },
+        // Angular-specific: migrate_v21_to_v22
+        {
+            name: 'migrate_v21_to_v22',
+            description: 'Migration guide for upgrading PrimeNG from v21 to v22. Covers Angular 22 support, native Signal Forms integration, form input type changes and modern signal-based APIs.',
+            parameters: {
+                section: {
+                    type: 'string',
+                    description: "Optional section: 'breaking', 'deprecations', 'whatsnew'"
+                }
+            },
+            handler: async (_data: ComponentsData, args: Record<string, unknown>) => ({
+                content: [
+                    {
+                        type: 'text' as const,
+                        text: formatMigrationContent(migrationGuides.v21_to_v22, args.section as string | undefined)
+                    }
+                ]
+            })
         }
     ]
 });
